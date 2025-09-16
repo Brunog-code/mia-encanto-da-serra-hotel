@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//enums
+enum RoomStatus {
+  AVAILABLE
+  MAINTENANCE
+  OCCUPIED
+}
+
+enum RoomCategory {
+  STANDARD
+  LUXURY
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+}
+
+enum paymentstatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum PaymentMethod {
+  CARD
+  PIX
+}
+
+//models
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  address   String
+  phone     String
+  cpf       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservations Reservation[] @relation("CustomerReservation")
+}
+
+model Room {
+  id          String       @id @default(uuid())
+  roomNumber  String       @unique
+  category    RoomCategory
+  description String
+  capacity    Int
+  dailyRate   Decimal
+  quantity    Int          @default(0)
+  status      RoomStatus   @default(AVAILABLE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  reservations Reservation[] @relation("RoomReservation")
+}
+
+model Reservation {
+  id          String            @id @default(uuid())
+  checkIn     DateTime
+  checkOut    DateTime
+  status      ReservationStatus @default(PENDING)
+  totalAmount Decimal
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  customerId String
+  customer   Customer @relation("CustomerReservation", fields: [customerId], references: [id], onDelete: Cascade)
+
+  roomId String
+  room   Room   @relation("RoomReservation", fields: [roomId], references: [id], onDelete: Cascade)
+
+  paymentId String?  @unique
+  payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  methodPayment PaymentMethod
+  installments  Int           @default(1)
+  amount        Decimal
+  status        paymentstatus @default(PENDING)
+  mpPaymentId   String
+  qrCode        String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  reservation Reservation? @relation
+}
