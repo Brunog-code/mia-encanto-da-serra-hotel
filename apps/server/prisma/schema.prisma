@@ -57,7 +57,6 @@ model Room {
   description String
   capacity    Int
   dailyRate   Decimal
-  quantity    Int          @default(0)
   status      RoomStatus   @default(AVAILABLE)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -91,7 +90,7 @@ model Payment {
   amount        Decimal
   status        paymentstatus @default(PENDING)
   mpPaymentId   String
-  qrCode        String
+  qrCode        String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
