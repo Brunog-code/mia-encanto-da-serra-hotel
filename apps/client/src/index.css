@@ -142,3 +142,39 @@
 .hover\:bg-bistre-600:hover {
   background-color: var(--bistre-600);
 }
+
+/* ===============================
+   Classes de borda
+   =============================== */
+.border-white-gost-400 {
+  border-color: var(--white-gost-400);
+}
+.border-white-gost-500 {
+  border-color: var(--white-gost-500);
+}
+.border-white-gost-600 {
+  border-color: var(--white-gost-600);
+}
+
+.border-golden-400 {
+  border-color: var(--golden-400);
+}
+.border-golden-500 {
+  border-color: var(--golden-500);
+}
+.border-golden-600 {
+  border-color: var(--golden-600);
+}
+
+.border-bistre-300 {
+  border-color: var(--bistre-300);
+}
+.border-bistre-400 {
+  border-color: var(--bistre-400);
+}
+.border-bistre-500 {
+  border-color: var(--bistre-500);
+}
+.border-bistre-600 {
+  border-color: var(--bistre-600);
+}

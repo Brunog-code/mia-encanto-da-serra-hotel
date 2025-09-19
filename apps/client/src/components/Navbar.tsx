@@ -10,11 +10,17 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { Link, scrollSpy } from "react-scroll";
 
 export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
   const [scroll, setScroll] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [windowWidthMd, setWindowWidthMd] = useState(window.innerWidth >= 768);
+
+  //atualiza scrollSpy na primeira render
+  useEffect(() => {
+    scrollSpy.update();
+  }, []);
 
   // Detecta scroll para mudar opacidade
   useEffect(() => {
@@ -25,7 +31,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Detecta resize da tela
+  // Detecta resize da tela para alternar entre mobile e desktop
   useEffect(() => {
     const handleResize = () => {
       setWindowWidthMd(window.innerWidth >= 768);
@@ -36,10 +42,20 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Itens do menu
+  const menu = [
+    "Inicio",
+    "Sobre",
+    "Quartos",
+    "Experiências",
+    "Galeria",
+    "Contato",
+  ];
+
   return (
     <header
       ref={ref}
-      className={`w-full z-50 fixed bg-white-gost-500 top-0 transition-all duration-300 p-2 ${
+      className={`w-full z-50 fixed bg-white-gost-500 hover:opacity-100 top-0 transition-all duration-300 p-2 ${
         scroll ? "opacity-[85%]" : "opacity-100"
       }`}
     >
@@ -73,7 +89,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             onClose={() => setDrawerOpen(false)}
           >
             <List sx={{ width: 250 }}>
-              {["Sobre", "Quartos", "Serviços", "Contato"].map((text) => (
+              {menu.map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => setDrawerOpen(false)}>
                     <ListItemText primary={text} />
@@ -86,13 +102,26 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
           {/* Navbar desktop */}
           <div className="hidden md:flex w-full flex-col mt-2 text-golden-600 font-semibold ">
             <div className="border-t border-b border-dark-600 w-full">
-              <ul className="flex justify-center space-x-6  p-2">
-                <li>Inicio</li>
-                <li>Sobre</li>
-                <li>Quartos</li>
-                <li>Experiências</li>
-                <li>Galeria</li>
-                <li>Contato</li>
+              <ul className="flex justify-center space-x-6">
+                {menu.map((text) => (
+                  <li
+                    className="p-2 rounded-md hover:bg-golden-400 hover:text-white cursor-pointer transition-all duration-300"
+                    key={text}
+                  >
+                    <Link
+                      key={text}
+                      to={text}
+                      smooth={true}
+                      duration={500}
+                      offset={-80}
+                      spy={true}
+                      className="p-2 rounded-md" 
+                      activeClass="text-bistre-600"
+                    >
+                      {text}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

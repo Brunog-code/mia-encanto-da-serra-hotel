@@ -5,3 +5,6 @@ export * from "./Button.tsx";
 export * from "./Input.tsx";
 export * from "./About.tsx";
 export * from "./SwiperAbout.tsx";
+export * from "./Rooms.tsx";
+export * from "./ScrollButton.tsx";
+export * from "./CardRoom.tsx";

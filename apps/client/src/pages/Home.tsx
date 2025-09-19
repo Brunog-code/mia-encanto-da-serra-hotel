@@ -1,10 +1,18 @@
-import { Hero, About } from "@/components";
+import { Hero, About, Rooms } from "@/components";
+import { Element } from "react-scroll";
 
 export const Home = () => {
   return (
     <div>
-      <Hero />
-      <About />
+      <Element name="Inicio">
+        <Hero />
+      </Element>
+      <Element name="Sobre">
+        <About />
+      </Element>
+      <Element name="Quartos">
+        <Rooms />
+      </Element>
     </div>
   );
 };

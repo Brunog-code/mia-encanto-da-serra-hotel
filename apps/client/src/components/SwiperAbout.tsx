@@ -3,9 +3,9 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 
 export const SwiperAbout = () => {
   const images = [
-    "/images/hotel/hotel-imagem-aerea.webp",
-    "/images/hotel/hotel-vista-lateral.webp",
     "/images/hotel/hotel-gramado.webp",
+    "/images/hotel/hotel-vista-lateral.webp",
+    "/images/hotel/hotel-imagem-aerea.webp",
     "/images/activities/pscina-hotel-aquecida-2.webp",
     "/images/room/quarto-luxo-banheiro-3.webp",
   ];
@@ -34,6 +34,7 @@ export const SwiperAbout = () => {
       <Swiper
         effect="coverflow"
         grabCursor={true}
+        initialSlide={2}
         centeredSlides={true}
         slidesPerView={3} //mostra 3 slides por vez
         spaceBetween={40} //espaço entre os slides
