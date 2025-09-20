@@ -21,7 +21,7 @@ interface ICardRoom {
   onViewDetails?: () => void;
 }
 
-export const CardRoom = ({
+export const RoomCard = ({
   imgs,
   title,
   description,
@@ -58,9 +58,7 @@ export const CardRoom = ({
 
       {/* Conteúdo do quarto */}
       <CardContent>
-        <Typography className="!font-bold !text-2xl !mb-4" >
-          {title}
-        </Typography>
+        <Typography className="!font-bold !text-2xl !mb-4">{title}</Typography>
         <Typography className="!text-bistre-500 !mb-4">
           {description}
         </Typography>

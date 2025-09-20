@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { forwardRef } from "react";
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Drawer, List, ListItem, ListItemButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, scrollSpy } from "react-scroll";
@@ -47,7 +41,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
     "Inicio",
     "Sobre",
     "Quartos",
-    "Experiências",
+    "Estrutura",
     "Galeria",
     "Contato",
   ];
@@ -92,7 +86,16 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
               {menu.map((text) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => setDrawerOpen(false)}>
-                    <ListItemText primary={text} />
+                    <Link
+                      to={text}
+                      smooth={true}
+                      duration={500}
+                      offset={-80}
+                      spy={true}
+                      className="w-full block p-2"
+                    >
+                      {text}
+                    </Link>
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -115,7 +118,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                       duration={500}
                       offset={-80}
                       spy={true}
-                      className="p-2 rounded-md" 
+                      className="p-2 rounded-md"
                       activeClass="text-bistre-600"
                     >
                       {text}

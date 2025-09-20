@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { Element } from "react-scroll";
-import { CardRoom } from "@/components";
+import { RoomCard } from "@/components";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
@@ -13,7 +13,7 @@ export const Rooms = () => {
       title: "Quarto Luxo",
       description:
         "Quarto espaçoso com decoração elegante, cama king-size, varanda com vista para as montanhas, Wi-Fi gratuito e café da manhã incluso.",
-      capacity: 4,
+      capacity: 6,
       imgs: [
         "/images/room/quarto-luxo.webp",
         "/images/room/quarto-luxo-2.webp",
@@ -30,7 +30,7 @@ export const Rooms = () => {
       title: "Quarto Standard",
       description:
         "Quarto confortável com cama queen-size, decoração moderna, Wi-Fi gratuito e café da manhã incluso. Ideal para viajantes a negócios ou lazer.",
-      capacity: 4,
+      capacity: 6,
       imgs: [
         "/images/room/quarto-stardand.webp",
         "/images/room/quarto-stardand-2.webp",
@@ -77,17 +77,17 @@ export const Rooms = () => {
   return (
     <section
       ref={sectionRoomRef}
-      className="pb-15 w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-bistre-300 "
+      className="w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-bistre-300 "
     >
       <Element className="space-y-5 flex flex-col">
-        <h1 className="text-4xl text-bistre-600 font-semibold text-center mt-15 mb-10">
+        <h1 className="text-4xl text-white-gost-500 font-semibold text-center mt-15 mb-10">
           Quartos
         </h1>
       </Element>
 
       <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
         <div>
-          <CardRoom
+          <RoomCard
             imgs={roomsHotel.quartoLuxo.imgs}
             title={roomsHotel.quartoLuxo.title}
             description={roomsHotel.quartoLuxo.description}
@@ -96,7 +96,7 @@ export const Rooms = () => {
           />
         </div>
         <div>
-          <CardRoom
+          <RoomCard
             imgs={roomsHotel.quartoStandard.imgs}
             title={roomsHotel.quartoStandard.title}
             description={roomsHotel.quartoStandard.description}
