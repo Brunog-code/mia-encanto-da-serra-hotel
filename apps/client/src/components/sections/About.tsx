@@ -32,12 +32,11 @@ export const About = () => {
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.5,
           ease: "expo.out",
-          delay: 0.5,
           scrollTrigger: {
             trigger: textRef.current,
-            start: "top 85%",
+            start: "top bottom",
             toggleActions: "play none none reverse",
           },
         }

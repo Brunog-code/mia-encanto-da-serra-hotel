@@ -83,10 +83,11 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             onClose={() => setDrawerOpen(false)}
           >
             <List sx={{ width: 250 }}>
-              {menu.map((text) => (
+              {menu.map((text, index) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton onClick={() => setDrawerOpen(false)}>
                     <Link
+                      key={index}
                       to={text}
                       smooth={true}
                       duration={500}

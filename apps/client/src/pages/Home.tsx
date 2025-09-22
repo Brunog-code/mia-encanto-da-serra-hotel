@@ -4,7 +4,11 @@ import {
   Rooms,
   ScrollButton,
   Promotion,
-  Structure
+  Structure,
+  Gallery,
+  Testimonials,
+  Faq,
+  Contact,
 } from "@/components";
 import { Element } from "react-scroll";
 
@@ -20,9 +24,23 @@ export const Home = () => {
       <Element name="Quartos">
         <Rooms />
       </Element>
-      <Promotion />
+      <Element name="Pacotes e ofertas">
+        <Promotion />
+      </Element>
       <Element name="Estrutura">
         <Structure />
+      </Element>
+      <Element name="Galeria">
+        <Gallery />
+      </Element>
+      <Element name="Depoimentos">
+        <Testimonials />
+      </Element>
+      <Element name="Faq">
+        <Faq />
+      </Element>
+      <Element name="Contato">
+        <Contact />
       </Element>
       <ScrollButton />
     </div>

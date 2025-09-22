@@ -61,7 +61,7 @@ export const Structure = () => {
         opacity: 0,
         rotation: -360,
         x: -window.innerWidth,
-        duration: 1.5,
+        duration: 1,
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate0",
@@ -74,10 +74,10 @@ export const Structure = () => {
         opacity: 0,
         rotation: 360,
         y: -350,
-        duration: 1.5,
+        duration: 1,
         ease: "power4.out",
         scrollTrigger: {
-          trigger: ".animate0",
+          trigger: ".animate1",
           start: "top 50%",
           toggleActions: "play none none reverse",
         },
@@ -87,10 +87,10 @@ export const Structure = () => {
         opacity: 0,
         rotation: 360,
         x: window.innerWidth,
-        duration: 1.5,
+        duration: 1,
         ease: "power4.out",
         scrollTrigger: {
-          trigger: ".animate0",
+          trigger: ".animate2",
           start: "top 50%",
           toggleActions: "play none none reverse",
         },
@@ -101,7 +101,7 @@ export const Structure = () => {
   }, []);
 
   return (
-    <section className="w-full min-h-screen h-auto flex flex-col items-center pt-20 px-10 bg-white-gost-500 ">
+    <section className="w-full  h-auto flex flex-col items-center pt-20 px-10 bg-white-gost-500 pb-15 ">
       <div>
         <h1 className="text-3xl md:text-4xl text-bistre-600 font-semibold text-center">
           Estrutura e atividades

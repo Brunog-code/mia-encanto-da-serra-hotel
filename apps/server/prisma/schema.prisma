@@ -23,9 +23,10 @@ enum ReservationStatus {
   PENDING
   CONFIRMED
   CANCELED
+  FINALIZED
 }
 
-enum paymentstatus {
+enum PaymentStatus {
   PENDING
   PAID
   FAILED
@@ -50,17 +51,24 @@ model Customer {
   reservations Reservation[] @relation("CustomerReservation")
 }
 
-model Room {
+model RoomType {
   id          String       @id @default(uuid())
-  roomNumber  String       @unique
   category    RoomCategory
   description String
+  price       Decimal
   capacity    Int
-  dailyRate   Decimal
-  status      RoomStatus   @default(AVAILABLE)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  amenities   String[] // lista de comodidades
+  rooms       Room[]
+}
 
+model Room {
+  id           String        @id @default(uuid())
+  number       String        @unique
+  status       RoomStatus    @default(AVAILABLE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  typeId       String
+  type         RoomType      @relation(fields: [typeId], references: [id])
   reservations Reservation[] @relation("RoomReservation")
 }
 
@@ -79,8 +87,7 @@ model Reservation {
   roomId String
   room   Room   @relation("RoomReservation", fields: [roomId], references: [id], onDelete: Cascade)
 
-  paymentId String?  @unique
-  payment   Payment? @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  payment Payment?
 }
 
 model Payment {
@@ -88,11 +95,12 @@ model Payment {
   methodPayment PaymentMethod
   installments  Int           @default(1)
   amount        Decimal
-  status        paymentstatus @default(PENDING)
+  status        PaymentStatus @default(PENDING)
   mpPaymentId   String
   qrCode        String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
-  reservation Reservation? @relation
+  reservationId String      @unique
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
 }

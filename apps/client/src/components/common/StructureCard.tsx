@@ -16,7 +16,7 @@ export const StructureCard = ({
   className,
 }: IstructureCard) => {
   return (
-    <div className="flex flex-col space-y-4 text-center bg-golden-400 rounded-xl p-4">
+    <div className="flex flex-col space-y-4 text-center bg-golden-400 rounded-xl p-4 shadow-lg">
       <div className="flex justify-center items-center">
         <img
           className={`rounded-full ${className}`}

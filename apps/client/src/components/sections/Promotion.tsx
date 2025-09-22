@@ -44,7 +44,7 @@ export const Promotion = () => {
     <section className="pb-15 w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-gradient-to-b from-[#b08c72] to-[#f5f5f5]">
       <div>
         <h1 className="text-4xl text-white-gost-500 font-semibold text-center mt-15 mb-10">
-          Pacotes e promoções
+          Pacotes e ofertas
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <PromoCard

@@ -1,6 +1,5 @@
-import { Button } from "@/components";
+import { Button, Input } from "@/components";
 import SplitType from "split-type";
-import { Input } from "@/components";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap/gsap-core";
 
