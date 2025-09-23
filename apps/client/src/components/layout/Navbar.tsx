@@ -3,13 +3,16 @@ import clsx from "clsx";
 import { forwardRef } from "react";
 import { Drawer, List, ListItem, ListItemButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import { Link, scrollSpy } from "react-scroll";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Button } from "@/components";
 
 export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
   const [scroll, setScroll] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [windowWidthMd, setWindowWidthMd] = useState(window.innerWidth >= 768);
+  const [showDiv, setShowDiv] = useState(false);
 
   //atualiza scrollSpy na primeira render
   useEffect(() => {
@@ -64,7 +67,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
           <img src="/images/logo-hotel.png" width={150} alt="Logo-hotel" />
         </div>
 
-        {/* Navbar mobile and desktop */}
+        {/* container Navbar mobile and desktop */}
         <nav className="w-full flex flex-col">
           {/* Botão mobile */}
           <div className=" self-start">
@@ -72,7 +75,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
               className="flex md:hidden text-2xl cursor-pointer"
               onClick={() => setDrawerOpen(!drawerOpen)}
             >
-              {drawerOpen ? <CloseIcon /> : <MenuIcon />}
+              <MenuIcon />
             </button>
           </div>
 
@@ -81,11 +84,35 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             anchor="left"
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
+            sx={{
+              "& .MuiDrawer-paper": {
+                background: "linear-gradient(to bottom, #5a4030, #3d2b1f)", // cor de fundo
+                width: 250,
+                color: "white", // cor do texto
+              },
+            }}
           >
+            <div className="pt-4 w-full flex flex-col space-y-4 justify-center items-center">
+              <AccountCircle
+                sx={{ fontSize: 50 }} // tamanho em pixels
+                className="text-white-gost-400"
+              />
+              <Button px="px-3" py="py-2">
+                Entrar
+              </Button>
+              <hr className="w-[80%] text-white-gost-600 opacity-50" />
+            </div>
             <List sx={{ width: 250 }}>
               {menu.map((text, index) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={() => setDrawerOpen(false)}>
+                  <ListItemButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#b08c72", // cor de fundo ao passar o mouse
+                        color: "white", // muda a cor do texto se quiser
+                      },
+                    }}
+                  >
                     <Link
                       key={index}
                       to={text}
@@ -94,6 +121,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                       offset={-80}
                       spy={true}
                       className="w-full block p-2"
+                      onClick={() => setDrawerOpen(false)}
                     >
                       {text}
                     </Link>
@@ -130,6 +158,29 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             </div>
           </div>
         </nav>
+
+        <div className="rounded-md hidden md:flex flex-col justify-center items-center absolute top-2 right-5">
+          <div
+            className="relative cursor-pointer"
+            onClick={() => setShowDiv(!showDiv)}
+          >
+            <AccountCircle fontSize="large" className="text-golden-400" />
+            <KeyboardArrowDownIcon className="text-golden-500 ml-1 absolute -bottom-1 left-6" />
+          </div>
+          {showDiv && (
+            <div className="absolute top-full -left-7 mt-1 bg-white border border-golden-400 rounded-md p-2 flex flex-col text-center gap-1">
+              <button className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer font-semibold">
+                Entrar
+              </button>
+              {/* <span className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer">
+                Minhas reservas
+              </span>
+              <span className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer">
+                Sair
+              </span> */}
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

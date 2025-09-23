@@ -47,7 +47,7 @@ export const Testimonials = () => {
       avatar: "https://i.pravatar.cc/150?img=45",
       comment:
         "Fiquei no quarto standard e mesmo assim me senti muito bem acolhida. Tudo muito limpo, organizado e com um atendimento impecável. Voltarei com certeza!",
-      rating: 4,
+      rating: 5,
       date: "15/03/2025",
     },
     {

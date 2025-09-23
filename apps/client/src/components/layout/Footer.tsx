@@ -5,11 +5,21 @@ export const Footer = () => {
   return (
     <section className="bg-gray-900 w-full text-white h-[50vh] flex flex-col">
       <div className="h-8 bg-red-500 p-8 flex items-center justify-between bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]">
-        <div>decidir</div>
+        <div>Mia encanto da serra Hotel</div>
         <div className="flex gap-5 ">
+          <a href="https://web.whatsapp.com/" target="_blank">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 cursor-pointer hover:scale-110 transition-transform duration-300"
+              viewBox="0 0 24 24"
+              fill="#25D366"
+            >
+              <path d="M20.52 3.48A11.79 11.79 0 0012 0C5.373 0 0 5.373 0 12c0 2.117.553 4.122 1.602 5.884L0 24l6.283-1.637A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12 0-3.205-1.25-6.212-3.48-8.52zM12 22.08a10.04 10.04 0 01-5.35-1.529l-.38-.23-3.73.97.993-3.632-.247-.387A9.963 9.963 0 012.04 12c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10zm5.204-7.787c-.272-.136-1.607-.794-1.854-.884-.247-.092-.427-.136-.607.136-.181.272-.697.884-.854 1.064-.157.181-.315.204-.587.068-.272-.136-1.146-.421-2.18-1.346-.807-.718-1.352-1.604-1.513-1.876-.158-.272-.017-.419.119-.555.123-.123.272-.315.407-.473.136-.157.181-.272.272-.454.091-.181.045-.34-.023-.476-.068-.136-.607-1.462-.832-2.004-.219-.524-.443-.454-.607-.462l-.519-.009c-.181 0-.476.068-.725.34-.272.272-1.04 1.016-1.04 2.477 0 1.46 1.065 2.875 1.213 3.074.136.181 2.097 3.197 5.077 4.482.709.306 1.261.489 1.69.625.71.225 1.356.193 1.868.117.571-.082 1.607-.656 1.833-1.29.226-.635.226-1.178.158-1.29-.068-.113-.247-.181-.519-.317z" />
+            </svg>
+          </a>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
             fill="#f5f5f5"
             viewBox="0 0 24 24"
           >
@@ -18,7 +28,7 @@ export const Footer = () => {
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
             fill="#f5f5f5"
             viewBox="0 0 24 24"
           >
@@ -61,8 +71,15 @@ export const Footer = () => {
             <h2 className="text-white-gost-600 mb-2 text-lg">Newsletter</h2>
             <span>Receba nossas novidades:</span>
             <div className="flex flex-col max-w-[60%] md:max-w-full">
-              <Input type="email" placeholder="Digite seu email" />
-              <Button>Inscrever</Button>
+              <Input
+                type="email"
+                placeholder="Digite seu email"
+                px="px-2"
+                py="py-1"
+              />
+              <Button px="px-4" py="py-2">
+                Inscrever
+              </Button>
             </div>
           </div>
 

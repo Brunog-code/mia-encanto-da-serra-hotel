@@ -65,7 +65,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate0",
-          start: "top 50%",
+          start: "top 60%",
           toggleActions: "play none none reverse",
         },
       });
@@ -78,7 +78,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate1",
-          start: "top 50%",
+          start: "top 60%",
           toggleActions: "play none none reverse",
         },
       });
@@ -91,7 +91,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate2",
-          start: "top 50%",
+          start: "top 60%",
           toggleActions: "play none none reverse",
         },
       });

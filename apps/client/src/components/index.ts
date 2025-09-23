@@ -17,3 +17,4 @@ export * from "./sections/Testimonials";
 export * from "./common/TestimonialsCard";
 export * from "./sections/Faq";
 export * from "./sections/Contact";
+export * from "./lib/ImgGallery";
