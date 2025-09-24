@@ -24,7 +24,10 @@ export const AppLayout = () => {
       <Navbar ref={navbarRef} />
 
       {/* Main content */}
-      <main style={{ marginTop: navbarHeight + 10 }} className="flex-1 w-full overflow-x-hidden">
+      <main
+        style={{ marginTop: navbarHeight + 10 }}
+        className="flex-1 w-full overflow-x-hidden"
+      >
         <Outlet />
       </main>
 

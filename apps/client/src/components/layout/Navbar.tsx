@@ -5,6 +5,8 @@ import { Drawer, List, ListItem, ListItemButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, scrollSpy } from "react-scroll";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Button } from "@/components";
 
@@ -93,6 +95,9 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             }}
           >
             <div className="pt-4 w-full flex flex-col space-y-4 justify-center items-center">
+              <IconButton className="self-end " onClick={() => setDrawerOpen(false)}>
+                <CloseIcon className="text-white" />
+              </IconButton>
               <AccountCircle
                 sx={{ fontSize: 50 }} // tamanho em pixels
                 className="text-white-gost-400"
