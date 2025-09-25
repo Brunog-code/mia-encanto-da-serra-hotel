@@ -2,20 +2,52 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Button } from "@/components";
 import { Input } from "@/components";
 import { useState } from "react";
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import gsap from "gsap";
 
 export const LoginRegister = () => {
   const [isRegister, setisRegister] = useState(false);
 
+  const toggleRegister = () => {
+    setisRegister(!isRegister);
 
+    const ctx = gsap.context(() => {
+      gsap.killTweensOf(".animate-g");
+      gsap.fromTo(
+        ".animate-g",
+        {
+          opacity: 0,
+          x: -window.innerWidth,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.1,
+          ease: "power4.out",
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  };
 
   return (
-    <section className="h-screen flex flex-col gap-6 justify-center items-center pb-20 relative  overflow-hidden">
-      <div className="flex w-[90%] justify-center items-center relative ">
-        <div className="absolute left-2 top-3 shadow-md">
-          <Button px="px-1" py="py-1">
+    <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-hidden">
+      <div className="relative flex justify-center items-center w-[90%]">
+        <div className="top-3 left-1 absolute shadow-md">
+          <Link
+            to="/"
+            className={clsx(
+              "flex justify-center items-center p-1 rounded-md font-semibold text-white-gost-500 transition-all duration-300",
+              isRegister
+                ? "bg-bistre-400 hover:bg-bistre-500"
+                : "bg-golden-500 hover:bg-golden-600"
+            )}
+          >
             <HomeIcon fontSize="large" />
             <span className="ml-1">Voltar</span>
-          </Button>
+          </Link>
         </div>
         <div>
           <img src="/images/logo-hotel.png" width={130} alt="Logo-Hotel"></img>
@@ -23,39 +55,71 @@ export const LoginRegister = () => {
       </div>
 
       {/* container login and register */}
-      <div className="  w-[98%] h-[80%] rounded-t-lg flex flex-col relative z-50 ">
-        <div className="h-[50%] bg-gradient-to-t from-[#e5a84e] to-[#c78d38] text-white-gost-400 shadow-md  rounded-t-lg relative flex flex-col items-center gap-2">
-          <p className="relative z-10 p-2 text-3xl font-bold">
-            Bem vindo de volta
+      <div className="z-50 relative flex flex-col rounded-t-lg w-[98%] h-[80%]">
+        <div
+          className={clsx(
+            "relative flex flex-col items-center gap-2 shadow-md rounded-t-lg h-[50%] text-white-gost-400",
+            isRegister
+              ? "bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]"
+              : "bg-gradient-to-t from-[#e5a84e] to-[#c78d38]"
+          )}
+        >
+          <p className="z-10 relative p-2 font-bold text-3xl">
+            {isRegister ? "Faça seu cadastro" : "Bem vindo de volta"}
           </p>
-          <div className="flex gap-2 items-center">
-            <span className="">Primeiro acesso?</span>
-            <span className="cursor-pointer rounded-md p-1 bg-bistre-400 hover:bg-bistre-500 transition-all duration-300" onClick={() =>}>
-              Registrar
+          <div className="flex items-center gap-2">
+            <span className="">
+              {isRegister ? "Já tem cadastro?" : "Primeiro acesso?"}
+            </span>
+            <span
+              className={clsx(
+                "p-2 rounded-md transition-all duration-300 cursor-pointer select-none",
+                isRegister
+                  ? "bg-golden-500 hover:bg-golden-600"
+                  : "bg-bistre-400 hover:bg-bistre-500"
+              )}
+              onClick={toggleRegister}
+            >
+              {isRegister ? "Login" : "Registrar"}
             </span>
           </div>
         </div>
 
-        <div className="p-2 absolute top-1/2 left-1/2 w-[80%] shadow-lg h-[90%] rounded-t-md bg-white-gost-400 transform -translate-x-1/2 -translate-y-1/4 flex flex-col justify-center items-center space-y-6">
+        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 rounded-t-md w-[80%] md:w-[50%] h-[90%] -translate-x-1/2 -translate-y-1/4 animate-g transform">
           <div>
-            <span className="text-2xl text-bistre-400 font-bold">Login</span>
+            <span className="font-bold text-bistre-400 text-2xl">
+              {isRegister ? "Cadastre-se" : "Login"}
+            </span>
           </div>
-          <form className="flex flex-col gap-2 w-[80%]">
-            <Input type="email" placeholder="Digite seu email" />
-            <Input type="password" placeholder="Digite sua senha" />
-            <p className="text-bistre-300 self-end cursor-pointer">
-              Esqueci minha senha
-            </p>
-            <Button>Entrar</Button>
-          </form>
+          {isRegister ? (
+            "registrar"
+          ) : (
+            <form className="flex flex-col gap-2 w-[80%]">
+              <Input type="email" placeholder="Digite seu email" />
+              <Input type="password" placeholder="Digite sua senha" />
+              <p className="self-end text-bistre-300 cursor-pointer">
+                Esqueci minha senha
+              </p>
+              <Button>Entrar</Button>
+            </form>
+          )}
         </div>
       </div>
-      <img
-        className="absolute -bottom-20 -right-10"
-        src="/images/effect-bg.png"
-        alt=""
-        width={170}
-      />
+      {isRegister ? (
+        <img
+          className="-right-10 -bottom-20 absolute"
+          src="/images/effect-bg-bistre.png"
+          alt=""
+          width={170}
+        />
+      ) : (
+        <img
+          className="-right-10 -bottom-20 absolute"
+          src="/images/effect-bg-golden.png"
+          alt=""
+          width={170}
+        />
+      )}
     </section>
   );
 };

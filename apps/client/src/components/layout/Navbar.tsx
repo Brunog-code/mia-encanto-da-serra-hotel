@@ -8,7 +8,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Button } from "@/components";
+import { Link as RouterLink } from "react-router-dom";
 
 export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
   const [scroll, setScroll] = useState(false);
@@ -60,7 +60,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
     >
       <div
         className={clsx(
-          "w-full flex justify-between items-center max-w-6xl mx-auto px-4 relative",
+          "relative flex justify-between items-center mx-auto px-4 w-full max-w-6xl",
           windowWidthMd ? "flex-col" : "flex-row-reverse"
         )}
       >
@@ -70,11 +70,11 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
         </div>
 
         {/* container Navbar mobile and desktop */}
-        <nav className="w-full flex flex-col">
+        <nav className="flex flex-col w-full">
           {/* Botão mobile */}
-          <div className=" self-start">
+          <div className="self-start">
             <button
-              className="flex md:hidden text-2xl cursor-pointer"
+              className="md:hidden flex text-2xl cursor-pointer"
               onClick={() => setDrawerOpen(!drawerOpen)}
             >
               <MenuIcon />
@@ -94,18 +94,24 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
               },
             }}
           >
-            <div className="pt-4 w-full flex flex-col space-y-4 justify-center items-center">
-              <IconButton className="self-end " onClick={() => setDrawerOpen(false)}>
+            <div className="flex flex-col justify-center items-center space-y-4 pt-4 w-full">
+              <IconButton
+                className="self-end"
+                onClick={() => setDrawerOpen(false)}
+              >
                 <CloseIcon className="text-white" />
               </IconButton>
               <AccountCircle
                 sx={{ fontSize: 50 }} // tamanho em pixels
                 className="text-white-gost-400"
               />
-              <Button px="px-3" py="py-2">
+              <RouterLink
+                to="login"
+                className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
+              >
                 Entrar
-              </Button>
-              <hr className="w-[80%] text-white-gost-600 opacity-50" />
+              </RouterLink>
+              <hr className="opacity-50 w-[80%] text-white-gost-600" />
             </div>
             <List sx={{ width: 250 }}>
               {menu.map((text, index) => (
@@ -125,7 +131,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                       duration={500}
                       offset={-80}
                       spy={true}
-                      className="w-full block p-2"
+                      className="block p-2 w-full"
                       onClick={() => setDrawerOpen(false)}
                     >
                       {text}
@@ -137,12 +143,12 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
           </Drawer>
 
           {/* Navbar desktop */}
-          <div className="hidden md:flex w-full flex-col mt-2 text-golden-600 font-semibold ">
-            <div className="border-t border-b border-dark-600 w-full">
+          <div className="hidden md:flex flex-col mt-2 w-full font-semibold text-golden-600">
+            <div className="border-dark-600 border-t border-b w-full">
               <ul className="flex justify-center space-x-6">
                 {menu.map((text) => (
                   <li
-                    className="p-2 rounded-md hover:bg-golden-400 hover:text-white cursor-pointer transition-all duration-300"
+                    className="hover:bg-golden-400 p-2 rounded-md hover:text-white transition-all duration-300 cursor-pointer"
                     key={text}
                   >
                     <Link
@@ -164,23 +170,26 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
           </div>
         </nav>
 
-        <div className="rounded-md hidden md:flex flex-col justify-center items-center absolute top-2 right-5">
+        <div className="hidden top-2 right-5 absolute md:flex flex-col justify-center items-center rounded-md">
           <div
             className="relative cursor-pointer"
             onClick={() => setShowDiv(!showDiv)}
           >
             <AccountCircle fontSize="large" className="text-golden-400" />
-            <KeyboardArrowDownIcon className="text-golden-500 ml-1 absolute -bottom-1 left-6" />
+            <KeyboardArrowDownIcon className="-bottom-1 left-6 absolute ml-1 text-golden-500" />
           </div>
           {showDiv && (
-            <div className="absolute top-full -left-7 mt-1 bg-white border border-golden-400 rounded-md p-2 flex flex-col text-center gap-1">
-              <button className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer font-semibold">
+            <div className="top-full -left-7 absolute flex flex-col gap-1 bg-white mt-1 p-2 border border-golden-400 rounded-md text-center">
+              <RouterLink
+                to="/login"
+                className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md font-semibold text-white transition-all duration-300 cursor-pointer"
+              >
                 Entrar
-              </button>
-              {/* <span className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer">
+              </RouterLink>
+              {/* <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
                 Minhas reservas
               </span>
-              <span className="text-white bg-golden-400 hover:bg-golden-500 rounded-md p-1 transition-all duration-300 cursor-pointer">
+              <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
                 Sair
               </span> */}
             </div>
