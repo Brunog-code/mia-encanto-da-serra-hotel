@@ -10,6 +10,7 @@ import HotelIcon from "@mui/icons-material/Hotel";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Button } from "@/components";
+import { useNavigate } from "react-router-dom";
 
 interface ICardRoom {
   imgs: string[];
@@ -17,8 +18,6 @@ interface ICardRoom {
   description: string;
   capacity: number;
   price: number; // adiciona o preço
-  onQuickReserve?: () => void;
-  onViewDetails?: () => void;
 }
 
 export const RoomCard = ({
@@ -27,9 +26,14 @@ export const RoomCard = ({
   description,
   capacity,
   price,
-  onQuickReserve,
-  onViewDetails,
 }: ICardRoom) => {
+
+  const navigate = useNavigate();
+
+  const onViewDetails = () => {
+    navigate(`/quarto/${title}`); //passar o id que vira do rooms.tsx
+  };
+
   return (
     <Card sx={{ maxWidth: 345, m: 2, borderRadius: 3, boxShadow: 3 }}>
       {/* Imagem do quarto */}
@@ -99,6 +103,7 @@ export const RoomCard = ({
             py="px-1"
             bg="bg-bistre-400"
             hoverBg="bg-bistre-500"
+            onClick={onViewDetails}
           >
             Ver detalhes
           </Button>

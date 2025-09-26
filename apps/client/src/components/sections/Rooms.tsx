@@ -8,7 +8,7 @@ export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-
+//buscar no banco e passar para o roomcard
   const roomsHotel = {
     quartoLuxo: {
       title: "Quarto Luxo",

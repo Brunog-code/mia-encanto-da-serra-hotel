@@ -18,4 +18,3 @@ export * from "./common/TestimonialsCard";
 export * from "./sections/Faq";
 export * from "./sections/Contact";
 export * from "./lib/ImgGallery";
-export * from "./sections/RoomDetails.tsx";
