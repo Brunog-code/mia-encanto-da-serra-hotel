@@ -33,7 +33,7 @@ export const LoginRegister = () => {
   };
 
   return (
-    <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-hidden">
+    <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
           <Link
@@ -85,14 +85,44 @@ export const LoginRegister = () => {
           </div>
         </div>
 
-        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 rounded-t-md w-[80%] md:w-[50%] h-[90%] -translate-x-1/2 -translate-y-1/4 animate-g transform">
+        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 rounded-t-md w-[80%] md:w-[50%] h-[100%] -translate-x-1/2 -translate-y-1/4 animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               {isRegister ? "Cadastre-se" : "Login"}
             </span>
           </div>
           {isRegister ? (
-            "registrar"
+            <form className="flex flex-col gap-2 w-[80%]">
+              <Input
+                border="border-bistre-600"
+                type="text"
+                placeholder="Digite seu nome"
+              />
+              <Input
+                border="border-bistre-600"
+                type="email"
+                placeholder="Digite sua email"
+              />
+              <Input
+                border="border-bistre-600"
+                type="text"
+                placeholder="Digite sua telefone"
+              />
+              <Input
+                border="border-bistre-600"
+                type="password"
+                placeholder="Digite sua senha"
+              />
+              <Input
+                border="border-bistre-600"
+                type="password"
+                placeholder="Confirme sua senha"
+              />
+
+              <Button bg="bg-bistre-400" hoverBg="bg-bistre-500">
+                Entrar
+              </Button>
+            </form>
           ) : (
             <form className="flex flex-col gap-2 w-[80%]">
               <Input type="email" placeholder="Digite seu email" />
@@ -107,14 +137,14 @@ export const LoginRegister = () => {
       </div>
       {isRegister ? (
         <img
-          className="-right-10 -bottom-20 absolute"
+          className="-right-20 -bottom-20 absolute"
           src="/images/effect-bg-bistre.png"
           alt=""
           width={170}
         />
       ) : (
         <img
-          className="-right-10 -bottom-20 absolute"
+          className="-right-20 -bottom-20 absolute"
           src="/images/effect-bg-golden.png"
           alt=""
           width={170}

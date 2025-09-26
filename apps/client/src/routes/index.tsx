@@ -7,7 +7,9 @@ export const AppRouters = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
-    children: [{ path: "/", element: <Home /> }],
+    children: [
+      { path: "/", element: <Home /> },
+    ],
   },
   {
     path: "/login",

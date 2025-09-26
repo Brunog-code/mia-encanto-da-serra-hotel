@@ -2,11 +2,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { Element } from "react-scroll";
-import { RoomCard } from "@/components";
+import { RoomCard} from "@/components";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+
 
   const roomsHotel = {
     quartoLuxo: {
@@ -74,18 +75,19 @@ export const Rooms = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
+
   return (
     <section
       ref={sectionRoomRef}
-      className="w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-bistre-300 "
+      className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto min-h-screen"
     >
-      <Element className="space-y-5 flex flex-col">
-        <h1 className="text-4xl text-white-gost-500 font-semibold text-center mt-15 mb-10">
+      <Element className="flex flex-col space-y-5">
+        <h1 className="mt-15 mb-10 font-semibold text-white-gost-500 text-4xl text-center">
           Quartos
         </h1>
       </Element>
 
-      <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
+      <div className="flex md:flex-row flex-col justify-evenly items-center w-full">
         <div>
           <RoomCard
             imgs={roomsHotel.quartoLuxo.imgs}
@@ -93,6 +95,7 @@ export const Rooms = () => {
             description={roomsHotel.quartoLuxo.description}
             capacity={roomsHotel.quartoLuxo.capacity}
             price={roomsHotel.quartoLuxo.price}
+   
           />
         </div>
         <div>
@@ -102,9 +105,11 @@ export const Rooms = () => {
             description={roomsHotel.quartoStandard.description}
             capacity={roomsHotel.quartoStandard.capacity}
             price={roomsHotel.quartoStandard.price}
+           
           />
         </div>
       </div>
+      
     </section>
   );
 };

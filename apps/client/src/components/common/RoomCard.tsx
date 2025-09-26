@@ -58,8 +58,8 @@ export const RoomCard = ({
 
       {/* Conteúdo do quarto */}
       <CardContent>
-        <Typography className="!font-bold !text-2xl !mb-4">{title}</Typography>
-        <Typography className="!text-bistre-500 !mb-4">
+        <Typography className="!mb-4 !font-bold !text-2xl">{title}</Typography>
+        <Typography className="!mb-4 !text-bistre-500">
           {description}
         </Typography>
 
@@ -77,7 +77,7 @@ export const RoomCard = ({
             </Typography>
           </Stack>
 
-          <Typography className="text-golden-600 !font-bold !text-2xl">
+          <Typography className="!font-bold text-golden-600 !text-2xl">
             R$ {price.toFixed(2)}
           </Typography>
         </Stack>

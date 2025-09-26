@@ -4,6 +4,7 @@ interface IButtonProps {
   py?: string;
   bg?: string;
   hoverBg?: string;
+  onClick?: () => void;
 }
 
 export const Button = ({
@@ -12,9 +13,11 @@ export const Button = ({
   py = "py-3",
   bg = "bg-golden-500",
   hoverBg = "bg-golden-600",
+  onClick,
 }: IButtonProps) => {
   return (
     <button
+      onClick={onClick}
       className={`cursor-pointer ${bg} hover:${hoverBg} text-white-gost-400 ${px} ${py}  rounded-md font-semibold transition-all duration-300`}
     >
       {children}
