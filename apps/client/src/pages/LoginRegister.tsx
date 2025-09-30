@@ -1,13 +1,14 @@
-import HomeIcon from "@mui/icons-material/Home";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button } from "@/components";
 import { Input } from "@/components";
 import { useState } from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 
 export const LoginRegister = () => {
   const [isRegister, setisRegister] = useState(false);
+  const navigate = useNavigate();
 
   const toggleRegister = () => {
     setisRegister(!isRegister);
@@ -36,18 +37,18 @@ export const LoginRegister = () => {
     <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
-          <Link
-            to="/"
+          <span
+            onClick={() => navigate(-1)}
             className={clsx(
-              "flex justify-center items-center p-1 rounded-md font-semibold text-white-gost-500 transition-all duration-300",
+              "flex justify-center items-center p-1 rounded-md font-semibold text-white-gost-500 transition-all duration-300 cursor-pointer",
               isRegister
                 ? "bg-bistre-400 hover:bg-bistre-500"
                 : "bg-golden-500 hover:bg-golden-600"
             )}
           >
-            <HomeIcon fontSize="large" />
+            <ArrowBackIcon fontSize="large" />
             <span className="ml-1">Voltar</span>
-          </Link>
+          </span>
         </div>
         <div>
           <img src="/images/logo-hotel.png" width={130} alt="Logo-Hotel"></img>
@@ -127,7 +128,10 @@ export const LoginRegister = () => {
             <form className="flex flex-col gap-2 w-[80%]">
               <Input type="email" placeholder="Digite seu email" />
               <Input type="password" placeholder="Digite sua senha" />
-              <p className="self-end text-bistre-300 cursor-pointer">
+              <p
+                className="self-end text-bistre-300 cursor-pointer"
+                onClick={() => navigate("/esqueci-senha")}
+              >
                 Esqueci minha senha
               </p>
               <Button>Entrar</Button>

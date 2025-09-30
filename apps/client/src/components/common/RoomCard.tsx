@@ -27,7 +27,6 @@ export const RoomCard = ({
   capacity,
   price,
 }: ICardRoom) => {
-
   const navigate = useNavigate();
 
   const onViewDetails = () => {

@@ -119,8 +119,8 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                   <ListItemButton
                     sx={{
                       "&:hover": {
-                        backgroundColor: "#b08c72", // cor de fundo ao passar o mouse
-                        color: "white", // muda a cor do texto se quiser
+                        backgroundColor: "#b08c72", 
+                        color: "white", 
                       },
                     }}
                   >

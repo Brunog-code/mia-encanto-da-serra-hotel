@@ -44,6 +44,7 @@ model Customer {
   email     String   @unique
   phone     String
   cpf       String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -63,6 +64,7 @@ model RoomType {
 model Room {
   id           String        @id @default(uuid())
   number       String        @unique
+  capacity     Int  
   status       RoomStatus    @default(AVAILABLE)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
