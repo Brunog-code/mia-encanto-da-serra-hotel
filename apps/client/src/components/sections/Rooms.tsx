@@ -2,13 +2,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { Element } from "react-scroll";
-import { RoomCard} from "@/components";
+import { RoomCard } from "@/components";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-//buscar no banco e passar para o roomcard
+  //buscar no banco e passar para o roomcard
   const roomsHotel = {
     quartoLuxo: {
       title: "Quarto Luxo",
@@ -75,7 +75,6 @@ export const Rooms = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
-
   return (
     <section
       ref={sectionRoomRef}
@@ -87,6 +86,17 @@ export const Rooms = () => {
         </h1>
       </Element>
 
+      <div className="mx-auto mb-8 w-full max-w-3xl text-white-gost-500 text-justify">
+        <p className="text-lg">
+          Nosso hotel oferece duas opções de acomodação para tornar sua estadia
+          inesquecível: o <strong>Quarto Luxo</strong>, ideal para quem busca
+          conforto total e vistas deslumbrantes, e o{" "}
+          <strong>Quarto Standard</strong>, perfeito para viajantes que desejam
+          praticidade e bem-estar. Ambas as opções incluem Wi-Fi gratuito e café
+          da manhã.
+        </p>
+      </div>
+
       <div className="flex md:flex-row flex-col justify-evenly items-center w-full">
         <div>
           <RoomCard
@@ -95,7 +105,6 @@ export const Rooms = () => {
             description={roomsHotel.quartoLuxo.description}
             capacity={roomsHotel.quartoLuxo.capacity}
             price={roomsHotel.quartoLuxo.price}
-   
           />
         </div>
         <div>
@@ -105,11 +114,9 @@ export const Rooms = () => {
             description={roomsHotel.quartoStandard.description}
             capacity={roomsHotel.quartoStandard.capacity}
             price={roomsHotel.quartoStandard.price}
-           
           />
         </div>
       </div>
-      
     </section>
   );
 };

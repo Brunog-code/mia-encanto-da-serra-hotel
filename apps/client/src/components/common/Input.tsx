@@ -1,8 +1,8 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useState, type InputHTMLAttributes } from "react";
 
-interface IInputProps {
+interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
   placeholder: string;
   px?: string;
@@ -16,6 +16,7 @@ export const Input = ({
   px = "px-4",
   py = "py-3",
   border = "border-golden-600",
+  ...rest
 }: IInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -23,7 +24,8 @@ export const Input = ({
       <input
         type={showPassword ? "text" : type}
         placeholder={placeholder}
-        className={`${px} ${py} w-full rounded-md text-golden-600 bg-white-gost-500 border ${border} focus:outline-none focus:ring-2 focus:ring-bistre-600 focus:border-transparent`}
+        className={`${px} ${py} w-full rounded-md text-golden-600 bg-white-gost-500 border ${border} focus:outline-none focus:ring-2 focus:ring-bistre-600 focus:border-transparent `}
+        {...rest}
       />
       {type == "password" && (
         <button

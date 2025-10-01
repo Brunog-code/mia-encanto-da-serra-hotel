@@ -1,14 +1,14 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button } from "@/components";
 import { Input } from "@/components";
 
-import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { useEffect } from "react";
 
-export const ResetPassword = () => {
-  const navigate = useNavigate();
+import { resetPasswordSchema, type resetPasswordFormData } from "@/shared/src";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
+export const ResetPassword = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".animate-g", {
@@ -20,6 +20,18 @@ export const ResetPassword = () => {
 
     return () => ctx.revert();
   }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<resetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const onSubmitResetPass = (data: resetPasswordFormData) => {
+    console.log(data);
+  };
 
   return (
     <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
@@ -53,11 +65,28 @@ export const ResetPassword = () => {
             </span>
           </div>
 
-          <form className="flex flex-col gap-3 w-[80%]">
-            <Input type="password" placeholder="Digite sua nova senha" />
-            <Input type="password" placeholder="Confirme sua nova senha" />
+          <form
+            className="flex flex-col gap-3 w-[80%]"
+            onSubmit={handleSubmit(onSubmitResetPass)}
+          >
+            <Input
+              type="password"
+              placeholder="Digite sua nova senha"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="text-red-400">{errors.password.message}</p>
+            )}
+            <Input
+              type="password"
+              placeholder="Confirme sua nova senha"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="text-red-400">{errors.confirmPassword.message}</p>
+            )}
 
-            <Button>Salvar nova senha</Button>
+            <Button type="submit">Salvar nova senha</Button>
           </form>
         </div>
       </div>

@@ -78,7 +78,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate1",
-          start: "top 60%",
+          start: "top 30%",
           toggleActions: "play none none reverse",
         },
       });
@@ -101,9 +101,9 @@ export const Structure = () => {
   }, []);
 
   return (
-    <section className="w-full  h-auto flex flex-col items-center pt-20 px-10 bg-white-gost-500 pb-15 ">
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto">
       <div>
-        <h1 className="text-3xl md:text-4xl text-bistre-600 font-semibold text-center">
+        <h1 className="font-semibold text-bistre-600 text-3xl md:text-4xl text-center">
           Estrutura e atividades
         </h1>
       </div>

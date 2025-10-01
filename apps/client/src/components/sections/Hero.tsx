@@ -3,6 +3,11 @@ import SplitType from "split-type";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap/gsap-core";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { reservationSchema, type reservationFormData } from "@/shared/src";
+
 export const Hero = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
@@ -52,6 +57,21 @@ export const Hero = () => {
     };
   }, []);
 
+  //Inicializando o useForm com Zod
+
+  //reservation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<reservationFormData>({
+    resolver: zodResolver(reservationSchema),
+  });
+
+  const onSubmitReservation = (data: reservationFormData) => {
+    console.log(data);
+  };
+
   return (
     <section className="relative flex w-screen h-screen overflow-hidden">
       <div className="w-full h-full">
@@ -74,20 +94,55 @@ export const Hero = () => {
               Sua experiência de conforto e charme começa aqui
             </p>
           </div>
-          <div className="flex md:flex-row flex-col justify-center md:justify-start gap-2 bg-white-gost-500 mt-8 p-2 rounded-md w-fit">
-            <Input type="date" placeholder="Check-in" />
-            <Input type="date" placeholder="Check-out" />
-            <select className="bg-white-gost-500 px-4 py-3 border border-golden-600 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-bistre-600 text-golden-600">
-              <option value="">Selecione hóspedes</option>
-              <option value="1">1 Hóspede</option>
-              <option value="2">2 Hóspedes</option>
-              <option value="3">3 Hóspedes</option>
-              <option value="4">4 Hóspedes</option>
-              <option value="5">5 Hóspedes</option>
-              <option value="6">6 Hóspedes</option>
-            </select>
-            <Button>Reserve agora</Button>
-          </div>
+          <form
+            className="flex md:flex-row flex-col justify-center md:justify-start gap-2 bg-white-gost-500 mt-8 p-2 rounded-md w-fit"
+            onSubmit={handleSubmit(onSubmitReservation)}
+          >
+            <div className="flex flex-col">
+              <Input
+                type="date"
+                placeholder="Check-in"
+                {...register("checkin")}
+              />
+              {errors.checkin && (
+                <span className="text-red-400 text-sm">
+                  {errors.checkin.message}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <Input
+                type="date"
+                placeholder="Check-out"
+                {...register("checkout")}
+              />
+              {errors.checkout && (
+                <span className="text-red-400 text-sm">
+                  {errors.checkout.message}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <select
+                className="bg-white-gost-500 px-4 py-3 border border-golden-600 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-bistre-600 text-golden-600"
+                {...register("guests")}
+              >
+                <option value="">Selecione hóspedes</option>
+                <option value="1">1 Hóspede</option>
+                <option value="2">2 Hóspedes</option>
+                <option value="3">3 Hóspedes</option>
+                <option value="4">4 Hóspedes</option>
+                <option value="5">5 Hóspedes</option>
+                <option value="6">6 Hóspedes</option>
+              </select>
+              {errors.guests && (
+                <span className="text-red-400 text-sm">
+                  {errors.guests.message}
+                </span>
+              )}
+            </div>
+            <Button type="submit">Reservar</Button>
+          </form>
         </div>
       </div>
     </section>

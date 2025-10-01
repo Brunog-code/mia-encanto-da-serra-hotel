@@ -6,6 +6,13 @@ import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { useEffect } from "react";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  forgotPasswordSchema,
+  type forgotPasswordFormData,
+} from "@/shared/src";
+
 export const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -20,6 +27,21 @@ export const ForgotPassword = () => {
 
     return () => ctx.revert();
   }, []);
+
+  //Inicializando o useForm com Zod
+
+  //forgotPass
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<forgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmitForgotPass = (data: forgotPasswordFormData) => {
+    console.log(data);
+  };
 
   return (
     <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
@@ -59,10 +81,20 @@ export const ForgotPassword = () => {
             </span>
           </div>
 
-          <form className="flex flex-col gap-2 w-[80%]">
-            <Input type="text" placeholder="Digite seu email" />
+          <form
+            className="flex flex-col gap-2 w-[80%]"
+            onSubmit={handleSubmit(onSubmitForgotPass)}
+          >
+            <Input
+              type="email"
+              placeholder="Digite seu email"
+              {...register("email")}
+            />
+            {errors.email && (
+              <p className="text-red-400">{errors.email.message}</p>
+            )}
 
-            <Button>Enviar link de redefinição</Button>
+            <Button type="submit">Enviar link de redefinição</Button>
           </form>
         </div>
       </div>

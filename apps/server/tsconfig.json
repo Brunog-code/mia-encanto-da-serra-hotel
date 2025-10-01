@@ -7,10 +7,11 @@
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "types": ["node"],
 
     "rootDir": "src",
     "outDir": "build"
   },
-  "include": ["src"],
+  "include": ["src", "prisma", "seeds", "scripts"],
   "exclude": ["node_modules"]
 }

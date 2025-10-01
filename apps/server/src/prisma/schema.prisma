@@ -37,6 +37,13 @@ enum PaymentMethod {
   PIX
 }
 
+enum MediaCategory {
+  HOTEL
+  ACTIVITY
+  RESTAURANT
+  ROOM
+}
+
 //models
 model Customer {
   id        String   @id @default(uuid())
@@ -53,22 +60,25 @@ model Customer {
 
 model RoomType {
   id          String       @id @default(uuid())
-  category    RoomCategory
+  category    RoomCategory @unique
   description String
   price       Decimal
   capacity    Int
   amenities   String[] // lista de comodidades
+
   rooms       Room[]
+  mediaImages MediaImage[]
 }
 
 model Room {
-  id           String        @id @default(uuid())
-  number       String        @unique
-  capacity     Int  
-  status       RoomStatus    @default(AVAILABLE)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  typeId       String
+  id        String     @id @default(uuid())
+  number    String     @unique
+  capacity  Int
+  status    RoomStatus @default(AVAILABLE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  typeId    String
+
   type         RoomType      @relation(fields: [typeId], references: [id])
   reservations Reservation[] @relation("RoomReservation")
 }
@@ -104,4 +114,17 @@ model Payment {
 
   reservationId String      @unique
   reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+}
+
+model MediaImage {
+  id          String        @id @default(uuid())
+  category    MediaCategory
+  url         String
+  title       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relacionamento opcional: só usado se category = ROOM
+  roomTypeId String?
+  roomType   RoomType? @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
 }

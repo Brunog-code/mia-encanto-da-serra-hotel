@@ -1,16 +1,32 @@
 import { Link } from "react-scroll";
 import { Button, Input } from "@/components";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { type newsletterFormData, newsletterSchema } from "@/shared/src";
+
 export const Footer = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(newsletterSchema),
+  });
+
+  const onSubmitNewslleter = (data: newsletterFormData) => {
+    console.log(data);
+  };
+
   return (
-    <section className="bg-gray-900 w-full text-white h-[50vh] flex flex-col">
-      <div className="h-8 bg-red-500 p-8 flex items-center justify-between bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]">
+    <section className="flex flex-col bg-gray-900 w-full h-[50vh] text-white">
+      <div className="flex justify-between items-center bg-red-500 bg-gradient-to-r from-[#5a4030] to-[#3d2b1f] p-8 h-8">
         <div>Mia encanto da serra Hotel</div>
-        <div className="flex gap-5 ">
+        <div className="flex gap-5">
           <a href="https://web.whatsapp.com/" target="_blank">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 cursor-pointer hover:scale-110 transition-transform duration-300"
+              className="w-6 h-6 hover:scale-110 transition-transform duration-300 cursor-pointer"
               viewBox="0 0 24 24"
               fill="#25D366"
             >
@@ -19,7 +35,7 @@ export const Footer = () => {
           </a>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
+            className="w-6 h-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
             fill="#f5f5f5"
             viewBox="0 0 24 24"
           >
@@ -28,7 +44,7 @@ export const Footer = () => {
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
+            className="w-6 h-6 hover:scale-120 transition-transform duration-300 cursor-pointer"
             fill="#f5f5f5"
             viewBox="0 0 24 24"
           >
@@ -37,10 +53,10 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 p-6 bg-gradient-to-b from-[#2a1d14] to-[#3d2b1f]  justify-between">
-        <div className="flex flex-col space-y-12 md:flex-row  justify-around">
+      <div className="flex flex-col flex-1 justify-between bg-gradient-to-b from-[#2a1d14] to-[#3d2b1f] p-6">
+        <div className="flex md:flex-row flex-col justify-around space-y-12">
           <div>
-            <h2 className="text-white-gost-600 mb-2 text-lg">Links úteis</h2>
+            <h2 className="mb-2 text-white-gost-600 text-lg">Links úteis</h2>
             <ul className="flex flex-col">
               {[
                 "Sobre",
@@ -59,7 +75,7 @@ export const Footer = () => {
                   duration={500}
                   offset={-80}
                   spy={true}
-                  className="p-1 rounded-md hover:bg-golden-600 hover:text-white cursor-pointer transition-all duration-300"
+                  className="hover:bg-golden-600 p-1 rounded-md hover:text-white transition-all duration-300 cursor-pointer"
                 >
                   {item}
                 </Link>
@@ -68,27 +84,34 @@ export const Footer = () => {
           </div>
 
           <div className="flex flex-col">
-            <h2 className="text-white-gost-600 mb-2 text-lg">Newsletter</h2>
+            <h2 className="mb-2 text-white-gost-600 text-lg">Newsletter</h2>
             <span>Receba nossas novidades:</span>
-            <div className="flex flex-col max-w-[60%] md:max-w-full">
+            <form
+              className="flex flex-col max-w-[60%] md:max-w-full"
+              onSubmit={handleSubmit(onSubmitNewslleter)}
+            >
               <Input
+                {...register("email")}
                 type="email"
                 placeholder="Digite seu email"
                 px="px-2"
                 py="py-1"
               />
-              <Button px="px-4" py="py-2">
+              {errors.email && (
+                <p className="text-red-400">{errors.email.message}</p>
+              )}
+              <Button px="px-4" py="py-2" type="submit">
                 Inscrever
               </Button>
-            </div>
+            </form>
           </div>
 
           <div>
-            <h2 className="text-white-gost-600 mb-2 text-lg">
+            <h2 className="mb-2 text-white-gost-600 text-lg">
               Métodos de pagamento
             </h2>
             <span>Cartões de crédito/débito:</span>
-            <ul className="list-disc pl-6 space-y-1">
+            <ul className="space-y-1 pl-6 list-disc">
               <li>Visa</li>
               <li>Mastercard</li>
               <li>Elo</li>
@@ -96,13 +119,13 @@ export const Footer = () => {
               <li>American Express</li>
             </ul>
             <span>Outros meios:</span>
-            <ul className="list-disc pl-6 space-y-1">
+            <ul className="space-y-1 pl-6 list-disc">
               <li>PIX</li>
             </ul>
           </div>
         </div>
 
-        <div className="text-center mt-4">
+        <div className="mt-4 text-center">
           <div className="flex-1">&copy; Todos os direitos reservados</div>
         </div>
       </div>
