@@ -1,6 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 
+//routes
+import imageRoutes from './routes/imageRoutes.js'
+
 //carrega variáveis do .env
 dotenv.config();
 
@@ -10,8 +13,7 @@ const app = express();
 //middleware que permite o Express entender requisições com corpo JSON
 app.use(express.json());
 
-app.use("/", (req, res) => {
-  res.send("teste");
-});
+//grupo de rotas
+app.use("/images", imageRoutes)
 
 export default app;

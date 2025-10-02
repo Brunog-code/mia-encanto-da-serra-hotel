@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { seedRoomTypes } from "./seedRoomTypes.js";
-// import { seedCustomers } from "./seedCustomers"; // futuramente
+import { seedRooms } from "./seedRooms.js";
+import { seedMediaImages } from "./seedMediaImages.js";
 
 const prisma = new PrismaClient();
 
@@ -8,8 +9,8 @@ async function main() {
   console.log("Iniciando seeds...");
 
   await seedRoomTypes();
-//   await seedRooms();
-  // await seedCustomers();
+  await seedRooms();
+  await seedMediaImages();
 
   console.log("✅ Seeds concluídos com sucesso!");
 }
