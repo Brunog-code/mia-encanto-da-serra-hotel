@@ -8,7 +8,7 @@ export const Structure = () => {
 
   const estructureData = [
     {
-      img: "/images/activities/pscina-hotel-aquecida.webp",
+      img: "/images/activities/activities-pscina-hotel-aquecida.webp",
       imgAlt: "Piscina",
       title: "Piscina",
       items: [
@@ -33,7 +33,7 @@ export const Structure = () => {
       ],
     },
     {
-      img: "/images/activities/trilha.webp",
+      img: "/images/activities/activities-trilha.webp",
       imgAlt: "Trilha",
       title: "Atividades",
       items: [

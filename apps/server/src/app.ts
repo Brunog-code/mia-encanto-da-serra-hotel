@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors'
 import dotenv from "dotenv";
 
 //routes
@@ -12,6 +13,9 @@ const app = express();
 
 //middleware que permite o Express entender requisições com corpo JSON
 app.use(express.json());
+
+//libera acesso
+app.use(cors())
 
 //grupo de rotas
 app.use("/images", imageRoutes)

@@ -15,7 +15,7 @@ export const Contact = () => {
         <div className="hidden sm:block">
           <img
             className="rounded-md"
-            src="/images/hotel/imagem-lateral-blur.webp"
+            src="/images/hotel/hotel-imagem-lateral-blur.webp"
             width={450}
             alt=""
           />

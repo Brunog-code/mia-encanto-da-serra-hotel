@@ -1,6 +1,6 @@
 import { Button, Input } from "@/components";
 import SplitType from "split-type";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap/gsap-core";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,8 +8,12 @@ import { useForm } from "react-hook-form";
 
 import { reservationSchema, type reservationFormData } from "@/shared/src";
 
+import { api } from "../../lib/axios";
+
 export const Hero = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
+
+  const [imgHero, setImgHero] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!h1Ref.current) return;
@@ -57,6 +61,31 @@ export const Hero = () => {
     };
   }, []);
 
+  useEffect(() => {
+    interface MediaImage {
+      id: string;
+      category: string;
+      url: string;
+      title: string;
+      createdAt: string;
+    }
+
+    const featchImg = async () => {
+      try {
+        const response = await api.get<MediaImage[]>("/images/category", {
+          params: { category: "hotel" },
+        });
+
+        const hero = response.data.find((item) => item.title.includes("hero"));
+
+        if (hero) setImgHero(hero.url);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    featchImg();
+  }, []);
+
   //Inicializando o useForm com Zod
 
   //reservation
@@ -76,7 +105,7 @@ export const Hero = () => {
     <section className="relative flex w-screen h-screen overflow-hidden">
       <div className="w-full h-full">
         <img
-          src="/images/hotel/bg-hero.jpg"
+          src={imgHero}
           alt="Piscina Hotel"
           className="w-full h-full object-cover"
         />

@@ -6,8 +6,8 @@ export const SwiperRoomDetails = () => {
     "/images/hotel/hotel-gramado.webp",
     "/images/hotel/hotel-vista-lateral.webp",
     "/images/hotel/hotel-imagem-aerea.webp",
-    "/images/activities/pscina-hotel-aquecida-2.webp",
-    "/images/room/quarto-luxo-banheiro-3.webp",
+    "/images/activities/activities-pscina-hotel-aquecida-2.webp",
+    "/images/room/room-luxo-banheiro-3.webp",
   ];
 
   return (

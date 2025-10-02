@@ -1,11 +1,15 @@
 import { SwiperAbout } from "@/components";
 import { gsap } from "gsap/gsap-core";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { api } from "@/lib/axios";
 
 export const About = () => {
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const textRef = useRef<HTMLHeadingElement | null>(null);
+
+  const [imgs, setImgs] = useState<string[] | undefined>(undefined);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -45,12 +49,43 @@ export const About = () => {
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    interface MediaImage {
+      id: string;
+      category: string;
+      url: string;
+      title: string;
+      createdAt: string;
+    }
+
+    const featchAllImgs = async () => {
+      const response = await api.get<MediaImage[]>("/images");
+
+      console.log(response.data);
+
+      const imgsAbout = response.data
+        .filter(
+          (item) =>
+            item.title == "hotel-gramado.webp" ||
+            item.title == "hotel-vista-lateral.webp" ||
+            item.title == "hotel-imagem-aerea.webp" ||
+            item.title == "activities-pscina-hotel-aquecida-2.webp" ||
+            item.title == "activities-massagem.webp"
+        )
+        .map((item) => item.url);
+
+      if (response.data) setImgs(imgsAbout);
+    };
+
+    featchAllImgs();
+  }, []);
+
   return (
-    <section className="w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-white-gost-500 ">
-      <div className="space-y-5 flex flex-col">
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 w-full h-auto min-h-screen">
+      <div className="flex flex-col space-y-5">
         <h1
           ref={titleRef}
-          className="text-3xl md:text-4xl text-bistre-600 font-semibold text-center mt-12"
+          className="mt-12 font-semibold text-bistre-600 text-3xl md:text-4xl text-center"
         >
           Sobre o hotel
         </h1>
@@ -58,7 +93,7 @@ export const About = () => {
         <div className="flex-1">
           <p
             ref={textRef}
-            className="text-lg md:text-xl leading-relaxed  mt-6 text-justify"
+            className="mt-6 text-lg md:text-xl text-justify leading-relaxed"
           >
             Desde sua inauguração em 2015, o Mia Encanto da Serra Hotel se
             dedica a proporcionar experiências únicas e inesquecíveis em Campos
@@ -72,7 +107,7 @@ export const About = () => {
         </div>
       </div>
 
-      <div className="self-center w-fit mt-6 ">
+      <div className="self-center mt-6 w-fit">
         <SwiperAbout />
       </div>
     </section>

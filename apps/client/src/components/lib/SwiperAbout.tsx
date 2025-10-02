@@ -6,12 +6,12 @@ export const SwiperAbout = () => {
     "/images/hotel/hotel-gramado.webp",
     "/images/hotel/hotel-vista-lateral.webp",
     "/images/hotel/hotel-imagem-aerea.webp",
-    "/images/activities/pscina-hotel-aquecida-2.webp",
-    "/images/room/quarto-luxo-banheiro-3.webp",
+    "/images/activities/activities-pscina-hotel-aquecida-2.webp",
+    "/images/room/room-luxo-banheiro-3.webp",
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto py-10">
+    <div className="mx-auto py-10 w-full max-w-5xl">
       <style>
         {`
           .swiper-pagination-bullet {
