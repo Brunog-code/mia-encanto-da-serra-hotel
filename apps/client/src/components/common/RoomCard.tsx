@@ -13,6 +13,7 @@ import { Button } from "@/components";
 import { useNavigate } from "react-router-dom";
 
 interface ICardRoom {
+  id: string;
   imgs: string[];
   title: string;
   description: string;
@@ -21,6 +22,7 @@ interface ICardRoom {
 }
 
 export const RoomCard = ({
+  id,
   imgs,
   title,
   description,
@@ -30,7 +32,7 @@ export const RoomCard = ({
   const navigate = useNavigate();
 
   const onViewDetails = () => {
-    navigate(`/quarto/${title}`); //passar o id que vira do rooms.tsx
+    navigate(`/quarto/${id}`); //passar o id que vira do rooms.tsx
   };
 
   return (
@@ -61,7 +63,9 @@ export const RoomCard = ({
 
       {/* Conteúdo do quarto */}
       <CardContent>
-        <Typography className="!mb-4 !font-bold !text-2xl">{title}</Typography>
+        <Typography className="!mb-4 !font-bold !text-2xl">
+          {title === "LUXURY" ? "LUXO" : "STANDARD"}
+        </Typography>
         <Typography className="!mb-4 !text-bistre-500">
           {description}
         </Typography>

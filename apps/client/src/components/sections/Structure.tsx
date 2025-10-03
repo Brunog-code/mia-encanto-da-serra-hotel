@@ -2,49 +2,10 @@ import { useEffect, useState } from "react";
 import { StructureCard } from "../common/StructureCard";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { api } from "@/lib/axios";
 
 export const Structure = () => {
   const [isMobile, setIsmobile] = useState(false);
-
-  const estructureData = [
-    {
-      img: "/images/activities/activities-pscina-hotel-aquecida.webp",
-      imgAlt: "Piscina",
-      title: "Piscina",
-      items: [
-        "3 piscinas",
-        "2 aquecidas",
-        "1 infantil",
-        "Área com espreguiçadeiras",
-      ],
-    },
-    {
-      img: "/images/restaurant/restaurante-cafe-da-manha-4.webp",
-      imgAlt: "Restaurante",
-      title: "Restaurante",
-      items: [
-        "Buffet variado",
-        "Pratos regionais",
-        "Opções vegetarianas",
-        "Ambiente climatizado",
-        "Amplo cardápio de vinhos",
-        "Coquetéis especiais",
-        "Área Kids",
-      ],
-    },
-    {
-      img: "/images/activities/activities-trilha.webp",
-      imgAlt: "Trilha",
-      title: "Atividades",
-      items: [
-        "Trilhas guiadas",
-        "Passeios ecológicos",
-        "Spa com massagem relaxante",
-        "Atividades para crianças",
-        "Aventura e lazer",
-      ],
-    },
-  ];
 
   useEffect(() => {
     const checkScreen = () => setIsmobile(window.innerWidth < 768);
@@ -100,6 +61,91 @@ export const Structure = () => {
     return () => ctx.revert();
   }, []);
 
+  interface MediaImage {
+    id: string;
+    category: string;
+    url: string;
+    title: string;
+    createdAt: string;
+  }
+
+  const titles = [
+    "activities-pscina-hotel-aquecida.webp",
+    "restaurante-cafe-da-manha-4.webp",
+    "activities-trilha.webp",
+  ];
+
+  const imgMap: Record<string, string> = {
+    Piscina: "activities-pscina-hotel-aquecida.webp",
+    Restaurante: "restaurante-cafe-da-manha-4.webp",
+    Atividades: "activities-trilha.webp",
+  };
+
+  const [estructureData, setEstructureData] = useState([
+    {
+      img: "",
+      imgAlt: "Piscina",
+      title: "Piscina",
+      items: [
+        "3 piscinas",
+        "2 aquecidas",
+        "1 infantil",
+        "Área com espreguiçadeiras",
+      ],
+    },
+    {
+      img: "",
+      imgAlt: "Restaurante",
+      title: "Restaurante",
+      items: [
+        "Buffet variado",
+        "Pratos regionais",
+        "Opções vegetarianas",
+        "Ambiente climatizado",
+        "Amplo cardápio de vinhos",
+        "Coquetéis especiais",
+        "Área Kids",
+      ],
+    },
+    {
+      img: "",
+      imgAlt: "Trilha",
+      title: "Atividades",
+      items: [
+        "Trilhas guiadas",
+        "Passeios ecológicos",
+        "Spa com massagem relaxante",
+        "Atividades para crianças",
+        "Aventura e lazer",
+      ],
+    },
+  ]);
+
+  useEffect(() => {
+    const featchEstructureImg = async () => {
+      try {
+        const response = await api.get<MediaImage[]>("/images", {
+          params: {
+            title: titles,
+          },
+        });
+
+        const updateEstructureData = estructureData.map((item) => {
+          const findImg = response.data.find(
+            (img) => img.title === imgMap[item.title]
+          );
+          return { ...item, img: findImg?.url || item.img };
+        });
+
+        setEstructureData(updateEstructureData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    featchEstructureImg();
+  }, []);
+
   return (
     <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto">
       <div>
@@ -117,7 +163,7 @@ export const Structure = () => {
           <StructureCard
             className={`animate${index}`}
             key={index}
-            img={item.img}
+            img={item.img || null}
             imgAlt={item.imgAlt}
             title={item.title}
             items={item.items}

@@ -1,8 +1,35 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/axios";
 
 export const Contact = () => {
+  const [imgContact, setImgContact] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    interface MediaImage {
+      id: string;
+      category: string;
+      url: string;
+      title: string;
+      createdAt: string;
+    }
+
+    const featchImg = async () => {
+      try {
+        const response = await api.get<MediaImage[]>("/images?title=hotel-imagem-lateral-blur.webp")
+
+        if (response.data) {
+          const img = response.data[0]?.url;
+          setImgContact(img);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    featchImg();
+  }, []);
+
   return (
     <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 pb-10 w-full h-auto min-h-screen">
       <div>
@@ -13,12 +40,7 @@ export const Contact = () => {
       {/* container text, imag e map*/}
       <div className="flex justify-around items-center w-full">
         <div className="hidden sm:block">
-          <img
-            className="rounded-md"
-            src="/images/hotel/hotel-imagem-lateral-blur.webp"
-            width={450}
-            alt=""
-          />
+          <img className="rounded-md" src={imgContact} width={450} alt="" />
         </div>
 
         {/* container endereco e map */}

@@ -72,13 +72,12 @@ export const Hero = () => {
 
     const featchImg = async () => {
       try {
-        const response = await api.get<MediaImage[]>("/images/category", {
-          params: { category: "hotel" },
-        });
+        const response = await api.get<MediaImage[]>("/images?title=hotel-bg-hero.jpg")
 
-        const hero = response.data.find((item) => item.title.includes("hero"));
-
-        if (hero) setImgHero(hero.url);
+        if (response.data) {
+          const img = response.data[0]?.url
+          setImgHero(img);
+        }
       } catch (error) {
         console.error(error);
       }

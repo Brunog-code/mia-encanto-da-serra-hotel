@@ -59,22 +59,26 @@ export const About = () => {
     }
 
     const featchAllImgs = async () => {
-      const response = await api.get<MediaImage[]>("/images");
+      const titles = [
+        "hotel-gramado.webp",
+        "hotel-vista-lateral.webp",
+        "hotel-imagem-aerea.webp",
+        "activities-pscina-hotel-aquecida-2.webp",
+        "activities-massagem.webp",
+      ];
+      
+      try {
+        const response = await api.get<MediaImage[]>("/images", {
+          params: { title: titles },
+        });
 
-      console.log(response.data);
-
-      const imgsAbout = response.data
-        .filter(
-          (item) =>
-            item.title == "hotel-gramado.webp" ||
-            item.title == "hotel-vista-lateral.webp" ||
-            item.title == "hotel-imagem-aerea.webp" ||
-            item.title == "activities-pscina-hotel-aquecida-2.webp" ||
-            item.title == "activities-massagem.webp"
-        )
-        .map((item) => item.url);
-
-      if (response.data) setImgs(imgsAbout);
+        if (response.data) {
+          const imgsAbout = response.data.map((item) => item.url);
+          setImgs(imgsAbout);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     featchAllImgs();
@@ -108,7 +112,7 @@ export const About = () => {
       </div>
 
       <div className="self-center mt-6 w-fit">
-        <SwiperAbout />
+        <SwiperAbout imgs={imgs ?? []} />
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 import CheckIcon from "@mui/icons-material/Check";
 
 interface IstructureCard {
-  img: string;
+  img: string | null;
   imgAlt: string;
   title: string;
   items: string[];
@@ -21,7 +21,7 @@ export const StructureCard = ({
         <img
           className={`rounded-full ${className}`}
           width={200}
-          src={img}
+          src={img || undefined}
           alt={imgAlt}
         />
       </div>

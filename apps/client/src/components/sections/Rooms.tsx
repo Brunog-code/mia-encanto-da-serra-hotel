@@ -3,47 +3,30 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { Element } from "react-scroll";
 import { RoomCard } from "@/components";
+import { api } from "@/lib/axios";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  //buscar no banco e passar para o roomcard
-  const roomsHotel = {
-    quartoLuxo: {
-      title: "Quarto Luxo",
-      description:
-        "Quarto espaçoso com decoração elegante, cama king-size, varanda com vista para as montanhas, Wi-Fi gratuito e café da manhã incluso.",
-      capacity: 6,
-      imgs: [
-        "/images/room/room-luxo.webp",
-        "/images/room/room-luxo-2.webp",
-        "/images/room/room-luxo-3.webp",
-        "/images/room/room-luxo-4.webp",
-        "/images/room/room-luxo-5.webp",
-        "/images/room/room-luxo-banheiro.webp",
-        "/images/room/room-luxo-banheiro-2.webp",
-        "/images/room/room-luxo-banheiro-3.webp",
-      ],
-      price: 2500, // preço em reais
-    },
-    quartoStandard: {
-      title: "Quarto Standard",
-      description:
-        "Quarto confortável com cama queen-size, decoração moderna, Wi-Fi gratuito e café da manhã incluso. Ideal para viajantes a negócios ou lazer.",
-      capacity: 6,
-      imgs: [
-        "/images/room/room-standard.webp",
-        "/images/room/room-standard-2.webp",
-        "/images/room/room-standard-3.webp",
-        "/images/room/room-standard-4.webp",
-        "/images/room/room-standard-5.webp",
-        "/images/room/room-standard-banheiro-1.webp",
-        "/images/room/room-standard-banheiro-2.webp",
-      ],
-      price: 1350, // preço em reais
-    },
-  };
+  interface MediaImage {
+    id: string;
+    category: string;
+    url: string;
+    title: string;
+    createdAt: string;
+  }
+  interface IRooms {
+    id: string;
+    category: string;
+    description: string;
+    price: number;
+    capacity: number;
+    amenities: string[];
+    mediaImages: MediaImage[];
+  }
+
+  const [rooms, setRooms] = useState<IRooms[] | undefined>(undefined);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -56,7 +39,7 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: `${isMobile ? "top-=700" : "top-=300"} top`,
+            start: `${isMobile ? "top-=800" : "top-=500"} top`,
             end: "bottom-=500 top", //termina antes do fim do elemento
             scrub: true,
             pin: false,
@@ -64,7 +47,7 @@ export const Rooms = () => {
         }
       );
     }, sectionRoomRef);
-    return () => ctx.revert(); // limpa o GSAP quando o componente desmonta
+    return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
   }, [isMobile]);
 
   //monitora resize para ajustar start do scrollTrigger
@@ -73,6 +56,26 @@ export const Rooms = () => {
     checkScreen(); // roda logo de cara
     window.addEventListener("resize", checkScreen);
     return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  useEffect(() => {
+    const featchRoomsImg = async () => {
+      try {
+        const response = await api.get<IRooms[]>("/rooms");
+
+        const roomsFormated = response.data.map((room) => ({
+          ...room,
+          price: Number(room.price),
+        }));
+
+        if (response.data) {
+          setRooms(roomsFormated);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    featchRoomsImg();
   }, []);
 
   return (
@@ -98,24 +101,17 @@ export const Rooms = () => {
       </div>
 
       <div className="flex md:flex-row flex-col justify-evenly items-center w-full">
-        <div>
+        {rooms?.map((item) => (
           <RoomCard
-            imgs={roomsHotel.quartoLuxo.imgs}
-            title={roomsHotel.quartoLuxo.title}
-            description={roomsHotel.quartoLuxo.description}
-            capacity={roomsHotel.quartoLuxo.capacity}
-            price={roomsHotel.quartoLuxo.price}
+            key={item.id}
+            id={item.id}
+            imgs={item.mediaImages.map((img) => img.url)}
+            title={item.category}
+            description={item.description}
+            capacity={item.capacity}
+            price={item.price}
           />
-        </div>
-        <div>
-          <RoomCard
-            imgs={roomsHotel.quartoStandard.imgs}
-            title={roomsHotel.quartoStandard.title}
-            description={roomsHotel.quartoStandard.description}
-            capacity={roomsHotel.quartoStandard.capacity}
-            price={roomsHotel.quartoStandard.price}
-          />
-        </div>
+        ))}
       </div>
     </section>
   );

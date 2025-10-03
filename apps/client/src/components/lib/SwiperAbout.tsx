@@ -1,14 +1,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 
-export const SwiperAbout = () => {
-  const images = [
-    "/images/hotel/hotel-gramado.webp",
-    "/images/hotel/hotel-vista-lateral.webp",
-    "/images/hotel/hotel-imagem-aerea.webp",
-    "/images/activities/activities-pscina-hotel-aquecida-2.webp",
-    "/images/room/room-luxo-banheiro-3.webp",
-  ];
+interface ISwiperAboutProps {
+  imgs: string[];
+}
+
+export const SwiperAbout = ({ imgs }: ISwiperAboutProps) => {
+
 
   return (
     <div className="mx-auto py-10 w-full max-w-5xl">
@@ -49,7 +47,7 @@ export const SwiperAbout = () => {
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
-        {images.map((src, index) => (
+        {imgs.map((src, index) => (
           <SwiperSlide
             key={index}
             className="w-48 h-48" // tamanho reduzido dos cards
