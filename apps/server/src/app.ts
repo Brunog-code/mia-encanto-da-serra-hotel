@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 //routes
 import imageRoutes from './routes/imageRoutes.js'
+import roomRoutes from './routes/roomRoutes.js'
 
 //carrega variáveis do .env
 dotenv.config();
@@ -19,5 +20,6 @@ app.use(cors())
 
 //grupo de rotas
 app.use("/images", imageRoutes)
+app.use("/rooms", roomRoutes)
 
 export default app;

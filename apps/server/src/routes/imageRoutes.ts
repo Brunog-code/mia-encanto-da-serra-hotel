@@ -8,8 +8,7 @@ const router = Router();
 const imgController = new ImageController(); 
 
 //endpoints e controllers
-router.get('/', imgController.getAllImages); 
-router.get('/category', imgController.getImagesByCategory); 
-router.get('/room', imgController.getImagesByRoomType); 
+router.get('/', imgController.getImages); 
+
 
 export default router;
