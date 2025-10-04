@@ -6,6 +6,7 @@ interface IButtonProps {
   hoverBg?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -16,12 +17,16 @@ export const Button = ({
   hoverBg = "bg-golden-600",
   onClick,
   type = "button",
+  disabled = false,
 }: IButtonProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`cursor-pointer ${bg} hover:${hoverBg} text-white-gost-400 ${px} ${py}  rounded-md font-semibold transition-all duration-300`}
+      className={`cursor-pointer ${bg} hover:${hoverBg} text-white-gost-400 ${px} ${py}  rounded-md font-semibold transition-all duration-300 ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+      disabled={disabled}
     >
       {children}
     </button>

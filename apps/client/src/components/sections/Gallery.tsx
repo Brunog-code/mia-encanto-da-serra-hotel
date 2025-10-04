@@ -1,10 +1,43 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ImgGallery } from "../lib/ImgGallery";
 
-import { hotelImages } from "@/data/hotelImages";
+import { api } from "@/lib/axios";
 
 export const Gallery = () => {
+  interface MediaImage {
+    id: string;
+    category: string;
+    url: string;
+    title: string;
+    createdAt: string;
+  }
+  interface ImgGallery {
+    category: string;
+    title: string;
+    url: string;
+  }
+
   const [filter, setFilter] = useState("Todas");
+  const [allImgs, setAllImgs] = useState<ImgGallery[] | null>(null);
+
+  useEffect(() => {
+    const featchAllImg = async () => {
+      try {
+        const response = await api.get<MediaImage[]>("/images");
+
+        const allImages: ImgGallery[] = response.data.map((item) => ({
+          category: item.category,
+          title: item.title,
+          url: item.url,
+        }));
+
+        setAllImgs(allImages);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    featchAllImg();
+  }, []);
 
   const filterOptions = [
     "Todas",
@@ -14,36 +47,43 @@ export const Gallery = () => {
     "Restaurante",
   ];
 
-  const allImages = [
-    ...hotelImages.room,
-    ...hotelImages.activities,
-    ...hotelImages.restaurant,
-    ...hotelImages.hotel,
-  ];
+  switch (filter) {
+    case "Hotel":
+      setFilter("HOTEL");
+      break;
+    case "Quartos":
+      setFilter("ROOM");
+      break;
+    case "Atividades":
+      setFilter("ACTIVITY");
+      break;
+    case "Restaurante":
+      setFilter("RESTAURANT");
+      break;
+  }
 
-  const filteredImages =
-    filter === "Todas"
-      ? allImages
-      : filter === "Hotel"
-      ? hotelImages.hotel
-      : filter === "Quartos"
-      ? hotelImages.room
-      : filter === "Atividades"
-      ? hotelImages.activities
-      : filter === "Restaurante"
-      ? hotelImages.restaurant
-      : allImages;
+  const filteredImages = useMemo(() => {
+    if (!allImgs) return [];
+    return filter === "Todas"
+      ? allImgs
+      : allImgs?.filter(
+          (img) =>
+            img.category === filter &&
+            img.title != "hotel-bg-hero.jpg" &&
+            img.title != "hotel-imagem-lateral-blur.webp"
+        );
+  }, [filter, allImgs]);
 
   return (
-    <section className="relative w-full min-h-screen h-auto flex flex-col items-center pt-20 bg-bistre-300 pb-20 space-y-10">
+    <section className="relative flex flex-col items-center space-y-10 bg-bistre-300 pt-20 pb-20 w-full h-auto min-h-screen">
       <div>
-        <h1 className="text-3xl md:text-4xl text-white-gost-500 font-semibold text-center">
+        <h1 className="font-semibold text-white-gost-500 text-3xl md:text-4xl text-center">
           Galeria de fotos
         </h1>
       </div>
 
       <div className="w-full">
-        <div className="flex gap-6 shadow-md justify-center bg-golden-400 rounded-md w-full md:w-1/2 mx-auto">
+        <div className="flex justify-center gap-6 bg-golden-400 shadow-md mx-auto rounded-md w-full md:w-1/2">
           {filterOptions.map((item, index) => (
             <button
               key={index}
@@ -57,14 +97,14 @@ export const Gallery = () => {
           ))}
         </div>
 
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center w-full">
           <ImgGallery filteredImages={filteredImages} />
         </div>
       </div>
 
       {/* Curva em S */}
       <svg
-        className="absolute bottom-0 w-full h-32"
+        className="bottom-0 absolute w-full h-32"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >

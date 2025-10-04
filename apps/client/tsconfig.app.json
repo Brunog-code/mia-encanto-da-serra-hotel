@@ -23,10 +23,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Alias @ */
-    "baseUrl": ".",
+    /* Alias @ sem baseUrl (compatível TS 7) */
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
 
     /* Adicione esta linha para reconhecer módulos Node */

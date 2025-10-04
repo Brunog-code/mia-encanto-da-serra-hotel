@@ -15,12 +15,17 @@ import {
   type RegisterFormData,
 } from "@/shared/src";
 
+import { api } from "@/lib/axios";
+
+import { toast } from "sonner";
+
 export const LoginRegister = () => {
   const [isRegister, setisRegister] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   //Inicializando o useForm com Zod
-
   //register
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -67,11 +72,34 @@ export const LoginRegister = () => {
   };
 
   const onSubmitLogin = (data: LoginFormData) => {
-    console.log(data);
+    try{
+      const response = api.post('/auth', data)
+    }catch(error: any){
+
+    }
   };
 
-  const onSubmitRegister = (data: RegisterFormData) => {
-    console.log(data);
+  const onSubmitRegister = async (data: RegisterFormData) => {
+    setLoading(true);
+    try {
+      const response = await api.post("/users", data);
+
+      //se cadastro foi bem-sucedido
+      toast.success(response.data.message);
+
+      //reseta formulario de cadastro
+      setisRegister(false);
+      registerForm.reset();
+      loginForm.reset();
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erro ao cadastrar usuário");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -188,8 +216,13 @@ export const LoginRegister = () => {
                 </p>
               )}
 
-              <Button bg="bg-bistre-400" hoverBg="bg-bistre-500" type="submit">
-                Entrar
+              <Button
+                bg="bg-bistre-400"
+                hoverBg="bg-bistre-500"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Cadastrando...." : "Cadastrar"}
               </Button>
             </form>
           ) : (

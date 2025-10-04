@@ -1,13 +1,19 @@
 import express from "express";
-import cors from 'cors'
 import dotenv from "dotenv";
+dotenv.config();
+
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+console.log("SUPABASE_ANON_KEY:", process.env.SUPABASE_ANON_KEY?.slice(0, 10) + "..."); // só exibe o começo
+console.log("SECRET_KEY:", process.env.SECRET_KEY);
+
+import cors from 'cors'
 
 //routes
 import imageRoutes from './routes/imageRoutes.js'
 import roomRoutes from './routes/roomRoutes.js'
-
-//carrega variáveis do .env
-dotenv.config();
+import userRoutes from './routes/userRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 //instancia do express
 const app = express();
@@ -21,5 +27,7 @@ app.use(cors())
 //grupo de rotas
 app.use("/images", imageRoutes)
 app.use("/rooms", roomRoutes)
+app.use("/users", userRoutes)
+app.use("/auth", authRoutes)
 
 export default app;

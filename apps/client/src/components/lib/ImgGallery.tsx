@@ -2,8 +2,9 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 interface HotelImage {
-  src: string;
-  caption: string;
+  category: string;
+  title: string;
+  url: string;
 }
 
 interface IImgGallery {
@@ -13,13 +14,12 @@ interface IImgGallery {
 export const ImgGallery = ({ filteredImages }: IImgGallery) => {
   // Achata todas as imagens e adapta para o formato do ImageGallery
   const galleryItems = filteredImages.map((item) => ({
-    original: item.src, // imagem principal
-    thumbnail: item.src, // miniatura
-    description: item.caption, // legenda
+    original: item.url, // imagem principal
+    thumbnail: item.url, // miniatura
   }));
 
   return (
-    <div className="w-full md:w-1/3 max-w-4xl mx-auto py-10 ">
+    <div className="mx-auto py-10 w-full md:w-1/3 max-w-4xl">
       <ImageGallery
         items={galleryItems}
         showPlayButton={false} //remove autoplay
