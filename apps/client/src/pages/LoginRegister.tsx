@@ -3,9 +3,8 @@ import { Button } from "@/components";
 import { Input } from "@/components";
 import { useState } from "react";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import gsap from "gsap";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -14,9 +13,8 @@ import {
   type LoginFormData,
   type RegisterFormData,
 } from "@/shared/src";
-
+import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/lib/axios";
-
 import { toast } from "sonner";
 
 export const LoginRegister = () => {
@@ -24,6 +22,14 @@ export const LoginRegister = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  //context
+  const { login } = useAuth()!;
+
+  //verifica se chegou nessa page com redirecionamento para mandar de volta depois do loigin
+  const params = new URLSearchParams(location.search);
+  const redirect = params.get("redirect");
 
   //Inicializando o useForm com Zod
   //register
@@ -71,11 +77,30 @@ export const LoginRegister = () => {
     return () => ctx.revert();
   };
 
-  const onSubmitLogin = (data: LoginFormData) => {
-    try{
-      const response = api.post('/auth', data)
-    }catch(error: any){
+  const onSubmitLogin = async (data: LoginFormData) => {
+    setLoading(true);
+    try {
+      const response = await api.post("/auth", data);
 
+      //chama o login do context, que salva token e atualiza estado
+      login(response.data.token);
+      toast.success("Login realizado com sucesso!");
+      setLoading(false);
+
+      //se tiver rota de redirecionamento, vai pra ela
+      if (redirect) {
+        navigate(redirect);
+      } else {
+        navigate("/");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erro ao cadastrar usuário");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -252,7 +277,9 @@ export const LoginRegister = () => {
               >
                 Esqueci minha senha
               </p>
-              <Button type="submit">Entrar</Button>
+              <Button type="submit">
+                {loading ? "Entrando...." : "Entrar"}
+              </Button>
             </form>
           )}
         </div>

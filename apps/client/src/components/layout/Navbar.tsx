@@ -8,13 +8,21 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
   const [scroll, setScroll] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [windowWidthMd, setWindowWidthMd] = useState(window.innerWidth >= 768);
   const [showDiv, setShowDiv] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  //context auth
+  const { user, logout } = useAuth();
 
   //atualiza scrollSpy na primeira render
   useEffect(() => {
@@ -50,6 +58,12 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
     "Galeria",
     "Contato",
   ];
+
+  const onSubmitLogout = () => {
+    logout();
+    toast.success("Desconectado com sucesso!");
+    navigate("/");
+  };
 
   return (
     <header
@@ -102,15 +116,43 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                 <CloseIcon className="text-white" />
               </IconButton>
               <AccountCircle
-                sx={{ fontSize: 50 }} // tamanho em pixels
+                sx={{ fontSize: 50 }} //tamanho em pixels
                 className="text-white-gost-400"
               />
-              <RouterLink
-                to="login"
-                className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
-              >
-                Entrar
-              </RouterLink>
+              {user ? (
+                <div className="flex flex-col gap-2 w-[90%] text-center">
+                  <span className="text-white-gost-500">
+                    Olá, <span className="font-semibold">{user.name}</span>
+                  </span>
+                  <RouterLink
+                    to="/minhas-reservas"
+                    className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
+                  >
+                    Reservas
+                  </RouterLink>
+                  <span className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg">
+                    Configurações
+                  </span>
+                  <span
+                    className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
+                    onClick={onSubmitLogout}
+                  >
+                    Sair
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <RouterLink
+                    to={`/login?redirect=${encodeURIComponent(
+                      location.pathname
+                    )}`}
+                    className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
+                  >
+                    Entrar
+                  </RouterLink>
+                </>
+              )}
+
               <hr className="opacity-50 w-[80%] text-white-gost-600" />
             </div>
             <List sx={{ width: 250 }}>
@@ -119,8 +161,8 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                   <ListItemButton
                     sx={{
                       "&:hover": {
-                        backgroundColor: "#b08c72", 
-                        color: "white", 
+                        backgroundColor: "#b08c72",
+                        color: "white",
                       },
                     }}
                   >
@@ -170,28 +212,51 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
           </div>
         </nav>
 
-        <div className="hidden top-2 right-5 absolute md:flex flex-col justify-center items-center rounded-md">
-          <div
-            className="relative cursor-pointer"
-            onClick={() => setShowDiv(!showDiv)}
-          >
-            <AccountCircle fontSize="large" className="text-golden-400" />
-            <KeyboardArrowDownIcon className="-bottom-1 left-6 absolute ml-1 text-golden-500" />
+        <div className="hidden top-2 right-5 absolute md:flex flex-col justify-center items-center">
+          <div className="relative flex flex-col justify-center items-center">
+            {user && (
+              <span className="text-bistre-300">
+                Olá, <span className="font-semibold">{user.name}</span>
+              </span>
+            )}
+            <div
+              className="relative cursor-pointer"
+              onClick={() => setShowDiv(!showDiv)}
+            >
+              <AccountCircle fontSize="large" className="text-golden-400" />
+              <KeyboardArrowDownIcon className="-bottom-1 left-6 absolute ml-1 text-golden-500" />
+            </div>
           </div>
           {showDiv && (
             <div className="top-full -left-7 absolute flex flex-col gap-1 bg-white mt-1 p-2 border border-golden-400 rounded-md text-center">
-              <RouterLink
-                to="/login"
-                className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md font-semibold text-white transition-all duration-300 cursor-pointer"
-              >
-                Entrar
-              </RouterLink>
-              {/* <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
-                Minhas reservas
-              </span>
-              <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
-                Sair
-              </span> */}
+              {user ? (
+                <>
+                  <RouterLink
+                    to="/minhas-reservas"
+                    className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer"
+                  >
+                    Reservas
+                  </RouterLink>
+                  <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
+                    Configurações
+                  </span>
+                  <span
+                    className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer"
+                    onClick={onSubmitLogout}
+                  >
+                    Sair
+                  </span>
+                </>
+              ) : (
+                <RouterLink
+                  to={`/login?redirect=${encodeURIComponent(
+                    location.pathname
+                  )}`}
+                  className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md font-semibold text-white transition-all duration-300 cursor-pointer"
+                >
+                  Entrar
+                </RouterLink>
+              )}
             </div>
           )}
         </div>

@@ -10,6 +10,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     }
 
     //se for enviado pela header do front
+    //O jwt.verify decodifica o token JWT usando a SECRET_KEY.
     jwt.verify(token, process.env.SECRET_KEY!, (err, user) => {
         if(err){
             return res.status(403).json({message: 'Token inválido'})

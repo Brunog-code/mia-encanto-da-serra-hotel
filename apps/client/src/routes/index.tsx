@@ -9,6 +9,8 @@ import {
   ResetPassword,
   RoomDetails,
 } from "@/pages";
+import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
 
 export const AppRouters = createBrowserRouter([
   {
@@ -19,7 +21,16 @@ export const AppRouters = createBrowserRouter([
   {
     path: "/login",
     element: <AuthLayout />,
-    children: [{ path: "", element: <LoginRegister /> }],
+    children: [
+      {
+        path: "",
+        element: (
+          <PublicRoute>
+            <LoginRegister />
+          </PublicRoute>
+        ),
+      },
+    ],
   },
   {
     path: "/esqueci-senha",
@@ -39,7 +50,16 @@ export const AppRouters = createBrowserRouter([
   {
     path: "/minhas-reservas",
     element: <AsideLayout />,
-    children: [{ path: "", element: <MyReservations /> }],
+    children: [
+      {
+        path: "",
+        element: (
+          <PrivateRoute>
+            <MyReservations />{" "}
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
   {
     path: "/confirmar-reserva",

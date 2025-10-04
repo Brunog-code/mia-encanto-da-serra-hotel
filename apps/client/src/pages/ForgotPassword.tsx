@@ -4,7 +4,7 @@ import { Input } from "@/components";
 
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,8 +12,11 @@ import {
   forgotPasswordSchema,
   type forgotPasswordFormData,
 } from "@/shared/src";
+import { toast } from "sonner";
+import { api } from "@/lib/axios";
 
 export const ForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,8 +42,18 @@ export const ForgotPassword = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmitForgotPass = (data: forgotPasswordFormData) => {
-    console.log(data);
+  const onSubmitForgotPass = async (data: forgotPasswordFormData) => {
+    try {
+      const response = await api.post("/auth/forgot-password", data);
+
+      console.log(response.data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erro ao cadastrar usuário");
+      }
+    }
   };
 
   return (
