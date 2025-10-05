@@ -38,9 +38,9 @@ export const AppRouters = createBrowserRouter([
     children: [{ path: "", element: <ForgotPassword /> }],
   },
   {
-    path: "/redefinir-senha",
+    path: "/redefinir-senha/:token",
     element: <AuthLayout />,
-    children: [{ path: "", element: <ResetPassword /> }],
+    children: [{ index: true, element: <ResetPassword /> }],
   },
   {
     path: "/quarto/:id",

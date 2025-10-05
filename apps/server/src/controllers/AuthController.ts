@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { loginSchema } from "../shared/src/lib/zod/authSchema.js";
+import { forgotPasswordSchema } from "../shared/src/lib/zod/forgotPasswordSchema.js";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import { generateToken } from "../utils/lib/generateToken.js";
+import { sendEmail } from "../services/emailService.js";
 
 export class AuthController {
     private prisma: PrismaClient
@@ -63,19 +66,83 @@ export class AuthController {
     }
 
     public forgotPassword = async(req: Request, res:Response) => {
-        const {email} = req.body
-        
+        try{
 
-        //1-validar dado com zod
-
-        //2-verificar se o email existe
-
-        //3-
-
-
-        
-
-        return res.status(200).json({message: `Email ${email} recebido`})
+            const {email} = req.body
+            
+            //1-validar email com zod
+             const parseData = forgotPasswordSchema.safeParse(req.body)
+                if(!parseData.success){
+                    const flattened = parseData.error.flatten()
+                    return res.status(400).json({
+                        message: "Email inválido",
+                        fieldErrors: flattened.fieldErrors, //erros por campo
+                        formErrors: flattened.formErrors,   //erros globais
+                    })
+                }
+    
+            //2-verificar se o email existe no db
+            const user = await this.prisma.customer.findUnique({
+                where: {email}
+            })
+    
+            if(!user) return res.status(400).json({message: "Usuário não encontrado"})
+    
+            //3-se existir, cria um token de redefinicao aleatorio e a expiracao
+            const resetToken = crypto.randomBytes(32).toString('hex')
+            const resetPasswordExpires = new Date(Date.now() + 3600000)
+    
+            //4-salva hash do token
+            const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex')
+    
+            //5-atribui o token de expiração ao usuário
+            await this.prisma.customer.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    resetPasswordToken: resetTokenHash,
+                    resetPasswordExpires: resetPasswordExpires
+                }
+            })
+    
+            //6-montar link de redefinição de senha
+            const resetLink = `${process.env.FRONTEND_URL}/redefinir-senha/${resetToken}`
+    
+            //7-usar o emailService para enviar o email
+            await sendEmail({
+                to: email,
+                subject:'Redefinição de senha',
+                html: `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2>Redefinição de senha</h2>
+                        <p>Olá <strong>${user.name}</strong>,</p>
+                        <p>Recebemos uma solicitação para redefinir a senha da sua conta. Para continuar o processo, clique no link abaixo:</p>
+                        <p>
+                            <a href="${resetLink}" 
+                            style="display: inline-block; background-color: #c78d38; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 6px;">
+                            Redefinir minha senha
+                            </a>
+                        </p>
+                        <p>Ou copie e cole o seguinte link no seu navegador:</p>
+                        <p><a href="${resetLink}">${resetLink}</a></p>
+                        <p><em>Este link é válido por 1 hora.</em></p>
+                        <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
+                        <p style="font-size: 14px; color: #666;">
+                            Se você não solicitou a redefinição de senha, ignore este e-mail. Sua conta permanecerá segura.
+                        </p>
+                        <p>Atenciosamente,<br>Equipe de Suporte</p>
+                    </div>
+                `
+            })
+    
+    
+            //8-resposta de sucesso
+            return res.status(200).json({message: `Email de redefinição enviado`})
+        }catch(error){
+            console.error("Erro no forgotPassword:", error);
+            res.status(500).json({ message: "Erro interno ao solicitar redefinição" });
+        }
     }
 
     public resetPassword = async(req: Request, res:Response) => {

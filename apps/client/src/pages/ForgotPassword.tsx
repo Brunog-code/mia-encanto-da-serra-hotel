@@ -43,16 +43,23 @@ export const ForgotPassword = () => {
   });
 
   const onSubmitForgotPass = async (data: forgotPasswordFormData) => {
+    setLoading(true)
     try {
       const response = await api.post("/auth/forgot-password", data);
+      
+      toast.success(response.data.message);
+      setLoading(false)
 
-      console.log(response.data);
+      //redireciona
+      navigate("/");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Erro ao cadastrar usuário");
       }
+    }finally{
+      setLoading(false)
     }
   };
 

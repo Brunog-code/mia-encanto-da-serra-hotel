@@ -46,13 +46,15 @@ enum MediaCategory {
 
 //models
 model Customer {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String    @id @default(uuid())
+  name                 String
+  email                String    @unique
+  phone                String
+  password             String
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   reservations Reservation[] @relation("CustomerReservation")
 }
@@ -116,12 +118,12 @@ model Payment {
 }
 
 model MediaImage {
-  id          String        @id @default(uuid())
-  category    MediaCategory
-  url         String        @unique
-  title       String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id        String        @id @default(uuid())
+  category  MediaCategory
+  url       String        @unique
+  title     String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   // Relacionamento opcional: só usado se category = ROOM
   roomTypeId String?
