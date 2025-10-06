@@ -277,7 +277,10 @@ export const LoginRegister = () => {
               >
                 Esqueci minha senha
               </p>
-              <Button type="submit">
+              <Button 
+              type="submit"
+              disabled={loading}
+              >
                 {loading ? "Entrando...." : "Entrar"}
               </Button>
             </form>

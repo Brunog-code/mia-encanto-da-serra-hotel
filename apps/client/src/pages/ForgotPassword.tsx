@@ -43,12 +43,12 @@ export const ForgotPassword = () => {
   });
 
   const onSubmitForgotPass = async (data: forgotPasswordFormData) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await api.post("/auth/forgot-password", data);
-      
+
       toast.success(response.data.message);
-      setLoading(false)
+      setLoading(false);
 
       //redireciona
       navigate("/");
@@ -58,8 +58,8 @@ export const ForgotPassword = () => {
       } else {
         toast.error("Erro ao cadastrar usuário");
       }
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,7 +114,9 @@ export const ForgotPassword = () => {
               <p className="text-red-400">{errors.email.message}</p>
             )}
 
-            <Button type="submit">Enviar link de redefinição</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Enviando..." : "Enviar link de redefinição"}
+            </Button>
           </form>
         </div>
       </div>

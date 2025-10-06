@@ -10,7 +10,7 @@ const auth = new AuthController()
 
 router.post('/', auth.login)
 router.post('/forgot-password', auth.forgotPassword)
-router.post('/reset-password', auth.resetPassword)
+router.post('/reset-password/:token', auth.resetPassword)
 router.get('/', authenticateToken, auth.getMe)
 
 export default router

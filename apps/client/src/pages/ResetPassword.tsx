@@ -2,13 +2,21 @@ import { Button } from "@/components";
 import { Input } from "@/components";
 
 import gsap from "gsap";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { resetPasswordSchema, type resetPasswordFormData } from "@/shared/src";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { api } from "@/lib/axios";
 
 export const ResetPassword = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const { token } = useParams();
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".animate-g", {
@@ -29,8 +37,24 @@ export const ResetPassword = () => {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmitResetPass = (data: resetPasswordFormData) => {
-    console.log(data);
+  const onSubmitResetPass = async (data: resetPasswordFormData) => {
+    setLoading(true);
+    try {
+      const response = await api.post(`/auth/reset-password/${token}`, data);
+
+      toast.success(response.data.message);
+
+      setLoading(false);
+      navigate("/login");
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data);
+      } else {
+        toast.error("Erro ao redefinir a senha");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -86,7 +110,9 @@ export const ResetPassword = () => {
               <p className="text-red-400">{errors.confirmPassword.message}</p>
             )}
 
-            <Button type="submit">Salvar nova senha</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Carregando..." : "Salvar nova senha"}
+            </Button>
           </form>
         </div>
       </div>

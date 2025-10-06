@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { loginSchema } from "../shared/src/lib/zod/authSchema.js";
 import { forgotPasswordSchema } from "../shared/src/lib/zod/forgotPasswordSchema.js";
+import { resetPasswordSchema } from "../shared/src/lib/zod/resetPasswordSchema.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { generateToken } from "../utils/lib/generateToken.js";
@@ -146,6 +147,60 @@ export class AuthController {
     }
 
     public resetPassword = async(req: Request, res:Response) => {
+        try{
+            const{ token } = req.params
+            const {password} = req.body
 
+            //1-verificar se esta chegando token e pass
+            if(!token) return res.status(400).json({mesage: 'Token não informado'})
+            if(!password) return res.status(400).json({mesage: 'Senha não informada'})
+
+            //2-validar password com zod
+            const parseData = resetPasswordSchema.safeParse(req.body)
+                if(!parseData.success){
+                    const flattened = parseData.error.flatten()
+                    return res.status(400).json({
+                        message: "Senha inválida",
+                        fieldErrors: flattened.fieldErrors, //erros por campo
+                        formErrors: flattened.formErrors,   //erros globais
+                    })
+            }
+
+            //3-gerar hash do token enviado para comparar com o hash no banco
+            const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex') 
+
+            //4-procurar usuário com token válido e não expirado
+            const user = await this.prisma.customer.findFirst({
+                where:{
+                    resetPasswordToken: resetTokenHash,
+                    resetPasswordExpires: {
+                        gte: new Date() //só retorna se o token não expirou, se for > ou = a agora, é valido.
+                    }
+                }
+            })
+
+            if(!user) return res.status(400).json({ message: "Token inválido ou expirado" });
+
+            //5-gerar hash na newPassword
+            const saltRounds = 10
+            const newPasswordHash = await bcrypt.hash(password, saltRounds)
+
+            //6-atualizar a senha no db e remover token e expiração
+            await this.prisma.customer.update({
+                where:{
+                    id: user.id
+                },
+                data:{
+                    password: newPasswordHash,
+                    resetPasswordToken: null,
+                    resetPasswordExpires: null
+                }
+            })
+            
+            return res.status(200).json({ message: "Senha redefinida com sucesso" });
+        }catch(error){
+            console.log(error)
+            res.status(500).json({message: 'Erro interno ao redefinir a senha'})
+        }
     }
 }
