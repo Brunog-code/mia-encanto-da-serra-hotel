@@ -1,12 +1,14 @@
 // import { useParams } from "react-router-dom";
 import { Button, SwiperRoomDetails, Input } from "@/components";
 import { gsap } from "gsap";
-
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import BedIcon from "@mui/icons-material/Bed";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "@/lib/axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { reservationSchema, type reservationFormData } from "@/shared/src";
 
 export const RoomDetails = () => {
   interface IRoom {
@@ -27,8 +29,17 @@ export const RoomDetails = () => {
     }[];
   }
   const { id } = useParams<{ id: string }>();
-
   const [room, setRoom] = useState<IRoom | null>(null);
+
+  //Inicializando o useForm com Zod
+  //reservation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<reservationFormData>({
+    resolver: zodResolver(reservationSchema),
+  });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,11 +78,15 @@ export const RoomDetails = () => {
     featchRoomsImg();
   }, []);
 
+  const onSubmitReservation = (data: reservationFormData) => {
+    console.log(data);
+  };
+
   return (
     <section>
       <div className="flex flex-col gap-4 p-4">
         <h1 className="bg-golden-500 shadow-md mt-5 p-1 rounded-md font-semibold text-white-gost-500 text-3xl text-center">
-          {room?.category === 'LUXURY' ? 'QUARTO LUXO' : 'QUARTO STANDARD'}
+          {room?.category === "LUXURY" ? "QUARTO LUXO" : "QUARTO STANDARD"}
         </h1>
 
         <div className="flex md:flex-row flex-col justify-center items-center gap-6 w-full">
@@ -108,10 +123,34 @@ export const RoomDetails = () => {
                 O que muda é a quantidade de camas. Escolha as datas, e o número
                 de hóspedes abaixo.
               </p>
-              <div className="flex flex-col w-full">
-                <Input type="date" placeholder="Check-in" />
-                <Input type="date" placeholder="Check-out" />
-                <select className="bg-white-gost-500 px-4 py-3 border border-golden-600 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-bistre-600 text-golden-600">
+              <form
+                className="flex flex-col w-full"
+                onSubmit={handleSubmit(onSubmitReservation)}
+              >
+                <Input
+                  type="date"
+                  placeholder="Check-in"
+                  {...register("checkin")}
+                />
+                {errors.checkin && (
+                  <span className="text-white text-sm">
+                    {errors.checkin.message}
+                  </span>
+                )}
+                <Input
+                  type="date"
+                  placeholder="Check-out"
+                  {...register("checkout")}
+                />
+                {errors.checkout && (
+                  <span className="text-white text-sm">
+                    {errors.checkout.message}
+                  </span>
+                )}
+                <select
+                  className="bg-white-gost-500 mb-2 px-4 py-3 border border-golden-600 focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-bistre-600 text-golden-600"
+                  {...register("guests")}
+                >
                   <option value="">Selecione hóspedes</option>
                   <option value="1">1 Hóspede</option>
                   <option value="2">2 Hóspedes</option>
@@ -120,12 +159,20 @@ export const RoomDetails = () => {
                   <option value="5">5 Hóspedes</option>
                   <option value="6">6 Hóspedes</option>
                 </select>
-              </div>
+                {errors.guests && (
+                  <span className="text-white text-sm b">
+                    {errors.guests.message}
+                  </span>
+                )}
+                <Button
+                  type="submit"
+                  bg="bg-bistre-400"
+                  hoverBg="bg-bistre-500"
+                >
+                  Reservar
+                </Button>
+              </form>
             </div>
-
-            <Button bg="bg-bistre-400" hoverBg="bg-bistre-500">
-              Reservar
-            </Button>
           </div>
         </div>
       </div>

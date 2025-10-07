@@ -12,7 +12,7 @@ function App() {
       <AuthProvider>
         <ThemeProvider theme={theme}>
           {/* Toaster global */}
-          <Toaster position="top-right" />
+          <Toaster position="top-right" richColors />
 
           {/* Rotas */}
           <RouterProvider router={AppRouters} />

@@ -2,17 +2,15 @@ import { Button, Input } from "@/components";
 import SplitType from "split-type";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap/gsap-core";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { reservationSchema, type reservationFormData } from "@/shared/src";
-
 import { api } from "../../lib/axios";
+import { scroller } from "react-scroll";
+import { toast } from "sonner";
 
 export const Hero = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
-
   const [imgHero, setImgHero] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -72,10 +70,12 @@ export const Hero = () => {
 
     const featchImg = async () => {
       try {
-        const response = await api.get<MediaImage[]>("/images?title=hotel-bg-hero.jpg")
+        const response = await api.get<MediaImage[]>(
+          "/images?title=hotel-bg-hero.jpg"
+        );
 
         if (response.data) {
-          const img = response.data[0]?.url
+          const img = response.data[0]?.url;
           setImgHero(img);
         }
       } catch (error) {
@@ -86,7 +86,6 @@ export const Hero = () => {
   }, []);
 
   //Inicializando o useForm com Zod
-
   //reservation
   const {
     register,
@@ -98,6 +97,17 @@ export const Hero = () => {
 
   const onSubmitReservation = (data: reservationFormData) => {
     console.log(data);
+
+    //inserir as datas e hospedes no db
+
+    //Scroll para a seção "Quartos" após submissão
+    scroller.scrollTo("Quartos", {
+      smooth: true,
+      duration: 500,
+      offset: -80,
+    });
+
+    toast.warning('Selecione um quarto para continuar a reserva')
   };
 
   return (
