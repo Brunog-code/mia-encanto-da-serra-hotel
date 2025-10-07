@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-
+import { reservationSchema } from "../shared/src/lib/zod/reservationSchema.js";
+import dayjs from "dayjs";
 export class RoomController {
     private prisma: PrismaClient;
         constructor() {
@@ -41,5 +42,56 @@ export class RoomController {
         if(!room) return res.json({message: 'Nenhum quarto encontrado'})
 
         return res.status(200).json(room)
+    }
+
+    public getAvailability = async(req: Request, res: Response) => {
+        try{
+            const checkIn = req.query.checkIn as string;
+            const checkOut = req.query.checkOut as string;
+    
+            //validar com zod
+            const parseData = reservationSchema.safeParse({
+                checkin: checkIn,
+                checkout: checkOut,
+                guests: "1", 
+            })
+            if(!parseData.success){
+                const flattened = parseData.error.flatten(); 
+                return res.status(400).json({
+                    message: "Dados inválidos",
+                    fieldErrors: flattened.fieldErrors, //erros por campo
+                    formErrors: flattened.formErrors,   //erros globais
+                })
+            }
+
+            //transforma em date
+            const checkInDate = dayjs(checkIn).startOf('day').toDate()
+            const checkOutDate  = dayjs(checkOut).endOf('day').toDate()
+    
+            //Buscar os tipos de quarto com unidades disponíveis
+            const availability = await this.prisma.room.groupBy({
+                by: ['typeId'],
+                _count: {id: true},
+                where: {
+                    status: "AVAILABLE",
+                    reservations: {
+                        none:{
+                            OR: [
+                                {
+                                    checkIn: { lte: checkOutDate },//"less than or equal" (menor ou igual). - check-in da reserva é menor ou igual ao check-out pesquisado
+                                    checkOut: { gte: checkInDate },//"greater than or equal" (maior ou igual). - check-out da reserva é maior ou igual ao check-in pesquisado
+                                    status: { in: ["PENDING", "CONFIRMED"] }//só essas bloqueiam o quarto
+                                }
+                            ]
+                        }
+                    }
+                }
+            })
+             
+            return res.status(200).json(availability)
+        }catch(error){
+            console.error(error);
+            return res.status(500).json({ message: "Erro ao buscar disponibilidade" });
+        }
     }
 }

@@ -5,9 +5,14 @@ import { Element } from "react-scroll";
 import { RoomCard } from "@/components";
 import { api } from "@/lib/axios";
 
+import { useReservation } from "@/contexts/ReservationContext";
+import { toast } from "sonner";
+
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  const { reservationData } = useReservation();
 
   interface MediaImage {
     id: string;
@@ -58,8 +63,34 @@ export const Rooms = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
+  //monitora as datas da reserva
   useEffect(() => {
-    const featchRoomsImg = async () => {
+    const checkRoomsAvailability = async () => {
+      if (!reservationData?.checkin || !reservationData?.checkout) return;
+
+      try {
+        const response = await api.get(`/rooms/availability`, {
+          params: {
+            checkIn: reservationData?.checkin,
+            checkOut: reservationData?.checkout,
+          },
+        });
+
+        console.log(response.data);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Erro ao buscar quartos disponiveis");
+        }
+      }
+    };
+
+    checkRoomsAvailability();
+  }, [reservationData]);
+
+  useEffect(() => {
+    const featchRoomsData = async () => {
       try {
         const response = await api.get<IRooms[]>("/rooms");
 
@@ -75,7 +106,7 @@ export const Rooms = () => {
         console.log(error);
       }
     };
-    featchRoomsImg();
+    featchRoomsData();
   }, []);
 
   return (

@@ -9,6 +9,7 @@ import { api } from "@/lib/axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reservationSchema, type reservationFormData } from "@/shared/src";
+import { useReservation } from "@/contexts/ReservationContext";
 
 export const RoomDetails = () => {
   interface IRoom {
@@ -31,6 +32,8 @@ export const RoomDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [room, setRoom] = useState<IRoom | null>(null);
 
+  const { reservationData, setReservation } = useReservation();
+
   //Inicializando o useForm com Zod
   //reservation
   const {
@@ -39,6 +42,7 @@ export const RoomDetails = () => {
     formState: { errors },
   } = useForm<reservationFormData>({
     resolver: zodResolver(reservationSchema),
+    defaultValues: reservationData || { checkin: "", checkout: "", guests: "" },
   });
 
   useEffect(() => {
@@ -80,6 +84,9 @@ export const RoomDetails = () => {
 
   const onSubmitReservation = (data: reservationFormData) => {
     console.log(data);
+
+    //atualiza o contexto
+    setReservation(data);
   };
 
   return (

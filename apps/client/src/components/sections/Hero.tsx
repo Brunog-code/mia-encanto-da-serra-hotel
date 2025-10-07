@@ -8,10 +8,14 @@ import { reservationSchema, type reservationFormData } from "@/shared/src";
 import { api } from "../../lib/axios";
 import { scroller } from "react-scroll";
 import { toast } from "sonner";
+import { useReservation } from "@/contexts/ReservationContext";
 
 export const Hero = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const [imgHero, setImgHero] = useState<string | undefined>(undefined);
+
+  //context
+  const { reservationData, setReservation } = useReservation();
 
   useEffect(() => {
     if (!h1Ref.current) return;
@@ -93,12 +97,12 @@ export const Hero = () => {
     formState: { errors },
   } = useForm<reservationFormData>({
     resolver: zodResolver(reservationSchema),
+    defaultValues: reservationData || { checkin: "", checkout: "", guests: "" },
   });
 
   const onSubmitReservation = (data: reservationFormData) => {
-    console.log(data);
-
-    //inserir as datas e hospedes no db
+    //inserir as datas e hospedes no context
+    setReservation(data);
 
     //Scroll para a seção "Quartos" após submissão
     scroller.scrollTo("Quartos", {
@@ -107,7 +111,7 @@ export const Hero = () => {
       offset: -80,
     });
 
-    toast.warning('Selecione um quarto para continuar a reserva')
+    toast.warning("Selecione um quarto para continuar a reserva");
   };
 
   return (

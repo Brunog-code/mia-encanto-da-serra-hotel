@@ -8,7 +8,9 @@ const router = Router();
 const RmController = new RoomController()
 
 //endpoints e controllers
+router.get('/availability', RmController.getAvailability)
 router.get('/', RmController.getAllRooms)
 router.get('/:id', RmController.getRoomById)
+
 
 export default router
