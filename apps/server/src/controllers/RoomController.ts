@@ -48,12 +48,13 @@ export class RoomController {
         try{
             const checkIn = req.query.checkIn as string;
             const checkOut = req.query.checkOut as string;
+            const guests = req.query.guests as string;
     
             //validar com zod
             const parseData = reservationSchema.safeParse({
                 checkin: checkIn,
                 checkout: checkOut,
-                guests: "1", 
+                guests: guests, 
             })
             if(!parseData.success){
                 const flattened = parseData.error.flatten(); 
@@ -67,6 +68,7 @@ export class RoomController {
             //transforma em date
             const checkInDate = dayjs(checkIn).startOf('day').toDate()
             const checkOutDate  = dayjs(checkOut).endOf('day').toDate()
+            const guestsNumber = Number(guests)
     
             //Buscar os tipos de quarto com unidades disponíveis
             const availability = await this.prisma.room.groupBy({
@@ -74,6 +76,7 @@ export class RoomController {
                 _count: {id: true},
                 where: {
                     status: "AVAILABLE",
+                    capacity: {gte: guestsNumber},
                     reservations: {
                         none:{
                             OR: [

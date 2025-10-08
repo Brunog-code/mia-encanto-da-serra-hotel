@@ -1,6 +1,19 @@
 import { Button } from "@/components";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
+import { useReservation } from "@/contexts/ReservationContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const ConfirmReservation = () => {
+
+  const {id} = useParams()
+
+  useEffect(() => {
+    //buscar dados do quarto
+  }, [])
+
+
   return (
     <section className="flex flex-col space-y-6 p-4 w-full min-h-screen">
       {/* título */}

@@ -12,6 +12,9 @@ import { Pagination, Autoplay } from "swiper/modules";
 import { Button } from "@/components";
 import { useNavigate } from "react-router-dom";
 
+import { type reservationFormData } from "@/shared/src";
+import { toast } from "sonner";
+
 interface ICardRoom {
   id: string;
   imgs: string[];
@@ -19,6 +22,8 @@ interface ICardRoom {
   description: string;
   capacity: number;
   price: number; // adiciona o preço
+  roomAvailable: number | undefined;
+  reservationData?: reservationFormData | null;
 }
 
 export const RoomCard = ({
@@ -28,11 +33,26 @@ export const RoomCard = ({
   description,
   capacity,
   price,
+  roomAvailable,
+  reservationData,
 }: ICardRoom) => {
   const navigate = useNavigate();
 
   const onViewDetails = () => {
-    navigate(`/quarto/${id}`); //passar o id que vira do rooms.tsx
+    navigate(`/quarto/${id}`); //passar o id que virá do rooms.tsx
+  };
+
+  const handleQuickBooking = (id: string) => {
+    if (!reservationData?.checkin || !reservationData?.checkout) {
+      toast.error(
+        "Por favor, selecione a data de check-in e check-out antes de reservar."
+      );
+      return;
+    }
+
+    //verificar se está logado
+
+    navigate(`/confirmar-reserva/${id}`);
   };
 
   return (
@@ -62,7 +82,12 @@ export const RoomCard = ({
       </Swiper>
 
       {/* Conteúdo do quarto */}
-      <CardContent>
+      <CardContent className="relative">
+        {roomAvailable == 20 && (
+          <div className="top-4 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
+            <span>ESGOTADO</span>
+          </div>
+        )}
         <Typography className="!mb-4 !font-bold !text-2xl">
           {title === "LUXURY" ? "LUXO" : "STANDARD"}
         </Typography>
@@ -99,7 +124,12 @@ export const RoomCard = ({
           px={1}
           pb={1}
         >
-          <Button>Reserva Rápida</Button>
+          <Button
+            disabled={roomAvailable == 20}
+            onClick={() => handleQuickBooking(id)}
+          >
+            Reserva Rápida
+          </Button>
 
           <Button
             px="px-2"

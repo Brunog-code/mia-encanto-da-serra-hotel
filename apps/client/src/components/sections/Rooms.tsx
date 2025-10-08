@@ -29,10 +29,17 @@ export const Rooms = () => {
     capacity: number;
     amenities: string[];
     mediaImages: MediaImage[];
+    roomAvailable?: number | undefined;
+  }
+
+  interface IAvailability {
+    typeId: string;
+    _count: { id: number };
   }
 
   const [rooms, setRooms] = useState<IRooms[] | undefined>(undefined);
 
+  //gsap animacao
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -66,17 +73,38 @@ export const Rooms = () => {
   //monitora as datas da reserva
   useEffect(() => {
     const checkRoomsAvailability = async () => {
-      if (!reservationData?.checkin || !reservationData?.checkout) return;
+      if (
+        !reservationData?.checkin ||
+        !reservationData?.checkout ||
+        !reservationData?.guests
+      )
+        return;
 
       try {
         const response = await api.get(`/rooms/availability`, {
           params: {
             checkIn: reservationData?.checkin,
             checkOut: reservationData?.checkout,
+            guests: reservationData?.guests,
           },
         });
 
-        console.log(response.data);
+        const availabilityData = response.data;
+
+        //atualiza o state room com a quantidade disponivel
+        setRooms((prevRooms) =>
+          prevRooms?.map((room) => {
+            const match = availabilityData.find(
+              (a: IAvailability) => a.typeId === room.id //verifica se o typeId do resultado do db, é o mesmo id do room ja setado
+            );
+
+            //se for, retorna o quarto que ja estava incluido a quantidade disponivel
+            return {
+              ...room,
+              roomAvailable: match._count.id,
+            };
+          })
+        );
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.message);
@@ -89,6 +117,7 @@ export const Rooms = () => {
     checkRoomsAvailability();
   }, [reservationData]);
 
+  //pega as informacoes e imgs do room
   useEffect(() => {
     const featchRoomsData = async () => {
       try {
@@ -134,6 +163,7 @@ export const Rooms = () => {
       <div className="flex md:flex-row flex-col justify-evenly items-center w-full">
         {rooms?.map((item) => (
           <RoomCard
+            roomAvailable={item.roomAvailable}
             key={item.id}
             id={item.id}
             imgs={item.mediaImages.map((img) => img.url)}
@@ -141,8 +171,14 @@ export const Rooms = () => {
             description={item.description}
             capacity={item.capacity}
             price={item.price}
+            reservationData={reservationData}
           />
         ))}
+      </div>
+      <div>
+        <span className="text-white-gost-500 text-lg">
+          Clique em ver detalhes para conferir disponibilidade completa.
+        </span>
       </div>
     </section>
   );
