@@ -57,10 +57,36 @@ export class UserController {
                     password: hashedPassword
                 }
             })
-            res.status(200).json({message: "Usuario criado com sucesso", userId: user.id})
+            return res.status(200).json({message: "Usuario criado com sucesso", userId: user.id})
          }catch(error){
             console.error(error)
-            res.status(500).json({ message: "Erro ao criar usuário" });
+            return res.status(500).json({ message: "Erro ao criar usuário" });
          }
+    }
+
+    public getUserById = async(req: Request, res: Response) => {
+        try{
+            const {id} = req.params
+
+            const user = await this.prisma.customer.findUnique({
+                where: {
+                    id
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                }
+            })
+
+            if(!user) return res.status(404).json({message: "Usuario não encontrado"})
+
+            return res.status(200).json(user)
+
+        }catch(error){
+            console.error(error)
+            return res.status(500).json({message: "Erro ao buscar usuário"})
+        }
     }
 }

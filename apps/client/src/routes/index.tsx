@@ -64,7 +64,16 @@ export const AppRouters = createBrowserRouter([
   {
     path: "/confirmar-reserva/:id",
     element: <AsideLayout />,
-    children: [{ path: "", element: <ConfirmReservation /> }],
+    children: [
+      {
+        path: "",
+        element: (
+          <PrivateRoute>
+            <ConfirmReservation />
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
 
   { path: "*", element: <Navigate to="/" /> },

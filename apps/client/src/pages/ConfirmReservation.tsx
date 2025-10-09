@@ -1,18 +1,164 @@
 import { Button } from "@/components";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
-
 import { useReservation } from "@/contexts/ReservationContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { api } from "@/lib/axios";
+import dayjs from "dayjs";
+import { formatDateBR } from "@/utils/formatDateBR";
 
 export const ConfirmReservation = () => {
+  const { id } = useParams();
 
-  const {id} = useParams()
+  //contexts
+  const { user } = useAuth();
+  const { reservationData } = useReservation();
 
+  //states
+  const [roomData, setRoomData] = useState<IRoomData | null>(null);
+  const [userPhone, setUserPhone] = useState(null);
+  const [numberOfRreservation, setNumberOfRreservation] = useState<number>(0);
+
+  interface MediaImage {
+    id: string;
+    category: string;
+    url: string;
+    title: string;
+    createdAt: string;
+  }
+  interface IRoomData {
+    id: string;
+    category: string;
+    description: string;
+    price: number;
+    capacity: number;
+    amenities: string[];
+    mediaImages: MediaImage[];
+  }
+
+  //buscar informacoes do quarto
   useEffect(() => {
-    //buscar dados do quarto
-  }, [])
+    const featchRoomData = async () => {
+      //buscar dados do quarto
+      try {
+        const response = await api.get(`/rooms/${id}`);
 
+        const roomsData = response.data;
+        setRoomData(roomsData);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Não foi possivel buscar dados do quarto");
+        }
+      }
+    };
+
+    featchRoomData();
+  }, []);
+
+  //buscar phone do user logado
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const featchUserData = async () => {
+      try {
+        const response = await api.get(`/users/${user?.id}`);
+
+        setUserPhone(response.data.phone);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Não foi possivel buscar dados do usuario");
+        }
+      }
+    };
+
+    featchUserData();
+  }, [user]);
+
+  //buscar numero da ultima reserva
+  useEffect(() => {
+    const fetchNumberReservation = async () => {
+      try {
+        const response = await api.get("/reservation/number");
+
+        setNumberOfRreservation(response.data.number);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Não foi possivel buscar o numero da reserva");
+        }
+      }
+    };
+
+    fetchNumberReservation();
+  }, []);
+
+  //calculo diarias
+  const diffInDays = useMemo(() => {
+    if (!reservationData?.checkin || !reservationData?.checkout) return 0;
+
+    const startDate = dayjs(reservationData?.checkin);
+    const endDate = dayjs(reservationData?.checkout);
+    const diff = endDate.diff(startDate, "day");
+
+    return diff > 0 ? diff : 1;
+  }, [reservationData?.checkin, reservationData?.checkout]);
+
+  interface ITotalmount {
+    total: number;
+    additionalCost: number;
+  }
+
+  //valor total
+  const totalAmount: ITotalmount = useMemo(() => {
+    if (!roomData || !diffInDays)
+      return {
+        total: 0,
+        additionalCost: 0,
+      };
+
+    const additionalCost = diffInDays * roomData.price * 0.1 + 100;
+    const total = diffInDays * roomData.price + additionalCost;
+
+    return {
+      additionalCost,
+      total,
+    };
+  }, [roomData, diffInDays]);
+
+  //numero reserva(se for o primeiro será 1001, se nao soma +1 no ultimo)
+  const reservationNumber =
+    numberOfRreservation == 1001
+      ? numberOfRreservation
+      : numberOfRreservation + 1;
+
+  //cria a reserva no db e prossegue para pagamento
+  const handleCreateReservationAndPay = async () => {
+    const dataReservation = {
+      reservationNumber: reservationNumber,
+      checkIn: reservationData?.checkin,
+      checkOut: reservationData?.checkout,
+      guestCount: reservationData?.guests,
+      totalAmount: totalAmount.total,
+      customerId: user?.id,
+      roomTypeId: roomData?.id,
+    };
+
+    try {
+      const response = await api.post("/reservation", dataReservation);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Não foi possivel criar a reserva");
+      }
+    }
+  };
 
   return (
     <section className="flex flex-col space-y-6 p-4 w-full min-h-screen">
@@ -34,7 +180,7 @@ export const ConfirmReservation = () => {
           {/* imagem do quarto */}
           <div className="flex justify-center items-center md:w-1/2">
             <img
-              src="/images/room/quarto-luxo-2.webp"
+              src={roomData?.mediaImages[2].url}
               alt="Quarto Luxo"
               className="shadow-md rounded-md w-full h-auto sm:h-[300px] md:h-[400px] object-cover"
             />
@@ -44,35 +190,57 @@ export const ConfirmReservation = () => {
           <div className="flex flex-col space-y-4 p-4 md:w-1/2">
             {/* descrição */}
             <span className="bg-bistre-400 p-2 rounded-md font-semibold text-white-gost-500 text-2xl text-center">
-              Quarto Luxo
+              {roomData?.category == "STANDARD"
+                ? "Quarto Standard"
+                : "Quarto Luxo"}
             </span>
-            <p>
-              Quarto espaçoso com decoração elegante, cama king-size, varanda
-              com vista para as montanhas, Wi-Fi gratuito e café da manhã
-              incluso.
-            </p>
+            <p>{roomData?.description}</p>
 
             {/* Dados do hóspede */}
             <div className="pt-2 border-gray-300 border-t">
               <h4 className="font-semibold text-lg">
                 Dados do hóspede principal
               </h4>
-              <p>Nome: João da Silva</p>
-              <p>Email: joao@email.com</p>
-              <p>Celular: (11) 99999-9999</p>
-              <p>Quantidade de hóspedes: 2</p>
+              <p>Nome: {user?.name}</p>
+              <p>Email: {user?.email}</p>
+              <p>Celular: {userPhone}</p>
+            </div>
+
+            {/* Dados da reserva */}
+            <div className="pt-2 border-gray-300 border-t">
+              <h4 className="font-semibold text-lg">Dados da reserva</h4>
+              <p>Numero: {reservationNumber}</p>
+              <p>Check-in: {formatDateBR(reservationData?.checkin)}</p>
+              <p>Check-out: {formatDateBR(reservationData?.checkout)}</p>
+              <p>Hóspedes: {reservationData?.guests}</p>
             </div>
 
             {/* Resumo financeiro */}
             <div className="pt-2 border-gray-300 border-t">
               <h4 className="font-semibold text-lg">Resumo financeiro</h4>
-              <p>Valor da diária: R$ 2.500</p>
-              <p>Quantidade de diárias: 3</p>
               <p>
-                Taxas adicionais: R$ 500 (serviço + estacionamento + impostos)
+                Valor da diária:{" "}
+                {roomData?.price &&
+                  new Intl.NumberFormat("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(Number(roomData.price))}
+              </p>
+              <p>Quantidade de diárias: {diffInDays}</p>
+              <p>
+                Taxas adicionais:{" "}
+                {totalAmount.additionalCost.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}{" "}
+                (serviço + impostos)
               </p>
               <p className="font-bold text-bistre-500 text-lg">
-                Valor total: R$ 8.000
+                Valor total:
+                {totalAmount.total.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
               </p>
             </div>
 
@@ -107,7 +275,11 @@ export const ConfirmReservation = () => {
 
         {/* botão de pagamento */}
         <div className="flex justify-end">
-          <Button bg="bg-bistre-500" hoverBg="bg-bistre-600">
+          <Button
+            bg="bg-bistre-500"
+            hoverBg="bg-bistre-600"
+            onClick={handleCreateReservationAndPay}
+          >
             Continuar para pagamento
           </Button>
         </div>

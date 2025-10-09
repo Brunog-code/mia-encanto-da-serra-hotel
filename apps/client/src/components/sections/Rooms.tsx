@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Element } from "react-scroll";
 import { RoomCard } from "@/components";
 import { api } from "@/lib/axios";
-
 import { useReservation } from "@/contexts/ReservationContext";
 import { toast } from "sonner";
 
@@ -70,7 +69,28 @@ export const Rooms = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
-  //monitora as datas da reserva
+  //pega as informacoes e imgs do room
+  useEffect(() => {
+    const featchRoomsData = async () => {
+      try {
+        const response = await api.get<IRooms[]>("/rooms");
+
+        const roomsFormated = response.data.map((room) => ({
+          ...room,
+          price: Number(room.price),
+        }));
+
+        if (response.data) {
+          setRooms(roomsFormated);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    featchRoomsData();
+  }, []);
+
+  //monitora as datas da reserva para ver se tem quarto disponivel
   useEffect(() => {
     const checkRoomsAvailability = async () => {
       if (
@@ -101,7 +121,7 @@ export const Rooms = () => {
             //se for, retorna o quarto que ja estava incluido a quantidade disponivel
             return {
               ...room,
-              roomAvailable: match._count.id,
+              roomAvailable: match ? match._count.id : room.roomAvailable,
             };
           })
         );
@@ -115,28 +135,7 @@ export const Rooms = () => {
     };
 
     checkRoomsAvailability();
-  }, [reservationData]);
-
-  //pega as informacoes e imgs do room
-  useEffect(() => {
-    const featchRoomsData = async () => {
-      try {
-        const response = await api.get<IRooms[]>("/rooms");
-
-        const roomsFormated = response.data.map((room) => ({
-          ...room,
-          price: Number(room.price),
-        }));
-
-        if (response.data) {
-          setRooms(roomsFormated);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    featchRoomsData();
-  }, []);
+  }, [reservationData, rooms]);
 
   return (
     <section

@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { type reservationFormData } from "@/shared/src";
 
 interface IReservationContext {
@@ -19,9 +25,19 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
   const [reservationData, setReservationData] =
     useState<reservationFormData | null>(null);
 
-  const setReservation = (data: reservationFormData) =>
-    setReservationData(data);
+  useEffect(() => {
+    //sessionStorage dados pré-reserva
+    const sessionDataSaved = sessionStorage.getItem("reservation");
+    if (sessionDataSaved) setReservation(JSON.parse(sessionDataSaved));
+  }, []);
 
+  //seta a reserva
+  const setReservation = (data: reservationFormData) => {
+    setReservationData(data);
+    sessionStorage.setItem("reservation", JSON.stringify(data));
+  };
+
+  //limpa a reserva
   const clearReservation = () => setReservationData(null);
 
   return (

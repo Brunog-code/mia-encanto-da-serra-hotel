@@ -11,9 +11,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Button } from "@/components";
 import { useNavigate } from "react-router-dom";
-
 import { type reservationFormData } from "@/shared/src";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ICardRoom {
   id: string;
@@ -36,6 +36,9 @@ export const RoomCard = ({
   roomAvailable,
   reservationData,
 }: ICardRoom) => {
+  //context
+  const { user } = useAuth();
+
   const navigate = useNavigate();
 
   const onViewDetails = () => {
@@ -43,7 +46,11 @@ export const RoomCard = ({
   };
 
   const handleQuickBooking = (id: string) => {
-    if (!reservationData?.checkin || !reservationData?.checkout) {
+    if (
+      !reservationData?.checkin ||
+      !reservationData?.checkout ||
+      !reservationData?.guests
+    ) {
       toast.error(
         "Por favor, selecione a data de check-in e check-out antes de reservar."
       );
@@ -51,8 +58,11 @@ export const RoomCard = ({
     }
 
     //verificar se está logado
-
-    navigate(`/confirmar-reserva/${id}`);
+    if (!user) {
+      navigate(`/login?redirect=/confirmar-reserva/${id}`);
+    } else {
+      navigate(`/confirmar-reserva/${id}`);
+    }
   };
 
   return (
@@ -83,7 +93,7 @@ export const RoomCard = ({
 
       {/* Conteúdo do quarto */}
       <CardContent className="relative">
-        {roomAvailable == 20 && (
+        {roomAvailable == 15 && (
           <div className="top-4 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
             <span>ESGOTADO</span>
           </div>
@@ -125,7 +135,7 @@ export const RoomCard = ({
           pb={1}
         >
           <Button
-            disabled={roomAvailable == 20}
+            disabled={roomAvailable == 15}
             onClick={() => handleQuickBooking(id)}
           >
             Reserva Rápida

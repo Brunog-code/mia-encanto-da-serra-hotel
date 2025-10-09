@@ -15,19 +15,20 @@ export const Hero = () => {
   const [imgHero, setImgHero] = useState<string | undefined>(undefined);
 
   //context
-  const { reservationData, setReservation } = useReservation();
+  const { setReservation } = useReservation();
 
+  //animacao letras
   useEffect(() => {
     if (!h1Ref.current) return;
 
-    // Divide em caracteres, mas mantém cada palavra intacta
+    //Divide em caracteres, mas mantém cada palavra intacta
     const split = new SplitType(h1Ref.current, {
       types: "chars,words",
       wordClass: "word",
       charClass: "char",
     });
 
-    // Aplica estilo para não quebrar palavras
+    //Aplica estilo para não quebrar palavras
     split.words?.forEach((word) => {
       word.style.display = "inline-block";
       word.style.whiteSpace = "nowrap";
@@ -36,7 +37,7 @@ export const Hero = () => {
     // Aplica estilo para letras
     split.chars?.forEach((char) => {
       char.style.display = "inline-block";
-      char.style.position = "relative"; // <-- importante
+      char.style.position = "relative";
     });
 
     const ctx = gsap.context(() => {
@@ -89,6 +90,12 @@ export const Hero = () => {
     featchImg();
   }, []);
 
+  //sessionStorage dados pré-reserva
+  const sessionDataSaved = sessionStorage.getItem("reservation");
+  const defaultValues = sessionDataSaved
+    ? JSON.parse(sessionDataSaved)
+    : { checkin: "", checkout: "", guests: "" };
+
   //Inicializando o useForm com Zod
   //reservation
   const {
@@ -97,7 +104,7 @@ export const Hero = () => {
     formState: { errors },
   } = useForm<reservationFormData>({
     resolver: zodResolver(reservationSchema),
-    defaultValues: reservationData || { checkin: "", checkout: "", guests: "" },
+    defaultValues,
   });
 
   const onSubmitReservation = (data: reservationFormData) => {

@@ -85,13 +85,15 @@ model Room {
 }
 
 model Reservation {
-  id          String            @id @default(uuid())
-  checkIn     DateTime
-  checkOut    DateTime
-  status      ReservationStatus @default(PENDING)
-  totalAmount Decimal
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  id                String            @id @default(uuid())
+  reservationNumber Int               @unique
+  checkIn           DateTime
+  checkOut          DateTime
+  guestCount        Int   
+  status            ReservationStatus @default(PENDING)
+  totalAmount       Decimal
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
   customerId String
   customer   Customer @relation("CustomerReservation", fields: [customerId], references: [id], onDelete: Cascade)

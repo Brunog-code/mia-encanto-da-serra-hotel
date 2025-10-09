@@ -9,5 +9,6 @@ const user = new UserController()
 
 //endpoints e controllers
 router.post('/', user.create)
+router.get('/:id', user.getUserById)
 
 export default router

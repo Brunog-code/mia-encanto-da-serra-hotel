@@ -4,12 +4,14 @@ import { gsap } from "gsap";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import BedIcon from "@mui/icons-material/Bed";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { api } from "@/lib/axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reservationSchema, type reservationFormData } from "@/shared/src";
 import { useReservation } from "@/contexts/ReservationContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export const RoomDetails = () => {
   interface IRoom {
@@ -32,7 +34,11 @@ export const RoomDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [room, setRoom] = useState<IRoom | null>(null);
 
+  //context
+  const { user } = useAuth();
   const { reservationData, setReservation } = useReservation();
+
+  const navigate = useNavigate();
 
   //Inicializando o useForm com Zod
   //reservation
@@ -44,7 +50,8 @@ export const RoomDetails = () => {
     resolver: zodResolver(reservationSchema),
     defaultValues: reservationData || { checkin: "", checkout: "", guests: "" },
   });
-
+  
+  //animacao
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".animate-g", {
@@ -83,10 +90,25 @@ export const RoomDetails = () => {
   }, []);
 
   const onSubmitReservation = (data: reservationFormData) => {
-    console.log(data);
-
+    if (
+      !reservationData?.checkin ||
+      !reservationData?.checkout ||
+      !reservationData?.guests
+    ) {
+      toast.error(
+        "Por favor, selecione a data de check-in e check-out antes de reservar."
+      );
+      return;
+    }
     //atualiza o contexto
     setReservation(data);
+
+    //verificar se está logado
+    if (!user) {
+      navigate(`/login?redirect=/confirmar-reserva/${id}`);
+    } else {
+      navigate(`/confirmar-reserva/${id}`);
+    }
   };
 
   return (

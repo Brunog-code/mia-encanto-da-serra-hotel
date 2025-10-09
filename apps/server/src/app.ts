@@ -8,6 +8,7 @@ import imageRoutes from './routes/imageRoutes.js'
 import roomRoutes from './routes/roomRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import reservationRoutes from './routes/reservationRoutes.js'
 
 //instancia do express
 const app = express();
@@ -23,5 +24,6 @@ app.use("/images", imageRoutes)
 app.use("/rooms", roomRoutes)
 app.use("/users", userRoutes)
 app.use("/auth", authRoutes)
+app.use("/reservation", reservationRoutes)
 
 export default app;
