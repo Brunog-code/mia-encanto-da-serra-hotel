@@ -33,6 +33,7 @@ export const RoomDetails = () => {
   }
   const { id } = useParams<{ id: string }>();
   const [room, setRoom] = useState<IRoom | null>(null);
+  const [roomAvailable, setRoomAvailable] = useState(0);
 
   //context
   const { user } = useAuth();
@@ -50,7 +51,7 @@ export const RoomDetails = () => {
     resolver: zodResolver(reservationSchema),
     defaultValues: reservationData || { checkin: "", checkout: "", guests: "" },
   });
-  
+
   //animacao
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -74,6 +75,7 @@ export const RoomDetails = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+  //pega imagens do quarto
   useEffect(() => {
     const featchRoomsImg = async () => {
       try {
@@ -88,6 +90,21 @@ export const RoomDetails = () => {
     };
     featchRoomsImg();
   }, []);
+
+  interface IRoomWithAvailability extends IRoom {
+    roomAvailable?: number;
+  }
+
+  useEffect(() => {
+    const roomsSession = sessionStorage.getItem("rooms");
+
+    if (roomsSession && room) {
+      const rooms: IRoomWithAvailability[] = JSON.parse(roomsSession);
+
+      const match = rooms.find((r) => r.category === room.category);
+      setRoomAvailable(match?.roomAvailable ?? 0);
+    }
+  }, [room]);
 
   const onSubmitReservation = (data: reservationFormData) => {
     if (
@@ -129,6 +146,11 @@ export const RoomDetails = () => {
             <span className="font-semibold text-white-gost-500 text-xl">
               Informações
             </span>
+            {roomAvailable == 0 && (
+              <div className="top-55 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
+                <span>INDISPONÍVEL</span>
+              </div>
+            )}
             <p>{room?.description}</p>
 
             <ul className="self-start space-y-1 mt-2 ml-6 list-disc">
@@ -197,6 +219,7 @@ export const RoomDetails = () => {
                   type="submit"
                   bg="bg-bistre-400"
                   hoverBg="bg-bistre-500"
+                  disabled={roomAvailable == 0}
                 >
                   Reservar
                 </Button>

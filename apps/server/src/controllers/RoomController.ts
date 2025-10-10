@@ -73,23 +73,21 @@ export class RoomController {
             //Buscar os tipos de quarto com unidades disponíveis
             const availability = await this.prisma.room.groupBy({
                 by: ['typeId'],
-                _count: {id: true},
+                _count: { id: true },
                 where: {
-                    status: "AVAILABLE",
+                    status: { not: "MAINTENANCE" },
                     capacity: {gte: guestsNumber},
                     reservations: {
-                        none:{
-                            OR: [
-                                {
-                                    checkIn: { lte: checkOutDate },//"less than or equal" (menor ou igual). - check-in da reserva é menor ou igual ao check-out pesquisado
-                                    checkOut: { gte: checkInDate },//"greater than or equal" (maior ou igual). - check-out da reserva é maior ou igual ao check-in pesquisado
-                                    status: { in: ["PENDING", "CONFIRMED"] }//só essas bloqueiam o quarto
-                                }
-                            ]
-                        }
-                    }
-                }
-            })
+                        none: {
+                            AND: [
+                                { checkIn: { lte: checkOutDate } },
+                                { checkOut: { gte: checkInDate } },
+                                { status: { in: ["PENDING", "CONFIRMED"] } },
+                            ],
+                        },
+                    },
+                },
+            });
              
             return res.status(200).json(availability)
         }catch(error){

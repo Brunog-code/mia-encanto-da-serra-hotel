@@ -5,13 +5,12 @@ import { Element } from "react-scroll";
 import { RoomCard } from "@/components";
 import { api } from "@/lib/axios";
 import { useReservation } from "@/contexts/ReservationContext";
-import { toast } from "sonner";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const { reservationData } = useReservation();
+  const { reservationData, checkRoomsAvailability } = useReservation();
 
   interface MediaImage {
     id: string;
@@ -30,13 +29,16 @@ export const Rooms = () => {
     mediaImages: MediaImage[];
     roomAvailable?: number | undefined;
   }
-
   interface IAvailability {
     typeId: string;
     _count: { id: number };
   }
 
-  const [rooms, setRooms] = useState<IRooms[] | undefined>(undefined);
+  //se tiver room na session, carrega o room, se nao inicia array zerado
+  const [rooms, setRooms] = useState<IRooms[] | undefined>(() => {
+    const stored = sessionStorage.getItem("rooms");
+    return stored ? JSON.parse(stored) : [];
+  });
 
   //gsap animacao
   useEffect(() => {
@@ -74,14 +76,15 @@ export const Rooms = () => {
     const featchRoomsData = async () => {
       try {
         const response = await api.get<IRooms[]>("/rooms");
-
         const roomsFormated = response.data.map((room) => ({
           ...room,
           price: Number(room.price),
         }));
 
-        if (response.data) {
+        //Evita sobrescrever se ja tem no sessionStorage (só grava na primeira req)
+        if (!rooms || rooms.length == 0) {
           setRooms(roomsFormated);
+          sessionStorage.setItem("rooms", JSON.stringify(roomsFormated));
         }
       } catch (error) {
         console.log(error);
@@ -92,50 +95,30 @@ export const Rooms = () => {
 
   //monitora as datas da reserva para ver se tem quarto disponivel
   useEffect(() => {
-    const checkRoomsAvailability = async () => {
-      if (
-        !reservationData?.checkin ||
-        !reservationData?.checkout ||
-        !reservationData?.guests
-      )
-        return;
+    const fetchAvailability = async () => {
+      const availabilityData = await checkRoomsAvailability();
+      if (!availabilityData || !rooms) return;
 
-      try {
-        const response = await api.get(`/rooms/availability`, {
-          params: {
-            checkIn: reservationData?.checkin,
-            checkOut: reservationData?.checkout,
-            guests: reservationData?.guests,
-          },
-        });
-
-        const availabilityData = response.data;
-
-        //atualiza o state room com a quantidade disponivel
-        setRooms((prevRooms) =>
-          prevRooms?.map((room) => {
-            const match = availabilityData.find(
-              (a: IAvailability) => a.typeId === room.id //verifica se o typeId do resultado do db, é o mesmo id do room ja setado
-            );
-
-            //se for, retorna o quarto que ja estava incluido a quantidade disponivel
-            return {
-              ...room,
-              roomAvailable: match ? match._count.id : room.roomAvailable,
-            };
-          })
+      const updateRooms = rooms?.map((room) => {
+        const match = availabilityData.find(
+          (a: IAvailability) => a.typeId === room.id
         );
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("Erro ao buscar quartos disponiveis");
-        }
-      }
+
+        return {
+          ...room,
+          roomAvailable: match ? match._count.id : 0,
+        };
+      });
+      //persiste os dados atualizados do quarto
+      setRooms(updateRooms);
+      sessionStorage.setItem("rooms", JSON.stringify(updateRooms));
     };
 
-    checkRoomsAvailability();
-  }, [reservationData, rooms]);
+    //só busca se tiver datas válidas
+    if (reservationData?.checkin && reservationData?.checkout) {
+      fetchAvailability();
+    }
+  }, [reservationData]);
 
   return (
     <section

@@ -1,4 +1,21 @@
+import { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+
+
+
+
 export const MyReservations = () => {
+
+  const {user}= useAuth()
+
+
+
+useEffect(() => {
+  //passar o id para o backend
+}, [])
+
+
+
   return (
     <section className="flex flex-col space-y-6 p-4 w-full min-h-screen">
       <div>
@@ -22,7 +39,7 @@ export const MyReservations = () => {
             {/* Foto à esquerda */}
             <div className="w-full md:w-1/4 h-48 md:h-auto">
               <img
-                src="/images/hotel/bg-hero.jpg"
+                src="/images/hotel/hotel-bg-hero.jpg"
                 alt="Quarto Luxo"
                 className="w-full h-full object-cover"
               />
@@ -63,7 +80,7 @@ export const MyReservations = () => {
             {/* Foto à esquerda */}
             <div className="w-full md:w-1/4 h-48 md:h-auto">
               <img
-                src="/images/hotel/bg-hero.jpg"
+                src="/images/hotel/hotel-bg-hero.jpg"
                 alt="Quarto Luxo"
                 className="w-full h-full object-cover"
               />

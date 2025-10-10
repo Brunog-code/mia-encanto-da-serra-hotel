@@ -18,7 +18,6 @@ export const ConfirmReservation = () => {
   //states
   const [roomData, setRoomData] = useState<IRoomData | null>(null);
   const [userPhone, setUserPhone] = useState(null);
-  const [numberOfRreservation, setNumberOfRreservation] = useState<number>(0);
 
   interface MediaImage {
     id: string;
@@ -79,25 +78,6 @@ export const ConfirmReservation = () => {
     featchUserData();
   }, [user]);
 
-  //buscar numero da ultima reserva
-  useEffect(() => {
-    const fetchNumberReservation = async () => {
-      try {
-        const response = await api.get("/reservation/number");
-
-        setNumberOfRreservation(response.data.number);
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("Não foi possivel buscar o numero da reserva");
-        }
-      }
-    };
-
-    fetchNumberReservation();
-  }, []);
-
   //calculo diarias
   const diffInDays = useMemo(() => {
     if (!reservationData?.checkin || !reservationData?.checkout) return 0;
@@ -131,16 +111,9 @@ export const ConfirmReservation = () => {
     };
   }, [roomData, diffInDays]);
 
-  //numero reserva(se for o primeiro será 1001, se nao soma +1 no ultimo)
-  const reservationNumber =
-    numberOfRreservation == 1001
-      ? numberOfRreservation
-      : numberOfRreservation + 1;
-
   //cria a reserva no db e prossegue para pagamento
   const handleCreateReservationAndPay = async () => {
     const dataReservation = {
-      reservationNumber: reservationNumber,
       checkIn: reservationData?.checkin,
       checkOut: reservationData?.checkout,
       guestCount: reservationData?.guests,
@@ -151,6 +124,8 @@ export const ConfirmReservation = () => {
 
     try {
       const response = await api.post("/reservation", dataReservation);
+
+      console.log(response.data);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -209,7 +184,6 @@ export const ConfirmReservation = () => {
             {/* Dados da reserva */}
             <div className="pt-2 border-gray-300 border-t">
               <h4 className="font-semibold text-lg">Dados da reserva</h4>
-              <p>Numero: {reservationNumber}</p>
               <p>Check-in: {formatDateBR(reservationData?.checkin)}</p>
               <p>Check-out: {formatDateBR(reservationData?.checkout)}</p>
               <p>Hóspedes: {reservationData?.guests}</p>

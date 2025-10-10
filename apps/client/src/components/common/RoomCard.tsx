@@ -93,9 +93,9 @@ export const RoomCard = ({
 
       {/* Conteúdo do quarto */}
       <CardContent className="relative">
-        {roomAvailable == 15 && (
-          <div className="top-4 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
-            <span>ESGOTADO</span>
+        {roomAvailable == 0 && (
+          <div className="top-4 right-5 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
+            <span>INDISPONÍVEL</span>
           </div>
         )}
         <Typography className="!mb-4 !font-bold !text-2xl">
@@ -135,7 +135,7 @@ export const RoomCard = ({
           pb={1}
         >
           <Button
-            disabled={roomAvailable == 15}
+            disabled={roomAvailable == 0}
             onClick={() => handleQuickBooking(id)}
           >
             Reserva Rápida

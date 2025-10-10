@@ -7,8 +7,8 @@ const router = Router()
 //instancia
 const reserv = new ReservationController()
 
-router.get('/number', reserv.getNumberReservation)
 router.post('/', reserv.createReservation)
+router.get('/:id', reserv.getAllReservations)
 
 
 export default router

@@ -6,6 +6,13 @@ import {
   type ReactNode,
 } from "react";
 import { type reservationFormData } from "@/shared/src";
+import { api } from "@/lib/axios";
+import { toast } from "sonner";
+
+interface IAvailability {
+  typeId: string;
+  _count: { id: number };
+}
 
 interface IReservationContext {
   reservationData: reservationFormData | null;
@@ -14,6 +21,7 @@ interface IReservationContext {
   totalAmount?: number;
   setReservation: (data: reservationFormData) => void;
   clearReservation: () => void;
+  checkRoomsAvailability: () => Promise<IAvailability[] | undefined>;
 }
 
 //cria o contexto
@@ -26,7 +34,7 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
     useState<reservationFormData | null>(null);
 
   useEffect(() => {
-    //sessionStorage dados pré-reserva
+    //sessionStorage dados pré-reserva (para persisti as datas e hospedes)
     const sessionDataSaved = sessionStorage.getItem("reservation");
     if (sessionDataSaved) setReservation(JSON.parse(sessionDataSaved));
   }, []);
@@ -37,12 +45,47 @@ export const ReservationProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.setItem("reservation", JSON.stringify(data));
   };
 
+  //verifica disponibilidade dos quartos
+  const checkRoomsAvailability = async (): Promise<
+    IAvailability[] | undefined
+  > => {
+    if (
+      !reservationData?.checkin ||
+      !reservationData?.checkout ||
+      !reservationData?.guests
+    )
+      return;
+
+    try {
+      const response = await api.get(`/rooms/availability`, {
+        params: {
+          checkIn: reservationData?.checkin,
+          checkOut: reservationData?.checkout,
+          guests: reservationData?.guests,
+        },
+      });
+
+      return response.data as IAvailability[];
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erro ao buscar quartos disponiveis");
+      }
+    }
+  };
+
   //limpa a reserva
   const clearReservation = () => setReservationData(null);
 
   return (
     <ReservationContext.Provider
-      value={{ reservationData, setReservation, clearReservation }}
+      value={{
+        reservationData,
+        setReservation,
+        clearReservation,
+        checkRoomsAvailability,
+      }}
     >
       {children}
     </ReservationContext.Provider>
