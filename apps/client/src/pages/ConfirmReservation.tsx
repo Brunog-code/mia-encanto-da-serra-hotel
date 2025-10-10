@@ -125,7 +125,7 @@ export const ConfirmReservation = () => {
     try {
       const response = await api.post("/reservation", dataReservation);
 
-      console.log(response.data);
+      toast.success('Reserva criada com sucesso')
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
