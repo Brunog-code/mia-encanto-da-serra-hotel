@@ -79,13 +79,32 @@ export class ReservationController {
 
     public getAllReservations = async(req: Request, res: Response) => {
         try{
+            const {id} = req.params
 
-            const {userId} = req.params
+            if(!id) return res.status(400).json({message: "Usuário não informado"})
 
-            if(userId) return res.status(400).json({message: "Usuário não informado"})
+            const reservations = await this.prisma.reservation.findMany({
+                where:{
+                    customerId: id
+                },
+                include: {
+                    room: {
+                        include: {
+                            type: {
+                                select: {
+                                    category: true,
+                                    mediaImages: true
+                                }
+                            }
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            })
 
-
-            const reservations = await this.prisma.reservation.findMany()
+            return res.status(200).json(reservations)
         }catch(error){
             console.error(error)
             return res.status(500).json({message: 'Erro interno ao carregar as reservas'})
