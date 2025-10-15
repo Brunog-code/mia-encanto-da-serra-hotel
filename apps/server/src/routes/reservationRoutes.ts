@@ -9,6 +9,7 @@ const reserv = new ReservationController()
 
 router.post('/', reserv.createReservation)
 router.get('/:id', reserv.getAllReservations)
+router.patch('/:id/cancel', reserv.cancelReservation)
 
 
 export default router

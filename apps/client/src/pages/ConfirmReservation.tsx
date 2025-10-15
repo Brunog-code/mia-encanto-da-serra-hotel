@@ -112,7 +112,8 @@ export const ConfirmReservation = () => {
   }, [roomData, diffInDays]);
 
   //cria a reserva no db e prossegue para pagamento
-  const handleCreateReservationAndPay = async () => {
+  const handleCreateReservation = async () => {
+    //obj da reserva
     const dataReservation = {
       checkIn: reservationData?.checkin,
       checkOut: reservationData?.checkout,
@@ -123,14 +124,54 @@ export const ConfirmReservation = () => {
     };
 
     try {
-      const response = await api.post("/reservation", dataReservation);
+      //1-criar a reserva no db
+      const reservationResponse = await api.post(
+        "/reservation",
+        dataReservation
+      );
+      toast.success("Reserva criada com sucesso");
 
-      toast.success('Reserva criada com sucesso')
+      //2-se nao retornar erro, chama a function que cria o pgto
+      handleCreatePay(reservationResponse);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
-        toast.error("Não foi possivel criar a reserva");
+        toast.error("Não foi possivel criar a reserva ou o pagamento");
+      }
+    }
+  };
+
+  interface IReservationResponse {
+    data: {
+      id: string;
+      checkIn: string;
+      checkOut: string;
+      roomCategory: string;
+      totalAmount: number;
+    };
+  }
+  const handleCreatePay = async (reservationResponse: IReservationResponse) => {
+    //nessa altura reserva na criada no db
+    try {
+      const paymentResponse = await api.post("/payment", {
+        idReservation: reservationResponse.data.id,
+        chekeInReservation: reservationResponse.data.checkIn,
+        chekeOutReservation: reservationResponse.data.checkOut,
+        totalAmountReservation: reservationResponse.data.totalAmount,
+        userName: user?.name,
+        userEmail: user?.email,
+        userPhone: userPhone,
+        roomCategory: roomData?.category,
+      });
+
+      //encaminha pro checkout
+      window.location.href = paymentResponse.data.init_point;
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Não foi possivel criar o pagamento");
       }
     }
   };
@@ -252,7 +293,7 @@ export const ConfirmReservation = () => {
           <Button
             bg="bg-bistre-500"
             hoverBg="bg-bistre-600"
-            onClick={handleCreateReservationAndPay}
+            onClick={handleCreateReservation}
           >
             Continuar para pagamento
           </Button>
