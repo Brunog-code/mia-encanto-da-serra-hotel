@@ -112,6 +112,7 @@ model Payment {
   status        PaymentStatus @default(PENDING)
   mpPaymentId   String
   qrCode        String?
+  paymentLink   String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 

@@ -108,6 +108,7 @@ export class ReservationController {
               },
             },
           },
+          payment: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -150,8 +151,8 @@ export class ReservationController {
         return res.status(400).json({ message: "Reserva já está cancelada" });
 
       //verifica se pode cancelar (5 dias antes do check-in)
-      const daysBeforeCheckIn = dayjs(reservation.checkIn).diff(dayjs(), 'day')
-      const canRefund = daysBeforeCheckIn >= 5
+      const daysBeforeCheckIn = dayjs(reservation.checkIn).diff(dayjs(), "day");
+      const canRefund = daysBeforeCheckIn >= 5;
 
       //alterar status da reserva e liberar quarto fisico
       const updatedReservation = await this.prisma.reservation.update({
@@ -170,7 +171,7 @@ export class ReservationController {
           reservationId: reservation.id,
           paymentId: reservation.payment.mpPaymentId,
           canRefund,
-          daysBeforeCheckIn
+          daysBeforeCheckIn,
         });
       }
 

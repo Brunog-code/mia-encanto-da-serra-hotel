@@ -1,8 +1,7 @@
-import { PaymentStatus, PrismaClient } from "@prisma/client";
+import { PaymentStatus, PaymentMethod, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { paymentSchema } from "../shared/src/lib/zod/paymentSchema.js";
 import { generatePreference } from "../services/paymentService.js";
-import { MercadoPagoConfig, Payment } from "mercadopago";
 
 export class PaymentController {
   private prisma: PrismaClient;
@@ -20,10 +19,7 @@ export class PaymentController {
     try {
       //1 - validar dados (zod) (verificar depois )
       const parsedData = paymentSchema.parse(requestData);
-      const {
-        idReservation,
-        userEmail,
-      } = parsedData;
+      const { idReservation, userEmail } = parsedData;
 
       //2-validar no db (reservation e usuario)
       const reservation = await this.prisma.reservation.findUnique({
@@ -44,6 +40,23 @@ export class PaymentController {
 
       //chama function(service) que cria a preferencia
       const preferencePayment = await generatePreference(parsedData);
+
+      //salva o link de pagamento no db
+      await this.prisma.payment.upsert({
+        where: { reservationId: idReservation },
+        update: {
+          paymentLink: preferencePayment.init_point,
+        },
+        create: {
+          reservationId: idReservation,
+          paymentLink: preferencePayment.init_point,
+          status: PaymentStatus.PENDING,
+          methodPayment: PaymentMethod.CARD, //placeholder
+          amount: 0, //placeholder
+          mpPaymentId: "pending", //placeholder
+          installments: 1,
+        },
+      });
 
       //resposta pro frontend
       res.status(200).json(preferencePayment);

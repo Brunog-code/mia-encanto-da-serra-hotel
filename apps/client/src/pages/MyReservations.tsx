@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { formatDateBR } from "@/utils/formatDateBR";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
+import PaymentIcon from "@mui/icons-material/Payment";
+import { Button } from "@/components";
 
 dayjs.locale("pt-br");
 
@@ -41,6 +43,18 @@ interface IReservationData {
       mediaImages: MediaImage[];
     };
   };
+  payment: {
+    id: string;
+    reservationId: string;
+    status: string;
+    methodPayment: string;
+    amount: number;
+    mpPaymentId: string;
+    qrCode: string | null;
+    createdAt: string;
+    updatedAt: string;
+    paymentLink: string | null;
+  };
 }
 
 export const MyReservations = () => {
@@ -53,6 +67,7 @@ export const MyReservations = () => {
     const fetchReservationsUser = async () => {
       try {
         const response = await api.get(`/reservation/${user?.id}`);
+        console.log(response.data);
 
         if (response.data) setReservations(response.data);
       } catch (error: any) {
@@ -124,7 +139,10 @@ export const MyReservations = () => {
     FINALIZED: "FINALIZADA",
   };
 
-  //logica para: se tem reserva, (e esta como pendente), e nao tem pagamento, exibir link de pagamento para o mercadopago
+  //redireciona para o link de pagamento
+  const handlePaymentRedirect = (paymentLink: string) => {
+    window.location.href = paymentLink;
+  };
 
   return (
     <section className="flex flex-col space-y-6 p-4 w-full min-h-screen">
@@ -193,14 +211,46 @@ export const MyReservations = () => {
                     </div>
                   </div>
 
+                  {reservation.status === "PENDING" &&
+                  (!reservation.payment ||
+                    reservation.payment.status === "PENDING" ||
+                    reservation.payment.status === "FAILED") ? (
+                    <div className="flex flex-col justify-start mt-5 w-full">
+                      <div>
+                        <span className="text-red-400 text-lg">
+                          Pagamento pendente
+                        </span>
+                      </div>
+                      <div>
+                        <Button
+                          px="px-2"
+                          py="py-1"
+                          onClick={() =>
+                            handlePaymentRedirect(
+                              reservation.payment?.paymentLink!
+                            )
+                          }
+                        >
+                          <PaymentIcon /> Pagar agora
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-5">
+                      <span className="text-green-600 text-lg">
+                        Pagamento efetuado
+                      </span>
+                    </div>
+                  )}
+
                   {(reservation.status == "PENDING" ||
                     reservation.status == "CONFIRMED") && (
-                    <div className="flex justify-end mt-5 w-full">
+                    <div className="flex justify-end mt-3 w-full">
                       <span
                         className="p-2 font-semibold text-red-400 hover:text-red-500 cursor-pointer"
                         onClick={() => handleCancelReservation(reservation.id)}
                       >
-                        Cancelar
+                        Cancelar Reserva
                       </span>
                     </div>
                   )}
