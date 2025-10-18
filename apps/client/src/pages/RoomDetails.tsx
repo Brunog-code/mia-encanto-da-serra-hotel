@@ -33,11 +33,12 @@ export const RoomDetails = () => {
   }
   const { id } = useParams<{ id: string }>();
   const [room, setRoom] = useState<IRoom | null>(null);
-  const [roomAvailable, setRoomAvailable] = useState(0);
+  const [roomAvailable, setRoomAvailable] = useState<number | null>(null);
 
   //context
   const { user } = useAuth();
-  const { reservationData, setReservation } = useReservation();
+  const { reservationData, setReservation, checkRoomsAvailability } =
+    useReservation();
 
   const navigate = useNavigate();
 
@@ -46,6 +47,8 @@ export const RoomDetails = () => {
   const {
     register,
     handleSubmit,
+    watch,
+    getValues,
     formState: { errors },
   } = useForm<reservationFormData>({
     resolver: zodResolver(reservationSchema),
@@ -75,9 +78,9 @@ export const RoomDetails = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  //pega imagens do quarto
+  //pega info do quarto
   useEffect(() => {
-    const featchRoomsImg = async () => {
+    const featchRoomsData = async () => {
       try {
         const response = await api.get(`/rooms/${id}`);
 
@@ -88,37 +91,92 @@ export const RoomDetails = () => {
         console.error(error);
       }
     };
-    featchRoomsImg();
+    featchRoomsData();
   }, []);
 
-  interface IRoomWithAvailability extends IRoom {
-    roomAvailable?: number;
-  }
+  //verifica disponibilidade do quarto quando mudar a reserva
+  //Observa as datas de check-in e check-out
+  const checkin = watch("checkin");
+  const checkout = watch("checkout");
+  const guests = watch("guests");
 
+  //useEffect monitora o formulário e força a atualização do contexto
   useEffect(() => {
-    const roomsSession = sessionStorage.getItem("rooms");
+    const currentCheckin = getValues("checkin");
+    const currentCheckout = getValues("checkout");
+    const currentGuests = getValues("guests");
 
-    if (roomsSession && room) {
-      const rooms: IRoomWithAvailability[] = JSON.parse(roomsSession);
-
-      const match = rooms.find((r) => r.category === room.category);
-      setRoomAvailable(match?.roomAvailable ?? 0);
+    if (!room || !currentCheckin || !currentCheckout || !currentGuests) {
+      // Se estiver incompleto, resetamos a disponibilidade e paramos.
+      setRoomAvailable(null);
+      return;
     }
-  }, [room]);
+
+    //Valida APENAS as regras de datas(check-out > check-in, etc.)
+    const dataToValidate = {
+      checkin: currentCheckin,
+      checkout: currentCheckout,
+      guests: currentGuests,
+    };
+
+    //Usa o schema completo, mas se falhar, define como 'null' (habilitado)
+    const validationResult = reservationSchema.safeParse(dataToValidate);
+    if (!validationResult.success) {
+      //Se as datas forem inválidas (ex: passado, check-out < check-in)
+      setRoomAvailable(null);
+      return;
+    }
+
+    //Se a validação Zod for BEM-SUCEDIDA, prossegue com a chamada à API
+    const fetchAvailability = async () => {
+      try {
+        // 1. ATUALIZA O CONTEXTO com os dados atuais do FORM
+        setReservation({
+          checkin: currentCheckin,
+          checkout: currentCheckout,
+          guests: currentGuests,
+        });
+
+        // 2. CHAMA A VERIFICAÇÃO (que agora usará os dados atualizados do contexto)
+        const availableRooms = await checkRoomsAvailability();
+
+        if (!availableRooms) {
+          setRoomAvailable(0);
+          return;
+        }
+
+        const matchedRoom = availableRooms.find((r) => r.typeId === room.id);
+        setRoomAvailable(matchedRoom ? matchedRoom._count.id : 0);
+      } catch (error) {
+        console.error("Erro ao verificar disponibilidade:", error);
+        setRoomAvailable(0);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      fetchAvailability(); //debouce da chamada
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    checkin,
+    checkout,
+    room,
+    guests,
+    checkRoomsAvailability,
+    setReservation,
+    getValues,
+  ]);
 
   const onSubmitReservation = (data: reservationFormData) => {
-    if (
-      !reservationData?.checkin ||
-      !reservationData?.checkout ||
-      !reservationData?.guests
-    ) {
+    //atualiza o contexto
+    setReservation(data);
+    if (!data?.checkin || !data?.checkout || !data?.guests) {
       toast.error(
         "Por favor, selecione a data de check-in e check-out antes de reservar."
       );
       return;
     }
-    //atualiza o contexto
-    setReservation(data);
 
     //verificar se está logado
     if (!user) {
@@ -146,11 +204,13 @@ export const RoomDetails = () => {
             <span className="font-semibold text-white-gost-500 text-xl">
               Informações
             </span>
-            {roomAvailable == 0 && (
-              <div className="top-55 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
-                <span>INDISPONÍVEL</span>
-              </div>
-            )}
+            {roomAvailable == 0 &&
+              !!reservationData?.checkin &&
+              !!reservationData?.checkout && (
+                <div className="top-55 right-10 z-50 absolute font-bold text-red-500 text-2xl -rotate-12 red-400">
+                  <span>INDISPONÍVEL</span>
+                </div>
+              )}
             <p>{room?.description}</p>
 
             <ul className="self-start space-y-1 mt-2 ml-6 list-disc">
@@ -219,7 +279,11 @@ export const RoomDetails = () => {
                   type="submit"
                   bg="bg-bistre-400"
                   hoverBg="bg-bistre-500"
-                  disabled={roomAvailable == 0}
+                  disabled={
+                    roomAvailable == 0 &&
+                    !!reservationData?.checkin &&
+                    !!reservationData?.checkout
+                  }
                 >
                   Reservar
                 </Button>

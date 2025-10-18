@@ -18,6 +18,7 @@ export const ConfirmReservation = () => {
   //states
   const [roomData, setRoomData] = useState<IRoomData | null>(null);
   const [userPhone, setUserPhone] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   interface MediaImage {
     id: string;
@@ -113,6 +114,7 @@ export const ConfirmReservation = () => {
 
   //cria a reserva no db e prossegue para pagamento
   const handleCreateReservation = async () => {
+    setLoading(true);
     //obj da reserva
     const dataReservation = {
       checkIn: reservationData?.checkin,
@@ -134,6 +136,7 @@ export const ConfirmReservation = () => {
       //2-se nao retornar erro, chama a function que cria o pgto
       handleCreatePay(reservationResponse);
     } catch (error: any) {
+      setLoading(false);
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
@@ -167,7 +170,9 @@ export const ConfirmReservation = () => {
 
       //encaminha pro checkout
       window.location.href = paymentResponse.data.init_point;
+      setLoading(false);
     } catch (error: any) {
+      setLoading(false);
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
@@ -294,8 +299,9 @@ export const ConfirmReservation = () => {
             bg="bg-bistre-500"
             hoverBg="bg-bistre-600"
             onClick={handleCreateReservation}
+            disabled={loading}
           >
-            Continuar para pagamento
+            {loading ? 'Redirecionando para pagamento': 'Continuar para pagamento'}
           </Button>
         </div>
       </div>

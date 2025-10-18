@@ -9,6 +9,7 @@ const payment = new PaymentController();
 
 //endpoints
 router.post("/", payment.createPaymentPreference);
+router.post("/refund", payment.refundPayment);
 router.get("/success", payment.success);
 router.get("/failure", payment.failure);
 router.get("/pending", payment.pending);

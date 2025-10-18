@@ -10,6 +10,7 @@ export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  //context
   const { reservationData, checkRoomsAvailability } = useReservation();
 
   interface MediaImage {
@@ -29,16 +30,14 @@ export const Rooms = () => {
     mediaImages: MediaImage[];
     roomAvailable?: number | undefined;
   }
-  interface IAvailability {
-    typeId: string;
-    _count: { id: number };
-  }
 
-  //se tiver room na session, carrega o room, se nao inicia array zerado
-  const [rooms, setRooms] = useState<IRooms[] | undefined>(() => {
-    const stored = sessionStorage.getItem("rooms");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [rooms, setRooms] = useState<IRooms[]>([]);
+
+  //quando o componente monta, seta o flag para permitir a checagem de disponibilidade
+  const [loadCheckAvailability, setLoadCheckAvailability] = useState(false);
+  useEffect(() => {
+    setLoadCheckAvailability(true);
+  }, []);
 
   //gsap animacao
   useEffect(() => {
@@ -52,7 +51,7 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: `${isMobile ? "top-=900" : "top-=350"} top`,
+            start: `${isMobile ? "top-=1200" : "top-=600"} top`,
             end: "bottom-=500 top", //termina antes do fim do elemento
             scrub: true,
             pin: false,
@@ -81,11 +80,7 @@ export const Rooms = () => {
           price: Number(room.price),
         }));
 
-        //Evita sobrescrever se ja tem no sessionStorage (só grava na primeira req)
-        if (!rooms || rooms.length == 0) {
-          setRooms(roomsFormated);
-          sessionStorage.setItem("rooms", JSON.stringify(roomsFormated));
-        }
+        setRooms(roomsFormated);
       } catch (error) {
         console.log(error);
       }
@@ -95,30 +90,24 @@ export const Rooms = () => {
 
   //monitora as datas da reserva para ver se tem quarto disponivel
   useEffect(() => {
+    if (!reservationData?.checkin || !reservationData?.checkout) return;
+
     const fetchAvailability = async () => {
       const availabilityData = await checkRoomsAvailability();
-      if (!availabilityData || !rooms) return;
+      if (!availabilityData) return;
 
-      const updateRooms = rooms?.map((room) => {
-        const match = availabilityData.find(
-          (a: IAvailability) => a.typeId === room.id
-        );
-
-        return {
-          ...room,
-          roomAvailable: match ? match._count.id : 0,
-        };
-      });
-      //persiste os dados atualizados do quarto
-      setRooms(updateRooms);
-      sessionStorage.setItem("rooms", JSON.stringify(updateRooms));
+      setRooms((prevRooms) =>
+        prevRooms.map((room) => {
+          const match = availabilityData.find((a) => a.typeId === room.id);
+          return {
+            ...room,
+            roomAvailable: match?._count.id ?? 0, //0 se não houver disponibilidade
+          };
+        })
+      );
     };
-
-    //só busca se tiver datas válidas
-    if (reservationData?.checkin && reservationData?.checkout) {
-      fetchAvailability();
-    }
-  }, [reservationData]);
+    fetchAvailability();
+  }, [reservationData, loadCheckAvailability]);
 
   return (
     <section
@@ -142,7 +131,7 @@ export const Rooms = () => {
         </p>
       </div>
 
-      <div className="flex md:flex-row flex-col justify-evenly items-center w-full">
+      <div className="flex flex-wrap justify-center gap-6 px-4 w-full">
         {rooms?.map((item) => (
           <RoomCard
             roomAvailable={item.roomAvailable}
@@ -157,9 +146,9 @@ export const Rooms = () => {
           />
         ))}
       </div>
-      <div>
+      <div className="flex justify-center items-center w-full">
         <span className="text-white-gost-500 text-lg">
-          Clique em ver detalhes para conferir disponibilidade completa.
+          Clique em ver detalhes para mais Informações.
         </span>
       </div>
     </section>

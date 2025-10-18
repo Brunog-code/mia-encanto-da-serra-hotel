@@ -15,6 +15,7 @@ export const Structure = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
+  //animacao
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -39,7 +40,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate1",
-          start: "top 30%",
+          start: "top 60%",
           toggleActions: "play none none reverse",
         },
       });

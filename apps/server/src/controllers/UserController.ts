@@ -57,7 +57,7 @@ export class UserController {
                     password: hashedPassword
                 }
             })
-            return res.status(200).json({message: "Usuario criado com sucesso", userId: user.id})
+            return res.status(201).json({message: "Usuario criado com sucesso", userId: user.id})
          }catch(error){
             console.error(error)
             return res.status(500).json({ message: "Erro ao criar usuário" });

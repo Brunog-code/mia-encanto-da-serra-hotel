@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { PaymentStatus, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { paymentSchema } from "../shared/src/lib/zod/paymentSchema.js";
 import { generatePreference } from "../services/paymentService.js";
+import { MercadoPagoConfig, Payment } from "mercadopago";
 
 export class PaymentController {
   private prisma: PrismaClient;
@@ -21,13 +22,7 @@ export class PaymentController {
       const parsedData = paymentSchema.parse(requestData);
       const {
         idReservation,
-        chekeInReservation,
-        chekeOutReservation,
-        roomCategory,
-        totalAmountReservation,
-        userName,
         userEmail,
-        userPhone,
       } = parsedData;
 
       //2-validar no db (reservation e usuario)
@@ -53,22 +48,107 @@ export class PaymentController {
       //resposta pro frontend
       res.status(200).json(preferencePayment);
     } catch (error) {
-      console.error(error);
+      console.error(
+        "❌ Erro no Mercado Pago (PaymentController):",
+        JSON.stringify(error, null, 2)
+      );
       return res
         .status(500)
         .json({ message: "Erro interno ao criar o pagamento" });
     }
   };
 
+  public refundPayment = async (req: Request, res: Response) => {
+    try {
+      const { paymentId, reservationId } = req.body;
+
+      if (!reservationId || !paymentId)
+        return res.status(400).json({ message: "paymentId é obrigatório" });
+
+      if (!process.env.ACCESS_TOKEN)
+        return res
+          .status(500)
+          .json({ message: "Token Mercado Pago não definido" });
+
+      //Faz requisição ao endpoint de refund do Mercado Pago
+      const mpResponse = await fetch(
+        `https://api.mercadopago.com/v1/payments/${paymentId}/refunds`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await mpResponse.json();
+
+      if (!mpResponse.ok) {
+        console.error("Erro Mercado Pago:", data);
+        return res
+          .status(500)
+          .json({ message: "Erro ao solicitar estorno", details: data });
+      }
+
+      console.log("Refund Mercado Pago:", data);
+
+      //Atualiza o status no DB
+      await this.prisma.payment.update({
+        where: {
+          reservationId,
+        },
+        data: {
+          status: PaymentStatus.REFUNDED,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Pagamento estornado com sucesso" });
+    } catch (error) {
+      console.error("Erro ao estornar o pagamento", error);
+      res.status(500).send("Erro interno no redirecionamento de falha");
+    }
+  };
+
   public success = async (req: Request, res: Response) => {
     try {
-    } catch (error) {}
+      const { payment_id, status, merchant_order_id } = req.query;
+
+      res.redirect(
+        `http://localhost:5173/success?payment_id=${payment_id}&status=${status}&order_id=${merchant_order_id}`
+      );
+    } catch (error) {
+      console.error("Erro no redirecionamento success:", error);
+      res.status(500).send("Erro interno no redirecionamento de falha");
+    }
   };
 
   public failure = async (req: Request, res: Response) => {
     try {
-    } catch (error) {}
+      const { payment_id, status, merchant_order_id } = req.query;
+
+      //redireciona para a página de erro no frontend
+      res.redirect(
+        `http://localhost:5173/failure?payment_id=${payment_id}&status=${status}&order_id=${merchant_order_id}`
+      );
+    } catch (error) {
+      console.error("Erro no redirecionamento failure:", error);
+      res.status(500).send("Erro interno no redirecionamento de falha");
+    }
   };
 
-  public pending = async (req: Request, res: Response) => {};
+  public pending = async (req: Request, res: Response) => {
+    try {
+      const { payment_id, status, merchant_order_id } = req.query;
+
+      //redireciona para a página de pagamento pendente
+      res.redirect(
+        `http://localhost:5173/pending?payment_id=${payment_id}&status=${status}&order_id=${merchant_order_id}`
+      );
+    } catch (error) {
+      console.error("Erro no redirecionamento pending:", error);
+      res.status(500).send("Erro interno no redirecionamento pendente");
+    }
+  };
 }

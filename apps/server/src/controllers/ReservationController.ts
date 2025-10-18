@@ -4,6 +4,7 @@ import {
   reservationFullValidation,
   type reservationFullValidationSchema,
 } from "../shared/src/lib/zod/reservationFullValidation.js";
+import dayjs from "dayjs";
 
 export class ReservationController {
   private prisma: PrismaClient;
@@ -131,21 +132,26 @@ export class ReservationController {
         return res.status(400).json({ message: "ID da reserva é obrigatório" });
 
       //verifica se tem reserva com o id passado
-      const reservationExists = await this.prisma.reservation.findFirst({
+      const reservation = await this.prisma.reservation.findUnique({
         where: {
           id,
         },
+        include: { payment: true },
       });
 
       //se não existir reserva
-      if (!reservationExists)
+      if (!reservation)
         return res
           .status(400)
           .json({ message: "Não existe reserva com esse ID" });
 
       //se a reserva ja estiver cancelada
-      if (reservationExists.status === "CANCELED")
+      if (reservation.status === "CANCELED")
         return res.status(400).json({ message: "Reserva já está cancelada" });
+
+      //verifica se pode cancelar (5 dias antes do check-in)
+      const daysBeforeCheckIn = dayjs(reservation.checkIn).diff(dayjs(), 'day')
+      const canRefund = daysBeforeCheckIn >= 5
 
       //alterar status da reserva e liberar quarto fisico
       const updatedReservation = await this.prisma.reservation.update({
@@ -156,6 +162,17 @@ export class ReservationController {
           status: "CANCELED",
         },
       });
+
+      //se houver pagamento aprovado, retorna o paymentId para o PaymentController
+      if (reservation.payment?.status == "PAID") {
+        return res.status(200).json({
+          message: "Reserva cancelada com sucesso.",
+          reservationId: reservation.id,
+          paymentId: reservation.payment.mpPaymentId,
+          canRefund,
+          daysBeforeCheckIn
+        });
+      }
 
       return res
         .status(200)

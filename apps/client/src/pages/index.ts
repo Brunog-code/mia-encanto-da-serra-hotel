@@ -5,3 +5,6 @@ export * from "./ConfirmReservation.tsx";
 export * from "./MyReservations.tsx";
 export * from "./ForgotPassword.tsx";
 export * from "./ResetPassword.tsx";
+export * from "./SuccessPayment.tsx"
+export * from "./FailurePayment.tsx"
+export * from "./PendingPayment.tsx"

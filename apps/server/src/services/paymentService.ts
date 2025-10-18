@@ -2,12 +2,11 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 import { PaymentFormData } from "../shared/src/lib/zod/paymentSchema.js";
 
 export const generatePreference = async (paymentData: PaymentFormData) => {
-  console.log(paymentData)
   try {
     //Cria cliente autenticado
-const client = new MercadoPagoConfig({
-  accessToken: process.env.ACCESS_TOKEN!,
-});
+    const client = new MercadoPagoConfig({
+      accessToken: process.env.ACCESS_TOKEN!,
+    });
     const {
       idReservation,
       chekeInReservation,
@@ -28,10 +27,8 @@ const client = new MercadoPagoConfig({
     const body = {
       items: [
         {
-          id: String(idReservation), 
-          title: `Reserva: ${chekeInReservation} a ${chekeOutReservation} - Quarto ${
-            roomCategory == "LUXURY" ? "LUXO" : roomCategory
-          }`,
+          id: String(idReservation),
+          title: `Quarto ${roomCategory == "LUXURY" ? "LUXO" : roomCategory}`,
           quantity: 1,
           unit_price: totalAmountReservation,
         },
@@ -60,6 +57,12 @@ const client = new MercadoPagoConfig({
       notification_url:
         "https://punitive-hezekiah-correctively.ngrok-free.dev/webhook",
       external_reference: idReservation,
+      payment_methods: {
+        excluded_payment_types: [
+          { id: "ticket" }, //desabilita boleto
+        ],
+        installments: 12, //quantidade máxima de parcelas
+      },
     };
 
     //cria a preferencia
@@ -67,7 +70,10 @@ const client = new MercadoPagoConfig({
 
     return response;
   } catch (error: any) {
-    console.error("Erro ao criar preferência de pagamento:", error.message);
-    throw new Error("Não foi possível gerar a preferência de pagamento");
+    console.error(
+      "❌ Erro DETALHADO do MP no Service:",
+      JSON.stringify(error, null, 2)
+    ); 
+    throw error;
   }
 };

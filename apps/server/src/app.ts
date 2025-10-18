@@ -11,6 +11,7 @@ import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import reservationRoutes from "./routes/reservationRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import webhookRoutes from "./routes/webhookRoutes.js";
 
 //instancia do express
 const app = express();
@@ -28,5 +29,6 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/reservation", reservationRoutes);
 app.use("/payment", paymentRoutes);
+app.use("/webhook", webhookRoutes);
 
 export default app;

@@ -11,6 +11,9 @@ import {
 } from "@/pages";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import SuccessPayment from "@/pages/SuccessPayment";
+import FailurePayment from "@/pages/FailurePayment";
+import PendingPayment from "@/pages/PendingPayment";
 
 export const AppRouters = createBrowserRouter([
   {
@@ -74,6 +77,18 @@ export const AppRouters = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/success",
+    element: <SuccessPayment />,
+  },
+  {
+    path: "/failure",
+    element: <FailurePayment />,
+  },
+  {
+    path: "/pending",
+    element: <PendingPayment />,
   },
 
   { path: "*", element: <Navigate to="/" /> },

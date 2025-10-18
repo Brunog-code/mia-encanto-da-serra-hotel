@@ -21,7 +21,9 @@ export const AppLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <Navbar ref={navbarRef} />
+      <header>
+        <Navbar ref={navbarRef} />
+      </header>
 
       {/* Main content */}
       <main
@@ -31,8 +33,10 @@ export const AppLayout = () => {
         <Outlet />
       </main>
 
-      {/* Footer */}
-      <Footer />
+      <footer>
+        {/* Footer */}
+        <Footer />
+      </footer>
     </div>
   );
 };

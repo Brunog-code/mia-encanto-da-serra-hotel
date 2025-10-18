@@ -19,3 +19,5 @@ export * from "./sections/Faq";
 export * from "./sections/Contact";
 export * from "./lib/ImgGallery";
 export * from "./lib/SwiperRoomDetails";
+export * from "./layout/FooterAsideLayout";
+export * from "./layout/NavbarAsideLayout";
