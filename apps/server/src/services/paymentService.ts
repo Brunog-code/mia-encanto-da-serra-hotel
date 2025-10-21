@@ -38,7 +38,7 @@ export const generatePreference = async (paymentData: PaymentFormData) => {
         name: userName,
         identification: {
           type: "CPF",
-          number: "12345678909", //CPF fictício
+          number: "19119119100", //CPF fictício
         },
         phone: {
           area_code,
@@ -71,9 +71,9 @@ export const generatePreference = async (paymentData: PaymentFormData) => {
     return response;
   } catch (error: any) {
     console.error(
-      "❌ Erro DETALHADO do MP no Service:",
+      "Erro DETALHADO do MP no Service:",
       JSON.stringify(error, null, 2)
-    ); 
+    );
     throw error;
   }
 };

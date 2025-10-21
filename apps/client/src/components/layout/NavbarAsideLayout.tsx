@@ -45,7 +45,9 @@ export const NavbarAsideLayout = () => {
           </button>
         </div>
         <div>
-          <img src="/images/logo-hotel.png" width={130} alt="Logo-hotel" />
+          <Link to="/">
+            <img src="/images/logo-hotel.png" width={130} alt="Logo-hotel" />
+          </Link>
         </div>
 
         <div className="top-6 right-10 absolute flex flex-col justify-center items-center rounded-md">
@@ -71,7 +73,7 @@ export const NavbarAsideLayout = () => {
             <div
               className={clsx(
                 "top-full absolute flex flex-col gap-1 bg-white mt-1 p-2 border border-golden-400 rounded-md text-center",
-                !user || isMobile ? "-left-7" : "-left-1"
+                !user ? "-left-10" : "left-7"
               )}
             >
               {user ? (
@@ -82,9 +84,6 @@ export const NavbarAsideLayout = () => {
                   >
                     Reservas
                   </Link>
-                  <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
-                    Configurações
-                  </span>
                   <span
                     className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer"
                     onClick={onSubmitLogout}

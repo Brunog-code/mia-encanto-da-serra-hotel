@@ -301,7 +301,9 @@ export const ConfirmReservation = () => {
             onClick={handleCreateReservation}
             disabled={loading}
           >
-            {loading ? 'Redirecionando para pagamento': 'Continuar para pagamento'}
+            {loading
+              ? "Redirecionando para pagamento"
+              : "Continuar para pagamento"}
           </Button>
         </div>
       </div>

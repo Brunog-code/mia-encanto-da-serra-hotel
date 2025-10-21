@@ -1,18 +1,16 @@
 import { Button, Input } from "@/components";
 import SplitType from "split-type";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 import { gsap } from "gsap/gsap-core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { reservationSchema, type reservationFormData } from "@/shared/src";
-import { api } from "../../lib/axios";
 import { scroller } from "react-scroll";
 import { toast } from "sonner";
 import { useReservation } from "@/contexts/ReservationContext";
 
 export const Hero = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
-  const [imgHero, setImgHero] = useState<string | undefined>(undefined);
 
   //context
   const { setReservation } = useReservation();
@@ -64,32 +62,6 @@ export const Hero = () => {
     };
   }, []);
 
-  useEffect(() => {
-    interface MediaImage {
-      id: string;
-      category: string;
-      url: string;
-      title: string;
-      createdAt: string;
-    }
-
-    const featchImg = async () => {
-      try {
-        const response = await api.get<MediaImage[]>(
-          "/images?title=hotel-bg-hero.jpg"
-        );
-
-        if (response.data) {
-          const img = response.data[0]?.url;
-          setImgHero(img);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    featchImg();
-  }, []);
-
   //sessionStorage dados pré-reserva
   const sessionDataSaved = sessionStorage.getItem("reservation");
   const defaultValues = sessionDataSaved
@@ -125,7 +97,7 @@ export const Hero = () => {
     <section className="relative flex w-screen h-screen overflow-hidden">
       <div className="w-full h-full">
         <img
-          src={imgHero}
+          src="/images/hotel/hotel-bg-hero.jpg"
           alt="Piscina Hotel"
           className="w-full h-full object-cover"
         />
@@ -143,6 +115,7 @@ export const Hero = () => {
               Sua experiência de conforto e charme começa aqui
             </p>
           </div>
+
           <form
             className="flex md:flex-row flex-col justify-center md:justify-start gap-2 bg-white-gost-500 mt-8 p-2 rounded-md w-fit"
             onSubmit={handleSubmit(onSubmitReservation)}
@@ -196,4 +169,4 @@ export const Hero = () => {
       </div>
     </section>
   );
-};
+}

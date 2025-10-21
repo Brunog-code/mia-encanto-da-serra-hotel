@@ -130,9 +130,6 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                   >
                     Reservas
                   </RouterLink>
-                  <span className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg">
-                    Configurações
-                  </span>
                   <span
                     className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
                     onClick={onSubmitLogout}
@@ -228,7 +225,11 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             </div>
           </div>
           {showDiv && (
-            <div className="top-full -left-7 absolute flex flex-col gap-1 bg-white mt-1 p-2 border border-golden-400 rounded-md text-center">
+            <div
+              className={`top-full ${
+                user ? "-left-1" : "-left-10"
+              } absolute flex flex-col gap-1 bg-white mt-1 p-2 border border-golden-400 rounded-md text-center`}
+            >
               {user ? (
                 <>
                   <RouterLink
@@ -237,9 +238,6 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                   >
                     Reservas
                   </RouterLink>
-                  <span className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer">
-                    Configurações
-                  </span>
                   <span
                     className="bg-golden-400 hover:bg-golden-500 p-1 rounded-md text-white transition-all duration-300 cursor-pointer"
                     onClick={onSubmitLogout}

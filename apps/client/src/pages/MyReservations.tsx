@@ -67,7 +67,6 @@ export const MyReservations = () => {
     const fetchReservationsUser = async () => {
       try {
         const response = await api.get(`/reservation/${user?.id}`);
-        console.log(response.data);
 
         if (response.data) setReservations(response.data);
       } catch (error: any) {
@@ -235,10 +234,24 @@ export const MyReservations = () => {
                         </Button>
                       </div>
                     </div>
-                  ) : (
+                  ) : reservation.status === "CANCELED" &&
+                    reservation.payment.status == "PAID" ? (
                     <div className="mt-5">
+                      <span className="text-golden-600 text-lg">
+                        Pagamento efetuado, entre em contato para reembolso.
+                      </span>
+                    </div>
+                  ) : reservation.status === "CANCELED" &&
+                    reservation.payment.status != "PAID" ? (
+                    <div>
+                      <span className="text-golden-600 text-lg">
+                        Não houve pagamaento, nenhuma ação necessária.
+                      </span>
+                    </div>
+                  ) : (
+                    <div>
                       <span className="text-green-600 text-lg">
-                        Pagamento efetuado
+                        Pagamento efetuado com sucesso!
                       </span>
                     </div>
                   )}

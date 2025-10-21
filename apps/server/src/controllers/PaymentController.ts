@@ -17,7 +17,7 @@ export class PaymentController {
       totalAmountReservation: Number(req.body.totalAmountReservation),
     };
     try {
-      //1 - validar dados (zod) (verificar depois )
+      //1 - validar dados (zod)
       const parsedData = paymentSchema.parse(requestData);
       const { idReservation, userEmail } = parsedData;
 
@@ -62,7 +62,7 @@ export class PaymentController {
       res.status(200).json(preferencePayment);
     } catch (error) {
       console.error(
-        "❌ Erro no Mercado Pago (PaymentController):",
+        "Erro no Mercado Pago (PaymentController):",
         JSON.stringify(error, null, 2)
       );
       return res

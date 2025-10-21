@@ -33,7 +33,7 @@ export const Gallery = () => {
 
         setAllImgs(allImages);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     featchAllImg();

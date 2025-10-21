@@ -11,8 +11,11 @@ export class WebhookController {
   }
 
   public handlePaymentNotification = async (req: Request, res: Response) => {
+    console.log("🛰️ [Webhook] Notificação recebida do Mercado Pago");
+    console.log("📦 Body recebido:", JSON.stringify(req.body, null, 2));
+
     if (!process.env.ACCESS_TOKEN) {
-      console.error("❌ ACCESS_TOKEN não definido!");
+      console.error("ACCESS_TOKEN não definido!");
       return res.sendStatus(500);
     }
 
