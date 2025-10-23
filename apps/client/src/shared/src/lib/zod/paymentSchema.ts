@@ -13,8 +13,8 @@ export const paymentSchema = z
     idReservation: z.string().nonempty("ID da reserva é obrigatório"),
     chekeInReservation: z.string().nonempty("Informe a data de check-in"),
     chekeOutReservation: z.string().nonempty("Informe a data de check-out"),
-    roomIdReservation: z.string().nonempty("Informe o ID do quarto"),
-    totalAmountReservatin: z
+    roomCategory: z.string().nonempty("Informe a categoria do quarto"),
+    totalAmountReservation: z
       .number("Valor total deve ser um número")
       .positive("Valor total deve ser positivo"),
     userName: z.string().nonempty("Informe o nome do usuário"),

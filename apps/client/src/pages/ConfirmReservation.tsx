@@ -170,7 +170,6 @@ export const ConfirmReservation = () => {
 
       //encaminha pro checkout
       window.location.href = paymentResponse.data.init_point;
-      setLoading(false);
     } catch (error: any) {
       setLoading(false);
       if (error.response) {

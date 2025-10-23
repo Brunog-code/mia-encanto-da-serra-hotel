@@ -2,12 +2,13 @@ import { PaymentStatus, PaymentMethod, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { paymentSchema } from "../shared/src/lib/zod/paymentSchema.js";
 import { generatePreference } from "../services/paymentService.js";
+import { db } from "../lib/prisma.js";
 
 export class PaymentController {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = db;
   }
 
   public createPaymentPreference = async (req: Request, res: Response) => {
@@ -41,7 +42,7 @@ export class PaymentController {
       //chama function(service) que cria a preferencia
       const preferencePayment = await generatePreference(parsedData);
 
-      //salva o link de pagamento no db
+      //salva o link de pagamento no db(payment final será salvo no webhook)
       await this.prisma.payment.upsert({
         where: { reservationId: idReservation },
         update: {
@@ -70,6 +71,8 @@ export class PaymentController {
         .json({ message: "Erro interno ao criar o pagamento" });
     }
   };
+
+  public simulatePaymentPreference = async (req: Request, res: Response) => {};
 
   public refundPayment = async (req: Request, res: Response) => {
     try {

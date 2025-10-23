@@ -29,5 +29,5 @@ export async function cancelOldReservations() {
   }
 }
 
-// Rodar automaticamente quando o servidor estiver ativo (para uso local ou produção 24/7)
+//Rodar automaticamente quando o servidor estiver ativo (para uso local ou produção 24/7)
 cron.schedule("0 * * * *", cancelOldReservations);

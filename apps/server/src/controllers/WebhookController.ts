@@ -1,13 +1,14 @@
 import { PrismaClient, PaymentStatus, PaymentMethod } from "@prisma/client";
 import { Request, Response } from "express";
 import { MercadoPagoConfig, Payment } from "mercadopago";
+import { db } from "../lib/prisma.js";
 
 export class WebhookController {
   private prisma: PrismaClient;
   private mpClient?: Payment;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = db;
   }
 
   public handlePaymentNotification = async (req: Request, res: Response) => {

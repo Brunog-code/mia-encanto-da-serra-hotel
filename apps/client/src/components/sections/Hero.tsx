@@ -1,6 +1,6 @@
 import { Button, Input } from "@/components";
 import SplitType from "split-type";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap/gsap-core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -169,4 +169,4 @@ export const Hero = () => {
       </div>
     </section>
   );
-}
+};

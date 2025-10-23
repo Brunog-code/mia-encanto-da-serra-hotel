@@ -1,16 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import {
-  reservationFullValidation,
-  type reservationFullValidationSchema,
-} from "../shared/src/lib/zod/reservationFullValidation.js";
+import { reservationFullValidation } from "../shared/src/lib/zod/reservationFullValidation.js";
 import dayjs from "dayjs";
+import { db } from "../lib/prisma.js";
 
 export class ReservationController {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = db;
   }
 
   public createReservation = async (req: Request, res: Response) => {

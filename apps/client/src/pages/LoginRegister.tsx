@@ -89,9 +89,9 @@ export const LoginRegister = () => {
 
       //se tiver rota de redirecionamento, vai pra ela
       if (redirect) {
-        navigate(redirect);
+        navigate(redirect, { replace: true });
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     } catch (error: any) {
       if (error.response) {

@@ -2,10 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { reservationSchema } from "../shared/src/lib/zod/reservationSchema.js";
 import dayjs from "dayjs";
+import { db } from "../lib/prisma.js";
 export class RoomController {
   private prisma: PrismaClient;
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = db;
   }
 
   public getAllRooms = async (req: Request, res: Response) => {

@@ -7,8 +7,9 @@ export async function seedRoomTypes() {
   const roomTypes = [
     {
       category: RoomCategory.STANDARD,
-      description: "Quarto confortável com cama queen-size, decoração moderna, Wi-Fi gratuito e café da manhã incluso. Ideal para viajantes a negócios ou lazer.",
-      price: 1350.00,
+      description:
+        "Quarto confortável com cama queen-size, decoração moderna, Wi-Fi gratuito e café da manhã incluso. Ideal para viajantes a negócios ou lazer.",
+      price: 850.0,
       capacity: 6,
       amenities: [
         "Wi-Fi gratuito",
@@ -24,8 +25,9 @@ export async function seedRoomTypes() {
     },
     {
       category: RoomCategory.LUXURY,
-      description: "Quarto espaçoso com decoração elegante, cama king-size, varanda com vista para as montanhas, Wi-Fi gratuito e café da manhã incluso.",
-      price: 2500.00,
+      description:
+        "Quarto espaçoso com decoração elegante, cama king-size, varanda com vista para as montanhas, Wi-Fi gratuito e café da manhã incluso.",
+      price: 1450.0,
       capacity: 6,
       amenities: [
         "Banheira de hidromassagem",
@@ -37,7 +39,7 @@ export async function seedRoomTypes() {
         "Produtos de banho de luxo",
         "Smart TV 85",
         "Roupa de cama premium",
-        "Estacionamento gratuito"
+        "Estacionamento gratuito",
       ],
     },
   ];
@@ -45,7 +47,7 @@ export async function seedRoomTypes() {
   for (const type of roomTypes) {
     await prisma.roomType.upsert({
       where: { category: type.category }, //garante que não duplica se rodar mais de uma vez
-      update: {},
+      update: { price: type.price },
       create: type,
     });
   }

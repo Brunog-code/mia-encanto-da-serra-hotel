@@ -56,7 +56,7 @@ export const NavbarAsideLayout = () => {
               <span className="text-bistre-300">
                 {isMobile ? "" : "Olá, "}
                 <span className="font-semibold text-sm md:text-base">
-                  {user.name} da silva
+                  {user.name}
                 </span>
               </span>
             )}
