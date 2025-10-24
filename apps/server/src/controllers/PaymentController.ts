@@ -72,7 +72,9 @@ export class PaymentController {
     }
   };
 
-  public simulatePaymentPreference = async (req: Request, res: Response) => {};
+  public simulatePaymentPreference = async (req: Request, res: Response) => {
+    
+  };
 
   public refundPayment = async (req: Request, res: Response) => {
     try {
