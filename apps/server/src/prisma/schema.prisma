@@ -110,7 +110,7 @@ model Payment {
   installments  Int           @default(1)
   amount        Decimal
   status        PaymentStatus @default(PENDING)
-  mpPaymentId   String
+  mpPaymentId   String?
   qrCode        String?
   paymentLink   String?
   createdAt     DateTime      @default(now())

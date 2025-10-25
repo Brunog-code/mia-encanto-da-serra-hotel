@@ -73,7 +73,71 @@ export class PaymentController {
   };
 
   public simulatePaymentPreference = async (req: Request, res: Response) => {
-    
+    const requestData = {
+      ...req.body,
+      totalAmountReservation: Number(req.body.totalAmountReservation),
+    };
+
+    try {
+      //1 - validar dados (zod)
+      const parsedData = paymentSchema.parse(requestData);
+      const { idReservation, totalAmountReservation, userEmail } = parsedData;
+
+      //2-validar no db (reservation e usuario)
+      const reservation = await this.prisma.reservation.findUnique({
+        where: {
+          id: idReservation,
+        },
+      });
+      if (!reservation)
+        return res.status(404).json({ error: "Reserva não encontrada" });
+
+      const user = await this.prisma.customer.findUnique({
+        where: {
+          email: userEmail,
+        },
+      });
+      if (!user)
+        return res.status(404).json({ error: "Usuário não encontrado" });
+
+      //simula registro de pagamento no banco
+      await db.payment.upsert({
+        where: { reservationId: idReservation },
+        update: {
+          status: PaymentStatus.PAID,
+          methodPayment: PaymentMethod.CARD,
+          amount: totalAmountReservation,
+          installments: 1,
+        },
+        create: {
+          reservationId: idReservation,
+          status: PaymentStatus.PAID,
+          methodPayment: PaymentMethod.CARD,
+          amount: totalAmountReservation,
+          installments: 1,
+        },
+      });
+
+      // 🔹 Atualiza reserva para CONFIRMED
+      await db.reservation.update({
+        where: { id: idReservation },
+        data: { status: "CONFIRMED" },
+      });
+
+      //resposta pro frontend
+      res.status(200).json({
+        message: "Pagamento simulado com sucesso!",
+        redirectUrl: "/success?payment_id=9999&status=approved&order_id=9999",
+      });
+    } catch (error) {
+      console.error(
+        "Erro no Mercado Pago (PaymentController):",
+        JSON.stringify(error, null, 2)
+      );
+      return res
+        .status(500)
+        .json({ message: "Erro interno ao criar o pagamento" });
+    }
   };
 
   public refundPayment = async (req: Request, res: Response) => {

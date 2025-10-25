@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/axios";
 import dayjs from "dayjs";
 import { formatDateBR } from "@/utils/formatDateBR";
+import { useNavigate } from "react-router-dom";
 
 export const ConfirmReservation = () => {
   const { id } = useParams();
@@ -157,7 +158,23 @@ export const ConfirmReservation = () => {
   const handleCreatePay = async (reservationResponse: IReservationResponse) => {
     //nessa altura reserva na criada no db
     try {
-      const paymentResponse = await api.post("/payment", {
+      //====fluxo oficial de pagamento
+      // const paymentResponse = await api.post("/payment", {
+      //   idReservation: reservationResponse.data.id,
+      //   chekeInReservation: reservationResponse.data.checkIn,
+      //   chekeOutReservation: reservationResponse.data.checkOut,
+      //   totalAmountReservation: reservationResponse.data.totalAmount,
+      //   userName: user?.name,
+      //   userEmail: user?.email,
+      //   userPhone: userPhone,
+      //   roomCategory: roomData?.category,
+      // });
+
+      //encaminha pro checkout
+      // window.location.href = paymentResponse.data.init_point;
+
+      //====fluxo alternativo de pagamento(simulaçao para producao)
+      const paymentResponse = await api.post("/payment/simulate_payment", {
         idReservation: reservationResponse.data.id,
         chekeInReservation: reservationResponse.data.checkIn,
         chekeOutReservation: reservationResponse.data.checkOut,
@@ -168,8 +185,7 @@ export const ConfirmReservation = () => {
         roomCategory: roomData?.category,
       });
 
-      //encaminha pro checkout
-      window.location.href = paymentResponse.data.init_point;
+      window.location.href = paymentResponse.data.redirectUrl;
     } catch (error: any) {
       setLoading(false);
       if (error.response) {
