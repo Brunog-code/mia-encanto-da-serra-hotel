@@ -6,7 +6,6 @@ import { api } from "@/lib/axios";
 
 export const Structure = () => {
   const [isMobile, setIsmobile] = useState(false);
-
   const [estructureData, setEstructureData] = useState([
     {
       img: "",
@@ -122,7 +121,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate0",
-          start: "top 60%",
+          start: "top 90%",
           toggleActions: "play none none reverse",
         },
       });
@@ -135,7 +134,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate1",
-          start: "top 60%",
+          start: "top 90%",
           toggleActions: "play none none reverse",
         },
       });
@@ -148,7 +147,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate2",
-          start: "top 60%",
+          start: "top 90%",
           toggleActions: "play none none reverse",
         },
       });
