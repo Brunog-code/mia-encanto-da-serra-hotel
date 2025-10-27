@@ -128,8 +128,7 @@ export const LoginRegister = () => {
   };
 
   return (
-    <section className="flex flex-col justify-center items-center gap-6 pb-2 border border-red-500 min-h-screen overflow-x-hidden">
-
+    <section className="relative flex flex-col justify-start items-center gap-6 pb-2 border border-red-500 min-h-screen overflow-x-hidden">
       {/* header */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
@@ -154,10 +153,9 @@ export const LoginRegister = () => {
 
       {/* container login and register */}
       <div className="flex flex-col justify-center items-center border rounded-t-lg w-[98%] h-auto">
-
         <div
           className={clsx(
-            "flex flex-col items-center gap-2 shadow-md rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
+            "flex flex-col items-center gap-2 shadow-md pb-2 rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
             isRegister
               ? "bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]"
               : "bg-gradient-to-t from-[#e5a84e] to-[#c78d38]"
@@ -287,7 +285,6 @@ export const LoginRegister = () => {
             </form>
           )}
         </div>
-
       </div>
 
       {/* mgs bg */}
