@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { ImgGallery } from "../lib/ImgGallery";
-
 import { api } from "@/lib/axios";
 
 export const Gallery = () => {
@@ -11,6 +10,7 @@ export const Gallery = () => {
     title: string;
     createdAt: string;
   }
+
   interface ImgGallery {
     category: string;
     title: string;
@@ -47,31 +47,21 @@ export const Gallery = () => {
     "Restaurante",
   ];
 
-  switch (filter) {
-    case "Hotel":
-      setFilter("HOTEL");
-      break;
-    case "Quartos":
-      setFilter("ROOM");
-      break;
-    case "Atividades":
-      setFilter("ACTIVITY");
-      break;
-    case "Restaurante":
-      setFilter("RESTAURANT");
-      break;
-  }
+  //Mapeamento para converter nomes em categorias do banco
+  const categoryMap: Record<string, string> = {
+    Todas: "Todas",
+    Hotel: "HOTEL",
+    Quartos: "ROOM",
+    Atividades: "ACTIVITY",
+    Restaurante: "RESTAURANT",
+  };
 
   const filteredImages = useMemo(() => {
     if (!allImgs) return [];
+
     return filter === "Todas"
       ? allImgs
-      : allImgs?.filter(
-          (img) =>
-            img.category === filter &&
-            img.title != "hotel-bg-hero.jpg" &&
-            img.title != "hotel-imagem-lateral-blur.webp"
-        );
+      : allImgs.filter((img) => img.category === filter);
   }, [filter, allImgs]);
 
   return (
@@ -82,22 +72,31 @@ export const Gallery = () => {
         </h1>
       </div>
 
+      {/* 🔹 Filtro */}
       <div className="w-full">
-        <div className="flex flex-wrap justify-center gap-6 bg-golden-400 shadow-md mx-auto rounded-md w-fit md:w-1/2">
-          {filterOptions.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => setFilter(item)}
-              className={`${
-                filter === item ? "text-white-gost-400" : ""
-              } font-semibold cursor-pointer hover:scale-105 transition-all duration-300 hover:bg-bistre-400 hover:text-white p-2`}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="flex flex-wrap justify-center gap-6 bg-golden-400 shadow-md mx-auto p-2 rounded-md w-fit md:w-1/2">
+          {filterOptions.map((item, index) => {
+            const isActive = filter === categoryMap[item]; //compara com o nome mapeado
+
+            return (
+              <button
+                key={index}
+                onClick={() => setFilter(categoryMap[item])}
+                className={`font-semibold cursor-pointer px-4 py-2 rounded-md transition-all duration-300 
+                  hover:scale-105 
+                  ${
+                    isActive
+                      ? "bg-white text-bistre-400"
+                      : "text-white-gost-400 hover:bg-bistre-400 hover:text-white"
+                  }`}
+              >
+                {item}
+              </button>
+            );
+          })}
         </div>
 
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center mt-10 w-full">
           <ImgGallery filteredImages={filteredImages} />
         </div>
       </div>
@@ -109,7 +108,7 @@ export const Gallery = () => {
         preserveAspectRatio="none"
       >
         <path
-          fill="#f5f5f5" // mesma cor do background da div
+          fill="#f5f5f5"
           d="M0,160 C360,320 1080,0 1440,160 L1440,320 L0,320 Z"
         ></path>
       </svg>
