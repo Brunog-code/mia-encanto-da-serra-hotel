@@ -50,7 +50,7 @@ O sistema de pagamento é o core do projeto e utiliza a API do **Mercado Pago** 
 ### 🔐 Segurança e Usabilidade
 
 * **Autenticação JWT:** Cadastro e login de usuários com tokens JWT para sessões seguras.
-* **Recuperação de Senha por E-mail:** Implementação de um fluxo de recuperação de senha seguro, utilizando a biblioteca **Nodemailer** para envio de tokens temporários por e-mail.
+* **Recuperação de Senha por E-mail:** Implementação de um fluxo de recuperação de senha seguro, utilizando a biblioteca **SendGrid** para envio de tokens temporários por e-mail.
 * **Validação de Dados:** Todas as entradas de formulário e dados da API são validadas estritamente utilizando a biblioteca **Zod**.
 * **Layout Responsivo:** O frontend é totalmente responsivo para garantir a melhor experiência em dispositivos desktop e mobile.
 
