@@ -139,6 +139,10 @@ export const Structure = () => {
         });
 
         setEstructureData(updateEstructureData);
+
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100); // 100ms geralmente é o suficiente
       } catch (error) {
         console.error(error);
       }
