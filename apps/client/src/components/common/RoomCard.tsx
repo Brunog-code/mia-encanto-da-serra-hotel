@@ -107,10 +107,18 @@ export const RoomCard = ({
 
         {/* Capacidade + Preço */}
         <Stack
-          direction="row"
           alignItems="center"
           justifyContent="space-between"
           spacing={1}
+          sx={{
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+            },
+            gap: {
+              xs: 1,
+            },
+          }} 
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <HotelIcon color="action" />
@@ -119,9 +127,10 @@ export const RoomCard = ({
             </Typography>
           </Stack>
 
-          <Typography className="!font-bold text-golden-600 !text-xl">
+          <Typography className="!font-bold text-golden-600 !text-2xl">
             R$ {price.toFixed(2)}
           </Typography>
+          
         </Stack>
       </CardContent>
 
@@ -141,7 +150,7 @@ export const RoomCard = ({
             gap: {
               xs: 1,
             },
-          }} // ======================
+          }} 
         >
           <Button
             disabled={roomAvailable == 0}
