@@ -119,7 +119,7 @@ export const RoomCard = ({
             </Typography>
           </Stack>
 
-          <Typography className="!font-bold text-golden-600 !text-2xl">
+          <Typography className="!font-bold text-golden-600 !text-xl">
             R$ {price.toFixed(2)}
           </Typography>
         </Stack>
