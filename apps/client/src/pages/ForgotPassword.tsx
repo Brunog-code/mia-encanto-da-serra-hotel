@@ -64,7 +64,8 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
+    <section className="relative flex flex-col justify-start items-center gap-6 pb-2 min-h-screen overflow-x-hidden">
+      {/* header */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
           <span
@@ -81,8 +82,8 @@ export const ForgotPassword = () => {
       </div>
 
       {/* container login and register */}
-      <div className="z-50 relative flex flex-col rounded-t-lg w-[98%] h-[80%]">
-        <div className="relative flex flex-col items-center gap-2 bg-gradient-to-t from-[#e5a84e] to-[#c78d38] shadow-md rounded-t-lg h-[50%] text-white-gost-400 animate-g">
+      <div className="z-10 flex flex-col justify-center items-center rounded-t-lg w-[98%] max-w-7xl min-h-auto">
+        <div className="flex flex-col items-center gap-2 bg-gradient-to-t from-[#e5a84e] to-[#c78d38] shadow-md pb-25 rounded-t-lg w-[100%] h-[100%] text-white-gost-400">
           <p className="z-10 relative p-2 font-bold text-3xl">
             Recuperar senha
           </p>
@@ -94,7 +95,7 @@ export const ForgotPassword = () => {
           </div>
         </div>
 
-        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg mt-4 p-2 rounded-t-md w-[80%] md:w-[50%] h-[90%] -translate-x-1/2 -translate-y-1/4 animate-g transform">
+        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg -mt-20 p-2 py-10 rounded-t-md w-[90%] md:w-[50%] h-auto animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               Esqueci minha senha
@@ -121,8 +122,9 @@ export const ForgotPassword = () => {
         </div>
       </div>
 
+      {/* mgs bg */}
       <img
-        className="-right-20 -bottom-20 absolute"
+        className="-right-20 bottom-10 absolute"
         src="/images/effect-bg-golden.png"
         alt=""
         width={170}

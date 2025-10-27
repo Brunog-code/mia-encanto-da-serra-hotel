@@ -59,6 +59,7 @@ export const ResetPassword = () => {
 
   return (
     <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
+      
       {/* Topo com botão voltar + logo */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div>
