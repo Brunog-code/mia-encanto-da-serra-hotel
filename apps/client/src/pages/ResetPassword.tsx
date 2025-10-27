@@ -58,8 +58,8 @@ export const ResetPassword = () => {
   };
 
   return (
-    <section className="relative flex flex-col justify-center items-center gap-6 pb-20 h-screen overflow-x-hidden">
-      
+    <section className="relative flex flex-col justify-start items-center gap-6 pb-2 min-h-screen overflow-x-hidden">
+
       {/* Topo com botão voltar + logo */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div>
@@ -68,9 +68,9 @@ export const ResetPassword = () => {
       </div>
 
       {/* Container principal */}
-      <div className="z-50 relative flex flex-col rounded-t-lg w-[98%] h-[80%]">
+      <div className="z-10 flex flex-col justify-center items-center rounded-t-lg w-[98%] max-w-7xl min-h-auto">
         {/* Cabeçalho */}
-        <div className="relative flex flex-col items-center gap-2 bg-gradient-to-t from-[#e5a84e] to-[#c78d38] shadow-md rounded-t-lg h-[50%] text-white-gost-400 animate-g">
+        <div className="flex flex-col items-center gap-2 bg-gradient-to-t from-[#e5a84e] to-[#c78d38] shadow-md pb-25 rounded-t-lg w-[100%] h-[100%] text-white-gost-400">
           <p className="z-10 relative p-2 font-bold text-3xl">
             Redefinir Senha
           </p>
@@ -83,7 +83,7 @@ export const ResetPassword = () => {
         </div>
 
         {/* Formulário */}
-        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg mt-4 p-4 rounded-t-md w-[80%] md:w-[50%] h-[90%] -translate-x-1/2 -translate-y-1/4 animate-g transform">
+        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg -mt-20 p-2 py-10 rounded-t-md w-[90%] md:w-[50%] h-auto animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               Defina sua nova senha
