@@ -46,7 +46,7 @@ export const Structure = () => {
     },
   ]);
 
-  const [imagesLoaded, setImagesLoaded] = useState(false); // novo estado
+  const [imagesLoaded, setImagesLoaded] = useState(false); //novo estado
 
   //verifica se é mobile
   useEffect(() => {
@@ -159,9 +159,7 @@ export const Structure = () => {
   }, [imagesLoaded]);
 
   return (
-    <section
-      className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto"
-    >
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto">
       <div>
         <h1 className="font-semibold text-bistre-600 text-3xl md:text-4xl text-center">
           Estrutura e atividades
