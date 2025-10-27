@@ -152,10 +152,10 @@ export const LoginRegister = () => {
       </div>
 
       {/* container login and register */}
-      <div className="z-10 flex flex-col justify-center items-center rounded-t-lg w-[98%] h-auto">
+      <div className="z-10 flex flex-col justify-center items-center rounded-t-lg w-[98%] max-w-7xl h-auto">
         <div
           className={clsx(
-            "flex flex-col items-center gap-2 shadow-md pb-2 rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
+            "flex flex-col items-center gap-2 shadow-md pb-16 rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
             isRegister
               ? "bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]"
               : "bg-gradient-to-t from-[#e5a84e] to-[#c78d38]"
@@ -182,7 +182,7 @@ export const LoginRegister = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 py-10 rounded-t-md w-[90%] md:w-[50%] h-auto animate-g transform">
+        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg -mt-10 p-2 py-10 rounded-t-md w-[90%] md:w-[50%] h-auto animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               {isRegister ? "Cadastre-se" : "Login"}
