@@ -133,6 +133,15 @@ export const RoomCard = ({
           width="100%"
           px={1}
           pb={1}
+          sx={{
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+            },
+            gap: {
+              xs: 1,
+            },
+          }} // ======================
         >
           <Button
             disabled={roomAvailable == 0}
@@ -143,7 +152,7 @@ export const RoomCard = ({
 
           <Button
             px="px-2"
-            py="px-1"
+            py="py-2"
             bg="bg-bistre-400"
             hoverBg="bg-bistre-500"
             onClick={onViewDetails}
