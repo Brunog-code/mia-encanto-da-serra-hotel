@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { api } from "@/lib/axios";
 import dayjs from "dayjs";
 import { formatDateBR } from "@/utils/formatDateBR";
-import { useNavigate } from "react-router-dom";
 
 export const ConfirmReservation = () => {
   const { id } = useParams();
