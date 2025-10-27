@@ -83,7 +83,7 @@ export const Gallery = () => {
       </div>
 
       <div className="w-full">
-        <div className="flex justify-center gap-6 bg-golden-400 shadow-md mx-auto rounded-md w-fit md:w-1/2">
+        <div className="flex flex-wrap justify-center gap-6 bg-golden-400 shadow-md mx-auto rounded-md w-fit md:w-1/2">
           {filterOptions.map((item, index) => (
             <button
               key={index}
