@@ -290,14 +290,14 @@ export const LoginRegister = () => {
       {/* mgs bg */}
       {isRegister ? (
         <img
-          className="-right-20 bottom-0 absolute"
+          className="-right-20 bottom-10 absolute"
           src="/images/effect-bg-bistre.png"
           alt=""
           width={170}
         />
       ) : (
         <img
-          className="-right-20 bottom-0 absolute"
+          className="-right-20 bottom-10 absolute"
           src="/images/effect-bg-golden.png"
           alt=""
           width={170}
