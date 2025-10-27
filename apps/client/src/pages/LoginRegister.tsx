@@ -128,7 +128,9 @@ export const LoginRegister = () => {
   };
 
   return (
-    <section className="relative flex flex-col justify-center items-center gap-6 pb-40 h-screen overflow-x-hidden">
+    <section className="flex flex-col justify-center items-center gap-6 pb-2 border border-red-500 min-h-screen overflow-x-hidden">
+
+      {/* header */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
           <span
@@ -144,16 +146,18 @@ export const LoginRegister = () => {
             <span className="ml-1">Voltar</span>
           </span>
         </div>
+
         <div>
           <img src="/images/logo-hotel.png" width={130} alt="Logo-Hotel"></img>
         </div>
       </div>
 
       {/* container login and register */}
-      <div className="z-50 relative flex flex-col rounded-t-lg w-[98%] h-[100%]">
+      <div className="flex flex-col justify-center items-center border rounded-t-lg w-[98%] h-auto">
+
         <div
           className={clsx(
-            "relative flex flex-col items-center gap-2 shadow-md rounded-t-lg h-[50%] text-white-gost-400",
+            "flex flex-col items-center gap-2 shadow-md rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
             isRegister
               ? "bg-gradient-to-r from-[#5a4030] to-[#3d2b1f]"
               : "bg-gradient-to-t from-[#e5a84e] to-[#c78d38]"
@@ -180,7 +184,7 @@ export const LoginRegister = () => {
           </div>
         </div>
 
-        <div className="top-1/2 left-1/2 absolute flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 py-10 rounded-t-md w-[80%] md:w-[50%] h-auto -translate-x-1/2 -translate-y-1/7 animate-g transform">
+        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 py-10 rounded-t-md w-[80%] md:w-[50%] h-auto animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               {isRegister ? "Cadastre-se" : "Login"}
@@ -277,26 +281,26 @@ export const LoginRegister = () => {
               >
                 Esqueci minha senha
               </p>
-              <Button 
-              type="submit"
-              disabled={loading}
-              >
+              <Button type="submit" disabled={loading}>
                 {loading ? "Entrando...." : "Entrar"}
               </Button>
             </form>
           )}
         </div>
+
       </div>
+
+      {/* mgs bg */}
       {isRegister ? (
         <img
-          className="-right-20 -bottom-20 absolute"
+          className="-right-20 bottom-0 absolute"
           src="/images/effect-bg-bistre.png"
           alt=""
           width={170}
         />
       ) : (
         <img
-          className="-right-20 -bottom-20 absolute"
+          className="-right-20 bottom-0 absolute"
           src="/images/effect-bg-golden.png"
           alt=""
           width={170}
