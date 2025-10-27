@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { StructureCard } from "../common/StructureCard";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -47,7 +47,6 @@ export const Structure = () => {
   ]);
 
   const [imagesLoaded, setImagesLoaded] = useState(false); // novo estado
-  const sectionRef = useRef<HTMLDivElement>(null); // referência à seção
 
   //verifica se é mobile
   useEffect(() => {
@@ -151,7 +150,7 @@ export const Structure = () => {
           toggleActions: "play none none reverse",
         },
       });
-    }, sectionRef);
+    });
 
     // Força refresh do ScrollTrigger após animações
     ScrollTrigger.refresh();
@@ -161,7 +160,6 @@ export const Structure = () => {
 
   return (
     <section
-      ref={sectionRef}
       className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto"
     >
       <div>
