@@ -170,7 +170,7 @@ export const ConfirmReservation = () => {
       //   roomCategory: roomData?.category,
       // });
 
-      //encaminha pro checkout
+      // encaminha pro checkout
       // window.location.href = paymentResponse.data.init_point;
 
       //====fluxo alternativo de pagamento(simulaçao para producao)
