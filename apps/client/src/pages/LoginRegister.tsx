@@ -128,7 +128,7 @@ export const LoginRegister = () => {
   };
 
   return (
-    <section className="relative flex flex-col justify-start items-center gap-6 pb-2 border border-red-500 min-h-screen overflow-x-hidden">
+    <section className="relative flex flex-col justify-start items-center gap-6 pb-2 border min-h-screen overflow-x-hidden">
       {/* header */}
       <div className="relative flex justify-center items-center w-[90%]">
         <div className="top-3 left-1 absolute shadow-md">
@@ -152,7 +152,7 @@ export const LoginRegister = () => {
       </div>
 
       {/* container login and register */}
-      <div className="flex flex-col justify-center items-center border rounded-t-lg w-[98%] h-auto">
+      <div className="z-10 flex flex-col justify-center items-center rounded-t-lg w-[98%] h-auto">
         <div
           className={clsx(
             "flex flex-col items-center gap-2 shadow-md pb-2 rounded-t-lg w-[100%] h-[100%] text-white-gost-400",
@@ -182,7 +182,7 @@ export const LoginRegister = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 py-10 rounded-t-md w-[80%] md:w-[50%] h-auto animate-g transform">
+        <div className="flex flex-col justify-center items-center space-y-6 bg-white-gost-400 shadow-lg p-2 py-10 rounded-t-md w-[90%] md:w-[50%] h-auto animate-g transform">
           <div>
             <span className="font-bold text-bistre-400 text-2xl">
               {isRegister ? "Cadastre-se" : "Login"}
@@ -190,7 +190,7 @@ export const LoginRegister = () => {
           </div>
           {isRegister ? (
             <form
-              className="flex flex-col gap-2 w-[80%]"
+              className="flex flex-col gap-2 w-[90%]"
               onSubmit={RegisterHandleSubmit(onSubmitRegister)}
             >
               <Input
@@ -254,7 +254,7 @@ export const LoginRegister = () => {
             </form>
           ) : (
             <form
-              className="flex flex-col gap-2 w-[80%]"
+              className="flex flex-col gap-2 w-[90%]"
               onSubmit={LoginHandleSubmit(onSubmitLogin)}
             >
               <Input
