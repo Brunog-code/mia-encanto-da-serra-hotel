@@ -147,16 +147,6 @@ export const Structure = () => {
     featchEstructureImg();
   }, []);
 
-  useEffect(() => {
-    if (estructureData.every((d) => d.img)) {
-      const timeout = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 500); // pequeno delay para garantir render
-
-      return () => clearTimeout(timeout);
-    }
-  }, [estructureData]);
-
   return (
     <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-15 w-full h-auto">
       <div>
