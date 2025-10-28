@@ -48,39 +48,42 @@ export const Faq = () => {
     },
   ];
   return (
-    <section className="relative w-full h-auto pb-30 pt-20 flex flex-col items-center px-10 bg-bistre-300 ">
-      <h1 className="mb-5 text-3xl md:text-4xl text-white-gost-500 font-semibold text-center">
+    <section className="relative flex flex-col items-center bg-bistre-300 px-10 pt-20 pb-30 w-full h-auto">
+      <h1 className="mb-5 font-semibold text-white-gost-500 text-3xl md:text-4xl text-center">
         FAQ
       </h1>
-      {faqs.map((faq, index) => (
-        <Accordion
-          className="w-full"
-          key={index}
-          expanded={expanded === index}
-          onChange={handleChange(index)}
-          sx={{
-            backgroundColor: expanded === index ? "#e5a84e" : "#e0e0e0", // bg-purple-600 / bg-red-400
-            color: expanded === index ? "#fff" : "#3d2b1f", // text-white / text-gray-800
-            transition: "background-color 0.3s",
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>{faq.question}</Typography>
-          </AccordionSummary>
-
-          <AccordionDetails
+      <div className="flex flex-col mx-auto w-full max-w-4xl">
+        {faqs.map((faq, index) => (
+          <Accordion
+            className="w-full"
+            key={index}
+            expanded={expanded === index}
+            onChange={handleChange(index)}
             sx={{
-              backgroundColor: expanded === index ? "#ffff" : "#F3F4F6", // bg-purple-100 / bg-gray-50
-              color: expanded === index ? "#1F2937" : "#374151", // text-gray-900 / text-gray-700
+              backgroundColor: expanded === index ? "#e5a84e" : "#e0e0e0", // bg-purple-600 / bg-red-400
+              color: expanded === index ? "#fff" : "#3d2b1f", // text-white / text-gray-800
+              transition: "background-color 0.3s",
             }}
           >
-            <Typography>{faq.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>{faq.question}</Typography>
+            </AccordionSummary>
+
+            <AccordionDetails
+              sx={{
+                backgroundColor: expanded === index ? "#ffff" : "#F3F4F6", // bg-purple-100 / bg-gray-50
+                color: expanded === index ? "#1F2937" : "#374151", // text-gray-900 / text-gray-700
+              }}
+            >
+              <Typography>{faq.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </div>
+
       {/* Curva em S */}
       <svg
-        className="absolute bottom-0 w-full h-32"
+        className="bottom-0 absolute w-full h-32"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >

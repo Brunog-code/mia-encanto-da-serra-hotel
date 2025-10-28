@@ -8,8 +8,10 @@ export const AsideLayout = () => {
         <NavbarAsideLayout />
       </header>
 
-      <main className="bg-bistre-300 w-full h-auto min-h-screen text-white-gost-500">
-        <Outlet />
+      <main className="flex justify-center bg-bistre-300 w-full min-h-screen overflow-x-hidden text-white-gost-500">
+        <div className="w-full max-w-[1920px]">
+          <Outlet />
+        </div>
       </main>
 
       <footer>

@@ -50,7 +50,7 @@ export const Promotion = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center bg-gradient-to-b from-[#b08c72] to-[#f5f5f5] px-10 pt-10 pb-15 w-full h-auto min-h-screen">
+    <section className="flex flex-col items-center bg-gradient-to-b from-[#b08c72] to-[#f5f5f5] px-10 pt-10 pb-15 w-full h-auto">
       <div>
         <h1 className="mt-15 mb-10 font-semibold text-white-gost-500 text-4xl text-center">
           Pacotes e ofertas

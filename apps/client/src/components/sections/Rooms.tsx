@@ -98,8 +98,6 @@ export const Rooms = () => {
       const availabilityData = await checkRoomsAvailability();
       if (!availabilityData) return;
 
-      console.log(availabilityData)
-
       setRooms((prevRooms) =>
         prevRooms.map((room) => {
           const match = availabilityData.find((a) => a.typeId === room.id);
@@ -117,7 +115,7 @@ export const Rooms = () => {
     <section
       ref={sectionRoomRef}
       style={{ clipPath: "circle(5% at 50% 50%)" }}
-      className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto min-h-screen will-change-[clip-path]"
+      className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto will-change-[clip-path]"
     >
       <Element className="flex flex-col space-y-5">
         <h1 className="mt-15 mb-10 font-semibold text-white-gost-500 text-4xl text-center">

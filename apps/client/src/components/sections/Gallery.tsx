@@ -65,7 +65,7 @@ export const Gallery = () => {
   }, [filter, allImgs]);
 
   return (
-    <section className="relative flex flex-col items-center space-y-10 bg-bistre-300 pt-20 pb-20 w-full h-auto min-h-screen">
+    <section className="relative flex flex-col items-center space-y-10 bg-bistre-300 pt-20 pb-20 w-full h-auto">
       <div>
         <h1 className="font-semibold text-white-gost-500 text-3xl md:text-4xl text-center">
           Galeria de fotos

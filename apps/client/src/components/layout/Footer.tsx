@@ -19,7 +19,7 @@ export const Footer = () => {
   };
 
   return (
-    <section className="flex flex-col bg-gray-900 w-full h-[50vh] text-white">
+    <section className="flex flex-col bg-gray-900 w-full h-auto text-white">
       <div className="flex justify-between items-center bg-red-500 bg-gradient-to-r from-[#5a4030] to-[#3d2b1f] p-8 h-8">
         <div>Mia encanto da serra Hotel</div>
         <div className="flex gap-5">

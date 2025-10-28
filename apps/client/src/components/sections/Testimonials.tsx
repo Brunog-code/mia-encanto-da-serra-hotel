@@ -89,7 +89,7 @@ export const Testimonials = () => {
   ];
 
   return (
-    <section className="relative flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-20 w-full h-auto min-h-screen">
+    <section className="relative flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-20 w-full h-auto">
       <div>
         <h1 className="font-semibold text-bistre-600 text-3xl md:text-4xl text-center">
           Depoimentos de hóspedes

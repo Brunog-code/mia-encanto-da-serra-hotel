@@ -103,6 +103,8 @@ export const Hero = () => {
 
   return (
     <section className="relative flex w-screen h-screen overflow-hidden">
+
+      {/* imagem */}
       <div className="w-full h-full">
         <img
           src="/images/hotel/hotel-bg-hero.jpg"
@@ -110,8 +112,12 @@ export const Hero = () => {
           className="w-full h-full object-cover"
         />
       </div>
+
+      {/* texto e formulario */}
       <div className="absolute inset-0 flex justify-center items-center px-8">
+
         <div className="max-w-4xl md:text-left text-center">
+          
           <div>
             <h1
               ref={h1Ref}
@@ -175,8 +181,11 @@ export const Hero = () => {
             </div>
             <Button type="submit">Reservar</Button>
           </form>
+
         </div>
+
       </div>
+
     </section>
   );
 };
