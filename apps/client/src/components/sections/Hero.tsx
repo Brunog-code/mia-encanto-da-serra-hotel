@@ -116,7 +116,7 @@ export const Hero = () => {
       {/* texto e formulario */}
       <div className="absolute inset-0 flex justify-center items-center px-8">
 
-        <div className="md:px-10 w-full md:text-left text-center">
+        <div className="md:px-10 w-full max-w-4xl md:text-left text-center">
           
           <div>
             <h1
