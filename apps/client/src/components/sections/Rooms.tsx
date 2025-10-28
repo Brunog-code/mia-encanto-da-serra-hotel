@@ -60,7 +60,7 @@ export const Rooms = () => {
           scrollTrigger: {
             trigger: sectionRoomRef.current,
             start: isMobile ? "top 100%" : "top 80%",
-            // end: "bottom 60%", //termina antes do fim do elemento
+            end: "bottom 60%", //termina antes do fim do elemento
             scrub: 0.5,
             pin: false,
           },
