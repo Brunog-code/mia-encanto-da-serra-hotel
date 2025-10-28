@@ -60,7 +60,7 @@ export const Hero = () => {
         duration: 0.8,
         delay:0.5,
         x: -window.innerWidth,
-        ease: "back.out(1.1)",
+        ease: "power1.out",
       });
     });
 
