@@ -15,7 +15,7 @@ export const Hero = () => {
   //context
   const { setReservation } = useReservation();
 
-  //animacao letras
+  //animacao
   useEffect(() => {
     if (!h1Ref.current) return;
 
@@ -54,6 +54,12 @@ export const Hero = () => {
           ease: "back.out(1.7)",
         }
       );
+
+      gsap.from('.animate-slogan', {
+        opacity: 0,
+        duration: 1,
+        x: -window.innerWidth
+      })
     });
 
     return () => {
@@ -111,7 +117,7 @@ export const Hero = () => {
             >
               Bem-vindo ao refúgio perfeito em Campos do Jordão
             </h1>
-            <p className="bg-bistre-400 shadow-md mt-4 p-1 ps-2 rounded-md w-fit text-white-gost-500 text-lg md:text-2xl">
+            <p className="bg-bistre-400 shadow-md mt-4 p-1 ps-2 rounded-md w-fit text-white-gost-500 text-lg md:text-2xl animate-slogan">
               Sua experiência de conforto e charme começa aqui
             </p>
           </div>
