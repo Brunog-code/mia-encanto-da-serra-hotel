@@ -102,9 +102,9 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
             onClose={() => setDrawerOpen(false)}
             sx={{
               "& .MuiDrawer-paper": {
-                background: "linear-gradient(to bottom, #5a4030, #3d2b1f)", // cor de fundo
+                background: "linear-gradient(to bottom, #5a4030, #3d2b1f)", //cor de fundo
                 width: 250,
-                color: "white", // cor do texto
+                color: "white", //cor do texto
               },
             }}
           >
@@ -116,7 +116,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                 <CloseIcon className="text-white" />
               </IconButton>
               <AccountCircle
-                sx={{ fontSize: 50 }} //tamanho em pixels
+                sx={{ fontSize: 65 }} //tamanho em pixels
                 className="text-white-gost-400"
               />
               {user ? (
@@ -143,7 +143,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                     to={`/login?redirect=${encodeURIComponent(
                       location.pathname
                     )}`}
-                    className="bg-golden-500 hover:bg-golden-600 px-3 py-2 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
+                    className="bg-golden-500 hover:bg-golden-600 px-4 py-3 rounded-md font-semibold text-white-gost-400 transition-all duration-300 cursor-pointer bg"
                   >
                     Entrar
                   </RouterLink>

@@ -66,7 +66,7 @@ export const RoomCard = ({
   };
 
   return (
-    <Card sx={{ maxWidth: 345, m: 2, borderRadius: 3, boxShadow: 3 }}>
+    <Card sx={{ maxWidth: 380, m: 2, borderRadius: 3, boxShadow: 3 }}>
       {/* Imagem do quarto */}
       <Swiper
         modules={[Pagination, Autoplay]}
@@ -118,7 +118,7 @@ export const RoomCard = ({
             gap: {
               xs: 1,
             },
-          }} 
+          }}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
             <HotelIcon color="action" />
@@ -130,7 +130,6 @@ export const RoomCard = ({
           <Typography className="!font-bold text-golden-600 !text-2xl">
             R$ {price.toFixed(2)}
           </Typography>
-          
         </Stack>
       </CardContent>
 
@@ -150,7 +149,7 @@ export const RoomCard = ({
             gap: {
               xs: 1,
             },
-          }} 
+          }}
         >
           <Button
             disabled={roomAvailable == 0}
@@ -160,8 +159,8 @@ export const RoomCard = ({
           </Button>
 
           <Button
-            px="px-2"
-            py="py-2"
+            px="px-3"
+            py="py-3"
             bg="bg-bistre-400"
             hoverBg="bg-bistre-500"
             onClick={onViewDetails}

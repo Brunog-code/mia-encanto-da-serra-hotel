@@ -66,7 +66,7 @@ export const About = () => {
         "activities-pscina-hotel-aquecida-2.webp",
         "activities-massagem.webp",
       ];
-      
+
       try {
         const response = await api.get<MediaImage[]>("/images", {
           params: { title: titles },
@@ -85,7 +85,7 @@ export const About = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 w-full h-auto min-h-screen">
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 w-full min-h-screen">
       <div className="flex flex-col space-y-5">
         <h1
           ref={titleRef}

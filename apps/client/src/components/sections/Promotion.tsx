@@ -6,6 +6,7 @@ import { useEffect } from "react";
 export const Promotion = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
       gsap.utils.toArray(".left-card").forEach((el) => {
         //transforma em array
@@ -30,23 +31,31 @@ export const Promotion = () => {
           ease: "power3.out",
           scrollTrigger: {
             trigger: el as HTMLElement,
-            start: "top 80%",
+            start: window.innerWidth < 768 ? "top 90%" : "top 80%",
             toggleActions: "play none none reverse",
           },
         });
       });
     });
 
-    return () => ctx.revert();
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
+
+    return () => {
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
+      ctx.revert();
+    };
   }, []);
 
   return (
-    <section className="pb-15 w-full min-h-screen h-auto flex flex-col items-center pt-10 px-10 bg-gradient-to-b from-[#b08c72] to-[#f5f5f5]">
+    <section className="flex flex-col items-center bg-gradient-to-b from-[#b08c72] to-[#f5f5f5] px-10 pt-10 pb-15 w-full h-auto min-h-screen">
       <div>
-        <h1 className="text-4xl text-white-gost-500 font-semibold text-center mt-15 mb-10">
+        <h1 className="mt-15 mb-10 font-semibold text-white-gost-500 text-4xl text-center">
           Pacotes e ofertas
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="gap-2 grid grid-cols-1 md:grid-cols-2">
           <PromoCard
             className="right-card"
             title="Reserve 5 diarias e ganhe a ceia todos os dias"
