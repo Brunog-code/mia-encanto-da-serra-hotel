@@ -2,6 +2,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState, type InputHTMLAttributes } from "react";
 
+import './input.css'
+
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string;
   placeholder: string;
@@ -19,15 +21,23 @@ export const Input = ({
   ...rest
 }: IInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="relative w-full">
       <input
         type={showPassword ? "text" : type}
         placeholder={placeholder}
-        className={`${px} ${py} w-full rounded-md text-golden-600 bg-white-gost-500 border ${border} focus:outline-none focus:ring-2 focus:ring-bistre-600 focus:border-transparent `}
+        className={`${px} ${py} w-full rounded-md text-golden-600 bg-white-gost-500 border ${border} focus:outline-none focus:ring-2 focus:ring-bistre-600 focus:border-transparent peer`}
         {...rest}
+        onFocus={(e) => {
+          // força abrir o calendário se suportado
+          if (type === "date" && e.target.showPicker) {
+            e.target.showPicker();
+          }
+        }}
       />
-      {type == "password" && (
+
+      {type === "password" && (
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}

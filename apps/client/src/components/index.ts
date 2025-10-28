@@ -2,7 +2,7 @@ export * from "./layout/Navbar";
 export * from "./layout/Footer";
 export * from "./sections/Hero";
 export * from "./common/Button";
-export * from "./common/Input";
+export * from "./common/input/Input";
 export * from "./sections/About";
 export * from "./lib/SwiperAbout";
 export * from "./sections/Rooms";
