@@ -28,7 +28,7 @@ export const AppLayout = () => {
       {/* Main content */}
       <main
         style={{ marginTop: navbarHeight + 10 }}
-        className="flex-1 w-full max-w-screen-2xl overflow-x-hidden"
+        className="flex-1 mx-auto w-full max-w-screen-2xl overflow-x-hidden"
       >
         <Outlet />
       </main>
