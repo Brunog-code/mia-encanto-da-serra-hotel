@@ -32,7 +32,7 @@ export const Hero = () => {
       word.style.whiteSpace = "nowrap";
     });
 
-    // Aplica estilo para letras
+    //Aplica estilo para letras
     split.chars?.forEach((char) => {
       char.style.display = "inline-block";
       char.style.position = "relative";
@@ -55,12 +55,13 @@ export const Hero = () => {
         }
       );
 
-      gsap.from('.animate-slogan', {
+      gsap.from(".animate-slogan", {
         opacity: 0,
-        duration: 1,
+        duration: 0.8,
+        delay:0.5,
         x: -window.innerWidth,
-        ease: "back.out(1.4)"
-      })
+        ease: "back.out(1.1)",
+      });
     });
 
     return () => {
