@@ -42,7 +42,7 @@ export const Rooms = () => {
   //monitora resize para ajustar start do scrollTrigger
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth < 768);
-    checkScreen(); // roda logo de cara
+    checkScreen(); //roda logo de cara
     window.addEventListener("resize", checkScreen);
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
@@ -59,7 +59,7 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: `${isMobile ? "top-=1130" : "top-=500"} top`,
+            start: `${isMobile ? "top-=1200" : "top-=500"} top`,
             end: "bottom-=500 top", //termina antes do fim do elemento
             scrub: true,
             pin: false,

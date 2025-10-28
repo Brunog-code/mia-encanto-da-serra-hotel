@@ -27,7 +27,7 @@ export const Testimonials = () => {
           scrollTrigger: {
             trigger: el, // cada card dispara sozinho
             start: isMobile ? "top 95%" : "top 85%",
-            toggleActions: "play none play reverse", // anima ao entrar e reinicia ao subir
+            toggleActions: "play none play reverse", //anima ao entrar e reinicia ao subir
           },
         });
       });
