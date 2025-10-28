@@ -33,7 +33,7 @@ export const Contact = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 pb-2 w-full h-auto min-h-screen">
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 pb-2 w-full min-h-screen">
       <div>
         <h1 className="mt-12 mb-5 font-semibold text-bistre-600 text-3xl md:text-4xl text-center">
           Contato e localização
