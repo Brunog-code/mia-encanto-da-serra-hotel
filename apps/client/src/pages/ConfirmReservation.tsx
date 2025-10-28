@@ -158,22 +158,7 @@ export const ConfirmReservation = () => {
     //nessa altura reserva na criada no db
     try {
       //====fluxo oficial de pagamento
-      // const paymentResponse = await api.post("/payment", {
-      //   idReservation: reservationResponse.data.id,
-      //   chekeInReservation: reservationResponse.data.checkIn,
-      //   chekeOutReservation: reservationResponse.data.checkOut,
-      //   totalAmountReservation: reservationResponse.data.totalAmount,
-      //   userName: user?.name,
-      //   userEmail: user?.email,
-      //   userPhone: userPhone,
-      //   roomCategory: roomData?.category,
-      // });
-
-      // encaminha pro checkout
-      // window.location.href = paymentResponse.data.init_point;
-
-      //====fluxo alternativo de pagamento(simulaçao para producao)
-      const paymentResponse = await api.post("/payment/simulate_payment", {
+      const paymentResponse = await api.post("/payment", {
         idReservation: reservationResponse.data.id,
         chekeInReservation: reservationResponse.data.checkIn,
         chekeOutReservation: reservationResponse.data.checkOut,
@@ -184,7 +169,22 @@ export const ConfirmReservation = () => {
         roomCategory: roomData?.category,
       });
 
-      window.location.href = paymentResponse.data.redirectUrl;
+      // encaminha pro checkout
+      window.location.href = paymentResponse.data.init_point;
+
+      //====fluxo alternativo de pagamento(simulaçao para producao)
+      // const paymentResponse = await api.post("/payment/simulate_payment", {
+      //   idReservation: reservationResponse.data.id,
+      //   chekeInReservation: reservationResponse.data.checkIn,
+      //   chekeOutReservation: reservationResponse.data.checkOut,
+      //   totalAmountReservation: reservationResponse.data.totalAmount,
+      //   userName: user?.name,
+      //   userEmail: user?.email,
+      //   userPhone: userPhone,
+      //   roomCategory: roomData?.category,
+      // });
+
+      // window.location.href = paymentResponse.data.redirectUrl;
     } catch (error: any) {
       setLoading(false);
       if (error.response) {

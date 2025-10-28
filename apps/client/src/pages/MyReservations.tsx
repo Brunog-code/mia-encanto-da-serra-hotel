@@ -144,7 +144,7 @@ export const MyReservations = () => {
   };
 
   return (
-    <section className="flex flex-col space-y-6 p-4 w-full min-h-screen">
+    <section className="flex flex-col space-y-6 p-4 border w-full min-h-screen">
       <div>
         <h1 className="bg-golden-500 shadow-md mt-5 p-3 rounded-md font-semibold text-white-gost-500 text-3xl text-center">
           Minhas reservas
@@ -166,8 +166,9 @@ export const MyReservations = () => {
                   {dayjs(reservation.checkIn).format("MMMM [de] YYYY")}
                 </h2>
               </div>
+
               {/* Card */}
-              <div className="flex md:flex-row flex-col bg-white-gost-500 shadow-md rounded-md w-full md:w-1/2 overflow-hidden">
+              <div className="flex md:flex-row flex-col bg-white-gost-500 shadow-md rounded-md w-full md:w-[70%] overflow-hidden">
                 {/* Foto à esquerda */}
                 <div className="relative w-full md:w-1/2 h-48 md:h-auto">
                   <div className="top-2 left-1 absolute bg-bistre-300 p-1 rounded-md text-white">

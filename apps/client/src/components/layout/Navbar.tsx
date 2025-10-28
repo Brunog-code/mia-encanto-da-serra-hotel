@@ -105,6 +105,7 @@ export const Navbar = forwardRef<HTMLHeadingElement, {}>((_, ref) => {
                 background: "linear-gradient(to bottom, #5a4030, #3d2b1f)", //cor de fundo
                 width: 250,
                 color: "white", //cor do texto
+                overflowX: "hidden",
               },
             }}
           >
