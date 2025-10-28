@@ -85,7 +85,7 @@ export const About = () => {
   }, []);
 
   return (
-    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 pb-10 w-full min-h-screen">
+    <section className="flex flex-col items-center bg-white-gost-500 px-10 pt-10 pb-2 w-full min-h-screen">
       <div className="flex flex-col space-y-5">
         <h1
           ref={titleRef}

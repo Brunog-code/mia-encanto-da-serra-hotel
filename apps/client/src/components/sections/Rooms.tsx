@@ -52,13 +52,11 @@ export const Rooms = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
+      gsap.to(
+        // Mude de fromTo para to
         sectionRoomRef.current,
-        { "clip-path": "circle(5% at 50% 50%)" },
         {
-          "clip-path": "circle(100% at 50% 50%)",
-          force3D: true,
-          transformOrigin: "center center",
+          "clip-path": "circle(100% at 50% 50%)", // Apenas o estado final
           scrollTrigger: {
             trigger: sectionRoomRef.current,
             start: isMobile ? "top 180%" : "top 80%",
@@ -71,7 +69,7 @@ export const Rooms = () => {
         }
       );
     }, sectionRoomRef);
-    return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
+    return () => ctx.revert();
   }, [isMobile]);
 
   //pega as informacoes e imgs do room
@@ -116,6 +114,7 @@ export const Rooms = () => {
   return (
     <section
       ref={sectionRoomRef}
+      style={{ clipPath: "circle(5% at 50% 50%)" }}
       className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto min-h-screen will-change-[clip-path]"
     >
       <Element className="flex flex-col space-y-5">
