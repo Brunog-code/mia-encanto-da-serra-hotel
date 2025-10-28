@@ -57,6 +57,8 @@ export const Rooms = () => {
         { "clip-path": "circle(5% at 50% 50%)" },
         {
           "clip-path": "circle(100% at 50% 50%)",
+          force3D: true,
+          transformOrigin: "center center",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
             start: isMobile ? "top 180%" : "top 80%",
@@ -114,7 +116,7 @@ export const Rooms = () => {
   return (
     <section
       ref={sectionRoomRef}
-      className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto min-h-screen"
+      className="relative flex flex-col items-center bg-bistre-300 px-10 pt-10 w-full h-auto min-h-screen will-change-[clip-path]"
     >
       <Element className="flex flex-col space-y-5">
         <h1 className="mt-15 mb-10 font-semibold text-white-gost-500 text-4xl text-center">
