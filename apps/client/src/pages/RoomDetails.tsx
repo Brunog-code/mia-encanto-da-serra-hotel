@@ -241,6 +241,7 @@ export const RoomDetails = () => {
                 <Input
                   type="date"
                   placeholder="Check-in"
+                  required
                   {...register("checkin")}
                 />
                 {errors.checkin && (
@@ -251,6 +252,7 @@ export const RoomDetails = () => {
                 <Input
                   type="date"
                   placeholder="Check-out"
+                  required
                   {...register("checkout")}
                 />
                 {errors.checkout && (
