@@ -2,6 +2,7 @@ import { PrismaClient, PaymentStatus, PaymentMethod } from "@prisma/client";
 import { Request, Response } from "express";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import { db } from "../lib/prisma.js";
+import { sendEmail } from "../services/emailService.js";
 
 export class WebhookController {
   private prisma: PrismaClient;
@@ -33,6 +34,7 @@ export class WebhookController {
 
       if (type === "payment") {
         const paymentId = data.id;
+
         if (!paymentId) {
           console.warn("Webhook sem paymentId");
           return res.sendStatus(400);
@@ -60,7 +62,7 @@ export class WebhookController {
           return res.sendStatus(400);
         }
 
-        //2-Tradução do Status: (FOCADO APENAS NO STATUS DO PAGAMENTO)
+        //2-Tradução do Status:(FOCADO APENAS NO STATUS DO PAGAMENTO)
         let status: PaymentStatus;
         switch (paymentStatusMP) {
           case "approved":
@@ -105,7 +107,7 @@ export class WebhookController {
         });
 
         //Atualiza o status da reserva
-        await this.prisma.reservation.update({
+        const reservation = await this.prisma.reservation.update({
           where: { id: externalReference },
           data: {
             status:
@@ -115,7 +117,31 @@ export class WebhookController {
                 ? "CANCELED"
                 : "PENDING",
           },
+          include: { customer: true }, //relação com usuário
         });
+
+        //ENVIO DE EMAIL (apenas se pago)
+        if (status === PaymentStatus.PAID && reservation?.customer?.email) {
+          try {
+            await sendEmail({
+              to: reservation.customer.email,
+              subject: "Sua reserva foi confirmada! 🎉",
+              html: `
+                <h1>Reserva Confirmada!</h1>
+                <p>Olá ${reservation.customer.name},</p>
+                <p>Sua reserva #${
+                  reservation.reservationNumber
+                } foi confirmada com sucesso.</p>
+                <p>Valor pago: R$ ${transactionAmount.toFixed(2)}</p>
+                <p>Obrigado por escolher nosso hotel!</p>
+              `,
+            });
+            console.log(`Email enviado para ${reservation.customer.email}`);
+          } catch (emailError) {
+            console.error("Erro ao enviar email de confirmação:", emailError);
+            // não precisa quebrar o webhook
+          }
+        }
       }
 
       //Retornar 200 OK é crucial para que o Mercado Pago não tente reenviar a notificação
