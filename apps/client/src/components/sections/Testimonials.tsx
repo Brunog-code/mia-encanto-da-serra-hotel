@@ -2,8 +2,19 @@ import { TestimonialsCard } from "../common/TestimonialsCard";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
+import { useState } from "react";
 
 export const Testimonials = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  //verifica se é mobile
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -15,14 +26,23 @@ export const Testimonials = () => {
           duration: 1,
           scrollTrigger: {
             trigger: el, // cada card dispara sozinho
-            start: "top 80%",
+            start: isMobile ? "top 95%" : "top 85%",
             toggleActions: "play none play reverse", // anima ao entrar e reinicia ao subir
           },
         });
       });
     });
 
-    return () => ctx.revert();
+    //Força refresh do ScrollTrigger após animações
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
+
+    return () => {
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
+      ctx.revert();
+    };
   }, []);
 
   const testimonials = [
@@ -69,9 +89,9 @@ export const Testimonials = () => {
   ];
 
   return (
-    <section className="relative w-full min-h-screen h-auto flex flex-col items-center px-10 bg-white-gost-500 pb-20 pt-20 ">
+    <section className="relative flex flex-col items-center bg-white-gost-500 px-10 pt-20 pb-20 w-full h-auto min-h-screen">
       <div>
-        <h1 className="text-3xl md:text-4xl text-bistre-600 font-semibold text-center">
+        <h1 className="font-semibold text-bistre-600 text-3xl md:text-4xl text-center">
           Depoimentos de hóspedes
         </h1>
       </div>
@@ -92,7 +112,7 @@ export const Testimonials = () => {
 
       {/* Curva em S */}
       <svg
-        className="absolute bottom-0 w-full h-32"
+        className="bottom-0 absolute w-full h-32"
         viewBox="0 0 1440 320"
         preserveAspectRatio="none"
       >

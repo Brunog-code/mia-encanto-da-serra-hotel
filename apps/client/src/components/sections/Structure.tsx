@@ -152,7 +152,7 @@ export const Structure = () => {
       });
     });
 
-    // Força refresh do ScrollTrigger após animações
+    //Força refresh do ScrollTrigger após animações
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("resize", refresh);
     window.addEventListener("orientationchange", refresh);
