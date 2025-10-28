@@ -1,7 +1,5 @@
 import sgMail from "@sendgrid/mail";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
-
 interface ISendEmail {
   to: string;
   subject: string;
@@ -9,6 +7,7 @@ interface ISendEmail {
 }
 
 export const sendEmail = async ({ to, subject, html }: ISendEmail) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
   try {
     const msg = {
       to,
