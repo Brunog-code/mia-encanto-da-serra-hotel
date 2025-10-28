@@ -1,17 +1,12 @@
-/* Esconde o texto nativo de data (dd/mm/aaaa) */
-input[type="date"]::-webkit-datetime-edit {
+/* Oculta o texto nativo de data (dd/mm/aaaa) quando o campo está vazio */
+input[type="date"]:not(:focus):not(:valid)::-webkit-datetime-edit {
   color: transparent;
 }
 
-/* Mostra o texto nativo quando o usuário seleciona uma data */
-input[type="date"]:valid::-webkit-datetime-edit {
-  color: inherit;
-}
-
-/* Mostra o placeholder customizado quando vazio */
-input[type="date"]:not(:focus):invalid::before {
+/* Placeholder customizado */
+input[type="date"]:not(:focus):not(:valid)::before {
   content: attr(placeholder);
-  color: var(--golden-600);
+  color: var(--golden-600); /* cinza do placeholder */
   position: absolute;
   left: 1rem;
   top: 50%;
@@ -19,7 +14,7 @@ input[type="date"]:not(:focus):invalid::before {
   pointer-events: none;
 }
 
-/* Remove o placeholder ao focar ou digitar */
+/* Remove placeholder quando foca ou há valor */
 input[type="date"]:focus::before,
 input[type="date"]:valid::before {
   content: "";
