@@ -52,11 +52,11 @@ export const Rooms = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      gsap.to(
-        // Mude de fromTo para to
+      gsap.fromTo(
         sectionRoomRef.current,
+        { "clip-path": "circle(5% at 50% 50%)" },
         {
-          "clip-path": "circle(100% at 50% 50%)", // Apenas o estado final
+          "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
             start: isMobile ? "top 180%" : "top 80%",
@@ -69,7 +69,7 @@ export const Rooms = () => {
         }
       );
     }, sectionRoomRef);
-    return () => ctx.revert();
+    return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
   }, [isMobile]);
 
   //pega as informacoes e imgs do room
