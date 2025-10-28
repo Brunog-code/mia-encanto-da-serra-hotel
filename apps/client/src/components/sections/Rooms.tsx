@@ -59,7 +59,7 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: `${isMobile ? "top-=1100" : "top-=500"} top`,
+            start: `${isMobile ? "top-=1130" : "top-=500"} top`,
             end: "bottom-=500 top", //termina antes do fim do elemento
             scrub: true,
             pin: false,

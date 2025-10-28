@@ -120,7 +120,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate0",
-          start: "top 90%",
+          start: isMobile ? "top 95%" : "top 85%",
           toggleActions: "play none none reverse",
         },
       });
@@ -133,7 +133,7 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate1",
-          start: "top 90%",
+          start: isMobile ? "top 90%" : "top 80%",
           toggleActions: "play none none reverse",
         },
       });
@@ -146,16 +146,22 @@ export const Structure = () => {
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".animate2",
-          start: "top 90%",
+          start: isMobile ? "top 95%" : "top 85%",
           toggleActions: "play none none reverse",
         },
       });
     });
 
     // Força refresh do ScrollTrigger após animações
-    ScrollTrigger.refresh();
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
 
-    return () => ctx.revert();
+    return () => {
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
+      ctx.revert();
+    };
   }, [imagesLoaded]);
 
   return (
