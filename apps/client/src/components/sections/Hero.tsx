@@ -58,7 +58,8 @@ export const Hero = () => {
       gsap.from('.animate-slogan', {
         opacity: 0,
         duration: 1,
-        x: -window.innerWidth
+        x: -window.innerWidth,
+        ease: "back.out(1.4)"
       })
     });
 
