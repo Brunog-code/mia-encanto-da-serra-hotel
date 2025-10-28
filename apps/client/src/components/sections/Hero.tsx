@@ -107,7 +107,7 @@ export const Hero = () => {
           <div>
             <h1
               ref={h1Ref}
-              className="font-bold text-white-gost-500 text-4xl md:text-6xl leading-tight"
+              className="font-bold text-white-gost-500 text-5xl md:text-6xl leading-tight"
             >
               Bem-vindo ao refúgio perfeito em Campos do Jordão
             </h1>
