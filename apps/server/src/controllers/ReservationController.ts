@@ -35,11 +35,10 @@ export class ReservationController {
             typeId: roomTypeId,
             reservations: {
               none: {
-                OR: [
-                  {
-                    checkIn: { lte: new Date(checkOut) },
-                    checkOut: { gte: new Date(checkIn) },
-                  },
+                AND: [
+                  { status: { in: ["PENDING", "CONFIRMED"] } },
+                  { checkIn: { lte: new Date(checkOut) } },
+                  { checkOut: { gte: new Date(checkIn) } },
                 ],
               },
             },

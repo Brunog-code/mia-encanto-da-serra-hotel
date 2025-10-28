@@ -14,7 +14,6 @@ Este projeto foi construído utilizando uma stack full-stack em JavaScript/TypeS
 | **Frontend** | HTML & CSS | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) |
 | **Estilização** | Tailwind CSS | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=flat-square&logo=tailwind-css&logoColor=white) |
 | **Backend** | Node.js | ![Node.js](https://img.shields.io/badge/Node.js-%2343853D.svg?style=flat-square&logo=node.js&logoColor=white) |
-| **API** | Express | ![Express](https://img-shields.io/badge/Express-%23404d59.svg?style=flat-square&logo=express&logoColor=white) |
 | **Banco de Dados** | PostgreSQL | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23316192.svg?style=flat-square&logo=postgresql&logoColor=white) |
 | **ORM** | Prisma ORM | ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=flat-square&logo=Prisma&logoColor=white) |
 
@@ -64,7 +63,7 @@ O sistema de pagamento é o core do projeto e utiliza a API do **Mercado Pago** 
 
 ## 🌐 Link do Projeto
 
-Acesse e teste o sistema de reservas e pagamento em produção:
+Acesse o projeto através do link abaixo:
 
 [🌐 **Mia Encanto da Serra - Hotel Fictício**](https://mia-encanto-da-serra-hotel.vercel.app/)
 

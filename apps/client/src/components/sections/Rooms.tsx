@@ -98,6 +98,8 @@ export const Rooms = () => {
       const availabilityData = await checkRoomsAvailability();
       if (!availabilityData) return;
 
+      console.log(availabilityData)
+
       setRooms((prevRooms) =>
         prevRooms.map((room) => {
           const match = availabilityData.find((a) => a.typeId === room.id);
@@ -149,11 +151,13 @@ export const Rooms = () => {
           />
         ))}
       </div>
+
       <div className="flex justify-center items-center w-full">
-        <span className="text-white-gost-500 text-lg">
+        <p className="text-white-gost-500 text-lg">
           Clique em ver detalhes para mais Informações.
-        </span>
+        </p>
       </div>
+
     </section>
   );
 };
