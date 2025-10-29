@@ -69,6 +69,10 @@ export const Rooms = () => {
         }
       );
     }, sectionRoomRef);
+
+    //Garante recalculo
+    ScrollTrigger.refresh();
+
     return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
   }, [isMobile]);
 
@@ -155,7 +159,6 @@ export const Rooms = () => {
           Clique em ver detalhes para mais Informações.
         </p>
       </div>
-
     </section>
   );
 };
