@@ -49,6 +49,7 @@ export const Rooms = () => {
 
   //gsap
   useEffect(() => {
+    if (rooms.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -70,11 +71,10 @@ export const Rooms = () => {
       );
     }, sectionRoomRef);
 
-    //Garante recalculo
-    setTimeout(() => ScrollTrigger.refresh(), 100); // espera render
+    ScrollTrigger.refresh(true); //força recalculo imediato
 
     return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
-  }, [isMobile]);
+  }, [rooms, isMobile]);
 
   //pega as informacoes e imgs do room
   useEffect(() => {
