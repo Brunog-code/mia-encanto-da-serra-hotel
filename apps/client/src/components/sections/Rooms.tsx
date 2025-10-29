@@ -8,7 +8,7 @@ import { useReservation } from "@/contexts/ReservationContext";
 
 export const Rooms = () => {
   const sectionRoomRef = useRef<HTMLElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   //context
   const { reservationData, checkRoomsAvailability } = useReservation();
@@ -59,8 +59,8 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: isMobile ? "top 210%" : "top 80%",
-            end: isMobile ? "bottom 50%" : "bottom 60%",
+            start: window.innerWidth < 768 ? "top 210%" : "top 80%",
+            end: window.innerWidth < 768 ? "bottom 50%" : "bottom 60%",
             scrub: 0.5,
             pin: false,
             invalidateOnRefresh: true,
@@ -74,7 +74,7 @@ export const Rooms = () => {
     ScrollTrigger.refresh();
 
     return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
-  }, [isMobile]);
+  }, []);
 
   //pega as informacoes e imgs do room
   useEffect(() => {
