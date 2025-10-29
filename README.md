@@ -108,7 +108,7 @@ Abaixo, um vídeo demonstrando o funcionamento do **Checkout Pro com Mercado Pag
 
 - **Vídeo completo do fluxo real de pagamento e confirmação de reserva**
 
-[![Assista o vídeo](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/hero.PNG)]([LINK_DO_VIDEO](https://www.youtube.com/watch?v=JsoISZGQEOM))
+[![Assista o vídeo](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/hero.PNG)](https://www.youtube.com/watch?v=JsoISZGQEOM)
 
 
 ---
