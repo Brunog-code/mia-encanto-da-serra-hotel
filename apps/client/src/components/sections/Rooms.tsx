@@ -41,7 +41,7 @@ export const Rooms = () => {
 
   //monitora resize para ajustar start do scrollTrigger
   useEffect(() => {
-    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    const checkScreen = () => setIsMobile(() => window.innerWidth < 768);
     checkScreen(); //roda logo de cara
     window.addEventListener("resize", checkScreen);
     return () => window.removeEventListener("resize", checkScreen);
@@ -59,8 +59,8 @@ export const Rooms = () => {
           "clip-path": "circle(100% at 50% 50%)",
           scrollTrigger: {
             trigger: sectionRoomRef.current,
-            start: window.innerWidth < 768 ? "top 210%" : "top 80%",
-            end: window.innerWidth < 768 ? "bottom 50%" : "bottom 60%",
+            start: isMobile ? "top 210%" : "top 80%",
+            end: isMobile ? "bottom 50%" : "bottom 60%",
             scrub: 0.5,
             pin: false,
             invalidateOnRefresh: true,
@@ -71,10 +71,10 @@ export const Rooms = () => {
     }, sectionRoomRef);
 
     //Garante recalculo
-    ScrollTrigger.refresh();
+    setTimeout(() => ScrollTrigger.refresh(), 100); // espera render
 
     return () => ctx.revert(); //limpa o GSAP quando o componente desmonta
-  }, []);
+  }, [isMobile]);
 
   //pega as informacoes e imgs do room
   useEffect(() => {
