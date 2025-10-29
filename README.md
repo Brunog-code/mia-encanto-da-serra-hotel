@@ -97,6 +97,10 @@ O sistema de pagamento utiliza a API do **Mercado Pago** no modelo **Checkout Pr
 
 ![pagamento confirmado](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/reserva-e-pagamento-aprovado.PNG)
 
+### Email - confirmação reserva
+
+![email confirmação](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/email-reserva-confirmada.PNG)
+
 ### Minhas reservas
 
 ![minhas reservas](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/reserva-confirmada.PNG)
