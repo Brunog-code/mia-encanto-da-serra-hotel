@@ -47,7 +47,7 @@ export const Rooms = () => {
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
 
-  //gsap animacao
+  //gsap
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
