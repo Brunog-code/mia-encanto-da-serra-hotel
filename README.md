@@ -111,7 +111,7 @@ O sistema de pagamento utiliza a API do **Mercado Pago** no modelo **Checkout Pr
 
 Abaixo, um vídeo demonstrando o funcionamento do **Checkout Pro com Mercado Pago**, a confirmação automática via **Webhook** e o envio de **redefinição de senha** para o e-mail do usuário cadastrado.
 
-- **Vídeo completo do fluxo real de pagamento e confirmação de reserva**
+> Clique na imagem para assistir no YouTube (abre em nova aba/janela).
 
 [![Assista o vídeo](https://img.youtube.com/vi/JsoISZGQEOM/hqdefault.jpg)](https://www.youtube.com/watch?v=JsoISZGQEOM)
 
