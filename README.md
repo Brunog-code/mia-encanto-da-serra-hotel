@@ -111,7 +111,7 @@ O sistema de pagamento utiliza a API do **Mercado Pago** no modelo **Checkout Pr
 
 Abaixo, um vídeo demonstrando o funcionamento do **Checkout Pro com Mercado Pago**, a confirmação automática via **Webhook** e o envio de **redefinição de senha** para o e-mail do usuário cadastrado.
 
-> ⚠️ O vídeo do youtube será aberto na mesma janela; caso queira, você pode abrir em nova aba/janela pelo navegador.".
+> ⚠️ O vídeo do youtube será aberto na mesma janela; caso queira, você pode abrir em nova aba/janela pelo navegador.
 
 [![Assista o vídeo](https://img.youtube.com/vi/JsoISZGQEOM/hqdefault.jpg)](https://www.youtube.com/watch?v=JsoISZGQEOM)
 
@@ -120,6 +120,6 @@ Abaixo, um vídeo demonstrando o funcionamento do **Checkout Pro com Mercado Pag
 ## 🧠 Contexto Acadêmico
 
 Este projeto foi desenvolvido com fins **educacionais**, simulando o funcionamento de um sistema real de reservas e pagamentos online.  
-O foco principal foi o **aprendizado de integração entre frontend, backend, banco de dados e API de terceiros (Mercado Pago)**, aplicando boas práticas de **segurança, escalabilidade e arquitetura moderna**.
+O foco principal foi o **aprendizado de integração entre frontend, backend, banco de dados e API de pagamento (Mercado Pago)**, aplicando boas práticas de **segurança, escalabilidade**. Todas as imagens foram geradas por IA.
 
 ---
