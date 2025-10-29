@@ -51,6 +51,7 @@ export class WebhookController {
         const paymentData = (paymentDetails as any).result || paymentDetails;
 
         const paymentStatusMP = paymentData.status; //ex: approved, pending, rejected, refunded
+        const paymentStatusDetail = paymentData.status_detail; // motivo do rejeitado
         const externalReference: string | undefined =
           paymentData.external_reference;
         const transactionAmount: number = paymentData.transaction_amount || 0;
@@ -87,7 +88,7 @@ export class WebhookController {
         }
 
         console.log(
-          `[Webhook] ID: ${paymentId}. Status MP: ${paymentStatusMP}. Status DB: ${status}`
+          `[Webhook] ID: ${paymentId}, Status MP: ${paymentStatusMP}, Detalhe: ${paymentStatusDetail}`
         );
 
         //3-Atualização no DB (SOMENTE O REGISTRO DE PAGAMENTO)
