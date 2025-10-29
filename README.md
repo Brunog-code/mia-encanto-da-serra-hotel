@@ -78,27 +78,32 @@ O sistema de pagamento utiliza a API do **Mercado Pago** no modelo **Checkout Pr
 ## 📸 Visualização
 
 ### Seção Hero
+
 ![Hero](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/hero.PNG)
 
-
 ### Seção quartos
+
 ![Quartos](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/room-section.PNG)
 
 ### Confirmar reserva
+
 ![confirmar reserva](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/confirm-reservation.PNG)
 
 ### Checkout Pro - Mercado pago
+
 ![checkoutPro](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/checkout-pro.PNG)
 
 ### Pagamento confirmado
+
 ![pagamento confirmado](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/reserva-e-pagamento-aprovado.PNG)
 
 ### Minhas reservas
+
 ![minhas reservas](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/reserva-confirmada.PNG)
 
 ### Minhas reservas - Botão pagar - Caso de pagamento pendente
-![minhas reservas - pagamento pendente](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/btn-pgto-pendente.PNG
-)
+
+![minhas reservas - pagamento pendente](https://hwrvkyieyvjmzncivmmt.supabase.co/storage/v1/object/public/images-hotel/prints-github/btn-pgto-pendente.PNG)
 
 ---
 
@@ -108,10 +113,7 @@ Abaixo, um vídeo demonstrando o funcionamento do **Checkout Pro com Mercado Pag
 
 - **Vídeo completo do fluxo real de pagamento e confirmação de reserva**
 
-<a href="https://www.youtube.com/watch?v=JsoISZGQEOM" target="_blank" rel="noopener noreferrer">
-  <img src="https://img.youtube.com/vi/JsoISZGQEOM/hqdefault.jpg" alt="Assista o vídeo" style="max-width:100%;"/>
-</a>
-
+[![Assista o vídeo](https://img.youtube.com/vi/JsoISZGQEOM/hqdefault.jpg)](https://www.youtube.com/watch?v=JsoISZGQEOM)
 
 ---
 
